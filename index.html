@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Owenn.ca</title>
 <style>
+/* Reset & base */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family:'Helvetica Neue', Arial, sans-serif;
@@ -13,7 +14,7 @@ body {
   line-height:1.6;
   scroll-behavior:smooth;
   overflow-x:hidden;
-  cursor:none; /* hide default cursor */
+  cursor:none; /* hide default cursor on desktop */
 }
 header {
   display:flex;
@@ -22,7 +23,7 @@ header {
   padding:1.5rem 10%;
   position:sticky;
   top:0;
-  background:rgba(255,255,255,0.9);
+  background:rgba(255,255,255,0.95);
   backdrop-filter:blur(10px);
   z-index:100;
 }
@@ -35,8 +36,9 @@ nav a {
   transition: color 0.3s ease;
 }
 nav a:hover { color:#3E8E41; }
+/* Hero */
 .hero {
-  height:100vh;
+  min-height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -52,13 +54,14 @@ nav a:hover { color:#3E8E41; }
 }
 .hero h2 { font-size:3rem; margin-bottom:1rem; }
 .hero p { font-size:1.2rem; max-width:600px; }
+/* Seasonal elements */
 .seasonal-element {
   position:absolute;
   pointer-events:none;
   user-select:none;
   font-size:1.5rem;
   opacity:0.8;
-  animation:float 10s linear infinite;
+  animation:float linear infinite;
 }
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg); }
@@ -102,19 +105,21 @@ footer {
   transition:background 0.3s ease;
 }
 .cycle-btns button:hover { background:rgba(255,255,255,0.6); }
+/* Affiliations */
 .affiliations-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:2rem;
   justify-items:center;
   align-items:center;
   margin-top:2rem;
 }
 .affiliation {
-  font-size:2.5rem;
+  font-size:2rem;
   transition:transform 0.3s ease;
 }
 .affiliation:hover { transform:scale(1.1); }
+/* Cat cursor */
 #cat {
   position:absolute;
   top:0; left:0;
@@ -122,6 +127,16 @@ footer {
   pointer-events:none;
   z-index:1000;
   transition: transform 0.05s linear;
+}
+/* Mobile & responsiveness */
+@media (max-width:768px){
+  header { flex-direction:column; padding:1rem 5%; }
+  nav a { margin:0.5rem; display:inline-block; }
+  .hero h2 { font-size:2rem; }
+  .hero p { font-size:1rem; padding:0 1rem; }
+  .seasonal-element { font-size:1.2rem; }
+  #cat { display:none; } /* hide cat on mobile */
+  section { padding:3rem 5%; }
 }
 </style>
 </head>
@@ -174,23 +189,24 @@ footer {
 <div id="cat">🐱</div>
 
 <script>
-// Seasonal cycle
+// Seasonal cycle with more elements
 const seasons = [
-  { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃'] },
-  { name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃'] },
-  { name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁'] },
-  { name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄'] },
+  { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🌼','🌿','🍀','🌺'] },
+  { name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🌴','🍉','🌷'] },
+  { name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🌾','🎃','🍄','🍁'] },
+  { name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🌨️','🌲','☃️','🧤'] },
 ];
 let current=0;
 const hero=document.querySelector('.hero');
 function showSeason(index){
   hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  seasons[index].elements.forEach((el,i)=>{
+  seasons[index].elements.forEach((el)=>{
     const div=document.createElement('div');
     div.className='seasonal-element';
-    div.style.top=`${20+i*30}%`;
-    div.style.left=`${10+i*40}%`;
+    div.style.top=Math.random()*80+'%';
+    div.style.left=Math.random()*90+'%';
+    div.style.animationDuration=(8+Math.random()*6)+'s';
     div.textContent=el;
     hero.appendChild(div);
   });
@@ -208,6 +224,7 @@ revealOnScroll();
 
 // Cat cursor chasing
 const cat=document.getElementById('cat');
+if(window.innerWidth>768){ // only enable for desktops
 document.addEventListener('mousemove',e=>{
   const mouseX=e.clientX;
   const mouseY=e.clientY;
@@ -218,6 +235,7 @@ document.addEventListener('mousemove',e=>{
   cat.style.left=`${catX+dx}px`;
   cat.style.top=`${catY+dy}px`;
 });
+} else { cat.style.display='none'; }
 </script>
 
 </body>
