@@ -5,138 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Owenn.ca</title>
 <style>
-/* Reset & base */
+/* Base reset */
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family:'Helvetica Neue', Arial, sans-serif;
-  background:#f9f9f9;
-  color:#222;
-  line-height:1.6;
-  scroll-behavior:smooth;
-  overflow-x:hidden;
-  cursor:none; /* hide default cursor on desktop */
-}
-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:1.5rem 10%;
-  position:sticky;
-  top:0;
-  background:rgba(255,255,255,0.95);
-  backdrop-filter:blur(10px);
-  z-index:100;
-}
+body { font-family:'Helvetica Neue', Arial, sans-serif; background:#f9f9f9; color:#222; line-height:1.6; scroll-behavior:smooth; overflow-x:hidden; }
+header { display:flex; justify-content:space-between; align-items:center; padding:1.5rem 10%; position:sticky; top:0; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); z-index:100; }
 header h1 { font-size:1.5rem; letter-spacing:2px; }
-nav a {
-  margin-left:1.5rem;
-  text-decoration:none;
-  color:#333;
-  font-weight:500;
-  transition: color 0.3s ease;
-}
+nav a { margin-left:1.5rem; text-decoration:none; color:#333; font-weight:500; transition: color 0.3s ease; }
 nav a:hover { color:#3E8E41; }
+
 /* Hero */
-.hero {
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  background:linear-gradient(135deg, #6DBE45, #82C784);
-  background-size:400% 400%;
-  color:white;
-  animation:fadeIn 1.5s ease;
-  position:relative;
-  overflow:hidden;
-  transition:background 2s ease;
-}
+.hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background:linear-gradient(135deg, #6DBE45, #82C784); background-size:400% 400%; color:white; position:relative; overflow:hidden; transition:background 2s ease; }
 .hero h2 { font-size:3rem; margin-bottom:1rem; }
 .hero p { font-size:1.2rem; max-width:600px; }
+
 /* Seasonal elements */
-.seasonal-element {
-  position:absolute;
-  pointer-events:none;
-  user-select:none;
-  font-size:1.5rem;
-  opacity:0.8;
-  animation:float linear infinite;
-}
-@keyframes float {
-  0% { transform:translateY(0) rotate(0deg); }
-  50% { transform:translateY(20px) rotate(180deg); }
-  100% { transform:translateY(0) rotate(360deg); }
-}
-@keyframes fadeIn {
-  from { opacity:0; transform:translateY(30px); }
-  to { opacity:1; transform:translateY(0); }
-}
-section {
-  padding:5rem 10%;
-  opacity:0;
-  transform:translateY(50px);
-  transition: all 0.8s ease-out;
-  position:relative;
-}
+.seasonal-element { position:absolute; pointer-events:none; user-select:none; font-size:1.5rem; opacity:0.8; animation:float linear infinite; }
+@keyframes float { 0% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(20px) rotate(180deg); } 100% { transform:translateY(0) rotate(360deg); } }
+@keyframes fadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+/* Sections */
+section { padding:5rem 10%; opacity:0; transform:translateY(50px); transition: all 0.8s ease-out; position:relative; }
 section.show { opacity:1; transform:translateY(0); }
-footer {
-  text-align:center;
-  padding:2rem;
-  background:#111;
-  color:#fff;
-  font-size:0.9rem;
-}
-.cycle-btns {
-  position:absolute;
-  bottom:2rem;
-  right:2rem;
-  display:flex;
-  gap:0.5rem;
-}
-.cycle-btns button {
-  background:rgba(255,255,255,0.3);
-  border:none;
-  padding:0.5rem 1rem;
-  border-radius:5px;
-  cursor:pointer;
-  font-weight:bold;
-  color:#fff;
-  transition:background 0.3s ease;
-}
+
+/* Footer */
+footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size:0.9rem; }
+
+/* Cycle buttons */
+.cycle-btns { position:absolute; bottom:2rem; right:2rem; display:flex; gap:0.5rem; }
+.cycle-btns button { background:rgba(255,255,255,0.3); border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-weight:bold; color:#fff; transition:background 0.3s ease; }
 .cycle-btns button:hover { background:rgba(255,255,255,0.6); }
+
 /* Affiliations */
-.affiliations-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:2rem;
-  justify-items:center;
-  align-items:center;
-  margin-top:2rem;
-}
-.affiliation {
-  font-size:2rem;
-  transition:transform 0.3s ease;
-}
+.affiliations-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:2rem; justify-items:center; align-items:center; margin-top:2rem; }
+.affiliation { font-size:2rem; transition:transform 0.3s ease; }
 .affiliation:hover { transform:scale(1.1); }
+
+/* Profile Cards */
+.profile-cards { display:flex; gap:1rem; justify-content:center; margin-top:2rem; flex-wrap:wrap; }
+.profile-card { display:flex; align-items:center; padding:1rem 1.5rem; background:#fff; border-radius:12px; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:transform 0.3s, box-shadow 0.3s; text-decoration:none; color:#222; font-weight:500; }
+.profile-card:hover { transform:scale(1.05); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
+.profile-card img { width:24px; height:24px; margin-right:0.75rem; }
+
 /* Cat cursor */
-#cat {
-  position:absolute;
-  top:0; left:0;
-  font-size:2rem;
-  pointer-events:none;
-  z-index:1000;
-  transition: transform 0.05s linear;
-}
-/* Mobile & responsiveness */
+#cat { position:fixed; top:0; left:0; font-size:2rem; pointer-events:none; z-index:1000; transition:transform 0.05s linear; }
+
+/* Dead pixels button */
+#dead-pixels { position:fixed; bottom:5px; left:5px; width:20px; height:20px; background:#222; border-radius:50%; cursor:pointer; z-index:9999; }
+
+/* Hidden embeds container */
+#hidden-embeds { display:none; position:fixed; bottom:0; right:0; width:400px; height:300px; background:#000; z-index:999; }
+#hidden-embeds iframe { width:100%; height:100%; border:none; }
+#hidden-embeds button { position:absolute; top:5px; right:5px; z-index:1000; padding:2px 5px; }
+
+/* Responsive */
 @media (max-width:768px){
   header { flex-direction:column; padding:1rem 5%; }
   nav a { margin:0.5rem; display:inline-block; }
   .hero h2 { font-size:2rem; }
   .hero p { font-size:1rem; padding:0 1rem; }
   .seasonal-element { font-size:1.2rem; }
-  #cat { display:none; } /* hide cat on mobile */
+  #cat { display:none; }
   section { padding:3rem 5%; }
+  #hidden-embeds { width:100%; height:200px; bottom:0; right:0; }
 }
 </style>
 </head>
@@ -147,8 +77,8 @@ footer {
   <nav>
     <a href="#about">About</a>
     <a href="#affiliations">Affiliations</a>
+    <a href="#profiles">Profiles</a>
     <a href="#contact">Contact</a>
-    <a href="https://www.linkedin.com/in/owenb1/" target="_blank">LinkedIn</a>
   </nav>
 </header>
 
@@ -177,6 +107,18 @@ footer {
   </div>
 </section>
 
+<section id="profiles">
+  <h2>Profiles</h2>
+  <div class="profile-cards">
+    <a class="profile-card" href="https://github.com/0in1" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GitHub
+    </a>
+    <a class="profile-card" href="https://www.linkedin.com/in/owenb1/" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"> LinkedIn
+    </a>
+  </div>
+</section>
+
 <section id="contact">
   <h2>Contact</h2>
   <p>Reach out at <a href="mailto:Contact@owenn.ca">Contact@owenn.ca</a>.</p>
@@ -187,9 +129,15 @@ footer {
 </footer>
 
 <div id="cat">🐱</div>
+<div id="dead-pixels"></div>
+<div id="hidden-embeds">
+  <button id="close-embeds">✖</button>
+  <iframe src="https://www.twitch.tv/0in1/embed" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/0in1" allowfullscreen></iframe>
+</div>
 
 <script>
-// Seasonal cycle with more elements
+// Seasonal cycle
 const seasons = [
   { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🌼','🌿','🍀','🌺'] },
   { name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🌴','🍉','🌷'] },
@@ -222,20 +170,29 @@ const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
 
-// Cat cursor chasing
+// Cat cursor & touch trail
 const cat=document.getElementById('cat');
-if(window.innerWidth>768){ // only enable for desktops
-document.addEventListener('mousemove',e=>{
-  const mouseX=e.clientX;
-  const mouseY=e.clientY;
-  const catX=parseFloat(cat.style.left)||0;
-  const catY=parseFloat(cat.style.top)||0;
-  const dx=(mouseX-catX-12)/5;
-  const dy=(mouseY-catY-12)/5;
-  cat.style.left=`${catX+dx}px`;
-  cat.style.top=`${catY+dy}px`;
-});
-} else { cat.style.display='none'; }
+if(window.innerWidth>768){
+  document.addEventListener('mousemove',e=>{
+    const mouseX=e.clientX;
+    const mouseY=e.clientY;
+    const catX=parseFloat(cat.style.left)||0;
+    const catY=parseFloat(cat.style.top)||0;
+    const dx=(mouseX-catX-12)/5;
+    const dy=(mouseY-catY-12)/5;
+    cat.style.left=`${catX+dx}px`;
+    cat.style.top=`${catY+dy}px`;
+  });
+} else {
+  cat.style.display='none';
+}
+
+// Dead-pixels hidden embeds
+const deadPixels=document.getElementById('dead-pixels');
+const hiddenEmbeds=document.getElementById('hidden-embeds');
+const closeEmbeds=document.getElementById('close-embeds');
+deadPixels.addEventListener('click',()=>{hiddenEmbeds.style.display='block';});
+closeEmbeds.addEventListener('click',()=>{hiddenEmbeds.style.display='none';});
 </script>
 
 </body>
