@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owen N Bahen | owenn.ca</title>
   <style>
-    /* General Reset */
+    /* Reset */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: Arial, sans-serif;
       line-height:1.6;
-      background:linear-gradient(to bottom, #e0f7fa, #ffffff);
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
       overflow-x:hidden;
       user-select:none; /* prevent highlight */
     }
@@ -18,14 +18,27 @@
     h1 { font-size:2rem; margin-bottom:1rem; }
     h2 { margin-top:2rem; font-size:1.5rem; }
 
-    /* Seasonal Animation */
+    /* Seasonal Box */
+    #seasonBox {
+      position: fixed;
+      top:20px; right:20px;
+      background:#fff;
+      border:2px solid #ccc;
+      padding:0.5rem 1rem;
+      border-radius:10px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      cursor:pointer;
+      z-index:1000;
+    }
+
+    /* Falling Elements */
     .season-element {
       position: fixed;
       top:-50px;
-      width:20px;
-      height:20px;
+      width:24px;
+      height:24px;
       pointer-events:none;
-      opacity:0.7;
+      opacity:0.8;
       animation: fall linear infinite;
     }
     @keyframes fall {
@@ -35,17 +48,17 @@
     /* Cards */
     .cards-grid {
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(160px,1fr));
+      grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
       gap:1.5rem;
       margin:2rem auto;
-      max-width:900px;
+      max-width:1000px;
     }
     .card {
       display:flex;
       align-items:center;
-      padding:1rem 1.25rem;
+      padding:1.25rem 1.5rem;
       background:#fff;
-      border-radius:12px;
+      border-radius:14px;
       box-shadow:0 5px 15px rgba(0,0,0,0.1);
       text-decoration:none;
       color:#222;
@@ -57,11 +70,11 @@
       box-shadow:0 10px 25px rgba(0,0,0,0.2);
     }
     .logo {
-      width:40px; height:40px;
+      width:44px; height:44px;
       border-radius:50%;
       display:flex; justify-content:center; align-items:center;
-      color:white; font-weight:bold; font-size:0.9rem;
-      margin-right:0.75rem; flex-shrink:0;
+      color:white; font-weight:bold; font-size:1rem;
+      margin-right:0.9rem; flex-shrink:0;
     }
 
     /* Footer */
@@ -73,7 +86,7 @@
       width:40px; height:40px;
       pointer-events:none;
       z-index:9999;
-      transition: transform 0.15s linear;
+      transition: transform 0.2s linear;
     }
     #cat::before {
       content:'🐱';
@@ -90,7 +103,7 @@
       cursor:pointer;
       z-index:9999;
     }
-    #twitchDot { left:20px; background:purple; }
+    #twitchDot { left:20px; background:#9146FF; } /* official Twitch purple */
     #ytDot { left:45px; background:red; }
     #hiddenMedia {
       display:none;
@@ -128,6 +141,9 @@
     <h1>Owen Nicholas Bahen</h1>
     <p>Welcome to my space at <strong>owenn.ca</strong></p>
   </header>
+
+  <!-- Seasonal box -->
+  <div id="seasonBox">🌸 Spring</div>
 
   <main>
     <section id="profiles">
@@ -181,34 +197,49 @@
   </div>
 
   <script>
-    // Seasonal effect: leaves/snowflakes
-    const seasonSymbols = ["🍃","🍂","❄️","🌸"];
+    /* Seasons */
+    const seasonBox=document.getElementById("seasonBox");
+    const seasons=[
+      {name:"Spring", symbol:"🌸", icons:["🌸","🌱","🌷"], bg:["#e0f7fa","#fff"]},
+      {name:"Summer", symbol:"☀️", icons:["☀️","🌻","🍃"], bg:["#87cefa","#fff9c4"]},
+      {name:"Fall", symbol:"🍂", icons:["🍂","🍁","🍃"], bg:["#ffcc80","#fff"]},
+      {name:"Winter", symbol:"❄️", icons:["❄️","⛄","🌨️"], bg:["#bbdefb","#e0f7fa"]}
+    ];
+    let currentSeason=0;
+
+    function setSeason(i){
+      currentSeason=i;
+      const s=seasons[i];
+      seasonBox.textContent=`${s.symbol} ${s.name}`;
+      document.body.style.background=`linear-gradient(to bottom, ${s.bg[0]}, ${s.bg[1]})`;
+    }
+    seasonBox.onclick=()=>setSeason((currentSeason+1)%seasons.length);
+
     function createSeasonElement(){
+      const s=seasons[currentSeason];
       const el=document.createElement("div");
       el.className="season-element";
-      el.textContent=seasonSymbols[Math.floor(Math.random()*seasonSymbols.length)];
+      el.textContent=s.icons[Math.floor(Math.random()*s.icons.length)];
       el.style.left=Math.random()*100+"vw";
       el.style.animationDuration=3+Math.random()*5+"s";
       document.body.appendChild(el);
       setTimeout(()=>el.remove(),8000);
     }
-    setInterval(createSeasonElement,500);
+    setInterval(createSeasonElement,600);
+    setSeason(0);
 
-    // Cat cursor
+    /* Cat cursor */
     const cat=document.getElementById("cat");
-    let catX=window.innerWidth/2, catY=window.innerHeight/2;
-    function moveCat(x,y){ catX=x; catY=y; cat.style.transform=`translate(${x}px,${y}px)`; }
-    document.addEventListener("mousemove", e=>moveCat(e.clientX, e.clientY));
-    document.addEventListener("touchstart", e=>{
-      const touch=e.touches[0];
-      moveCat(touch.clientX,touch.clientY);
-    });
-    document.addEventListener("touchmove", e=>{
-      const touch=e.touches[0];
-      moveCat(touch.clientX,touch.clientY);
+    function moveCat(x,y){
+      cat.style.transform=`translate(${x}px,${y}px)`;
+    }
+    document.addEventListener("mousemove",e=>moveCat(e.clientX,e.clientY));
+    document.addEventListener("touchmove",e=>{
+      const t=e.touches[0];
+      moveCat(t.clientX,t.clientY);
     });
 
-    // Hidden media toggle
+    /* Hidden media toggle */
     const twitchDot=document.getElementById("twitchDot");
     const ytDot=document.getElementById("ytDot");
     const hiddenMedia=document.getElementById("hiddenMedia");
