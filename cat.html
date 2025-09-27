@@ -1,70 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cat Page - Owen Bahen</title>
-<link rel="stylesheet" href="styles.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cat Playground — Owen Bahen</title>
+<style>
+  :root{
+    --accent:#82C784;
+    --muted:#f3f3f3;
+    --glass: rgba(255,255,255,0.8);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(180deg,#e6f7f0 0%, #f9f9f9 60%);
+    color:#222;
+    overflow:hidden;
+    min-height:100vh;
+  }
+
+  /* Top bar */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding:0.6rem 1rem;
+    background:linear-gradient(90deg,#2A7A4A,#7ECC92);
+    color:white;
+    position:sticky;
+    top:0;
+    z-index:40;
+  }
+  .topbar h1{font-size:1rem; margin:0; font-weight:700; letter-spacing:1px}
+  .topbar .controls{display:flex;gap:0.6rem;align-items:center}
+  .topbar button{background:transparent;border:1px solid rgba(255,255,255,0.25); color:white;padding:0.4rem 0.6rem;border-radius:6px; cursor:pointer}
+  .topbar small{opacity:0.9; font-size:0.8rem}
+
+  /* Game stage */
+  .stage{
+    position:relative;
+    width:100%;
+    height:calc(100vh - 72px);
+    overflow:hidden;
+  }
+
+  /* Parallax background: subtle trees / skyline using emoji */
+  .bg-layer{
+    position:absolute; inset:0; pointer-events:none; z-index:0;
+  }
+  .bg-skyline{
+    position:absolute; left:50%; transform:translateX(-50%); bottom:8%;
+    font-size:48px; opacity:0.05;
+    filter:blur(0.6px);
+  }
+
+  /* Maple leaves (parallax slow) */
+  .leaf{
+    position:absolute;
+    font-size:22px;
+    opacity:0.12;
+    transform-origin:center;
+    animation:leaf-fall linear infinite;
+    will-change: transform, top, left;
+  }
+  @keyframes leaf-fall{
+    0%{ transform: translateY(-10vh) rotate(0deg) }
+    100%{ transform: translateY(110vh) rotate(540deg) }
+  }
+
+  /* Seasonal emojis (faster) */
+  .seasonal{
+    position:absolute;
+    pointer-events:none;
+    font-size:20px;
+    animation:floaty linear infinite;
+    z-index:8;
+  }
+  @keyframes floaty{
+    0%{ transform: translateY(0) }
+    50%{ transform: translateY(-20px) }
+    100%{ transform: translateY(0) }
+  }
+
+  /* HUD (facts, score) */
+  .hud{
+    position:absolute;
+    top:10px;
+    left:10px;
+    z-index:30;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .panel{
+    background:var(--glass);
+    padding:0.6rem 0.8rem;
+    border-radius:8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    backdrop-filter: blur(6px);
+    min-width:220px;
+  }
+  .panel h3{margin:0 0 6px 0; font-size:0.95rem}
+  .fact{font-size:0.9rem; margin-bottom:6px}
+  .fact-btn{background:var(--accent); color:white; border:none; padding:6px 8px; border-radius:6px; cursor:pointer}
+
+  /* Toys */
+  .toy{
+    position:absolute;
+    font-size:28px;
+    transform:translate(-50%,-50%);
+    user-select:none;
+    z-index:20;
+    transition: transform 0.08s linear;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  /* Cat */
+  #cat{
+    position:absolute;
+    width:56px;
+    height:56px;
+    font-size:48px;
+    transform-origin:center;
+    z-index:25;
+    user-select:none;
+    pointer-events:auto;
+    transition: transform 0.12s linear;
+    text-shadow:0 6px 18px rgba(0,0,0,0.18);
+  }
+
+  /* Meow secret */
+  #meow-btn{
+    position:absolute; right:10px; top:10px;
+    opacity:0; pointer-events:none; /* hidden until Konami or hover */
+    background:rgba(255,255,255,0.9); border:1px solid #ddd; padding:6px 8px; border-radius:6px;
+    z-index:40;
+  }
+
+  /* Konami visible hint in footer */
+  .footer{
+    position:absolute; left:0; right:0; bottom:6px; text-align:center; z-index:35; font-size:0.9rem;
+    color:rgba(0,0,0,0.6)
+  }
+
+  /* Controls at bottom right */
+  .controls-rt{
+    position:absolute; right:12px; bottom:12px; z-index:30; display:flex; gap:8px; flex-direction:column;
+  }
+  .small-panel{ background:var(--glass); padding:10px 12px; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.08) }
+
+  /* Responsive */
+  @media (max-width:700px){
+    .panel{ min-width:160px }
+    #cat{ font-size:42px; width:48px; height:48px }
+  }
+</style>
 </head>
 <body>
 
-<header class="hero">
-  <h1>Cat Playground</h1>
-</header>
-
-<section id="cat-fun">
-  <h2>Click the Cat!</h2>
-  <p>Our cat loves exploring! Click it to teleport to the playground.</p>
-</section>
-
-<div id="cat">🐈</div>
-
-<div style="text-align:center; margin:3rem 0 2rem 0;">
-  <p>Don't worry, the cat will keep moving!</p>
-  <div style="font-size:2rem;">🐾</div>
+<!-- Topbar -->
+<div class="topbar">
+  <h1>Cat Playground — Owen Bahen</h1>
+  <div class="controls">
+    <small>Click anywhere to drop toys • Catch them!</small>
+  </div>
 </div>
 
-<script src="scripts.js"></script>
+<!-- Game stage -->
+<div class="stage" id="stage">
+
+  <!-- background layers -->
+  <div class="bg-layer" id="bg-layer">
+    <!-- skyline emoji - subtle -->
+    <div class="bg-skyline">🗼🏛️🏙️</div>
+  </div>
+
+  <!-- seasonal emoji container -->
+  <div id="seasonal-container"></div>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="panel">
+      <h3>Random Cat Fact</h3>
+      <div class="fact" id="fact-area">Press the button for a fact about cats (or Canada cats!).</div>
+      <button class="fact-btn" id="fact-btn">Show fact</button>
+    </div>
+
+    <div class="panel">
+      <h3>Score</h3>
+      <div style="font-size:1.2rem;font-weight:700" id="score">Toys caught: 0</div>
+    </div>
+  </div>
+
+  <!-- Meow secret (hidden) -->
+  <button id="meow-btn">MEOW</button>
+
+  <!-- controls bottom-right -->
+  <div class="controls-rt">
+    <div class="small-panel" id="place-type">Toy: 🎾</div>
+    <div class="small-panel" id="lives">9 Lives Remaining</div>
+  </div>
+
+  <!-- cat element -->
+  <div id="cat" aria-hidden="true">🐈</div>
+
+  <!-- footer note / konami hint -->
+  <div class="footer">Back to <a href="index.html">Home</a> • Try the Konami code for a surprise</div>
+</div>
 
 <script>
-// --- Cat movement smooth ---
-const catPageCat = document.getElementById('cat');
-let catPagePos = { x: window.innerWidth/2, y: window.innerHeight/2 };
-let catTarget = {...catPagePos};
+/* ---------------------------
+   Setup: game state + assets
+   --------------------------- */
+const stage = document.getElementById('stage');
+const catEl = document.getElementById('cat');
+const seasonalContainer = document.getElementById('seasonal-container');
+const factBtn = document.getElementById('fact-btn');
+const factArea = document.getElementById('fact-area');
+const scoreEl = document.getElementById('score');
+const placeTypeEl = document.getElementById('place-type');
+const livesEl = document.getElementById('lives');
+const meowBtn = document.getElementById('meow-btn');
 
-function catMove() {
-  catTarget.x += Math.random()*120 - 60;
-  catTarget.y += Math.random()*80 - 40;
-  catTarget.x = Math.max(0, Math.min(window.innerWidth-50, catTarget.x));
-  catTarget.y = Math.max(0, Math.min(window.innerHeight-50, catTarget.y));
+let score = 0;
+let toys = []; // {id, el, x, y, emoji}
+let toyId = 0;
+let gameWidth = window.innerWidth;
+let gameHeight = window.innerHeight;
+let toyTypes = ['🐭','🧶','🐟','🪶','🎾','🦴'];
+let currentToy = toyTypes[0];
+let facts = [
+  "Cats sleep 12–16 hours a day.",
+  "A group of cats is called a clowder.",
+  "Cats have nearly 20 muscles that control their ears.",
+  "Toronto's unofficial animal might be the raccoon, but cats rule this page.",
+  "Cats can make over 100 vocal sounds.",
+  "The Maple Leaf was adopted as Canada's national symbol in 1965.",
+  "Canada has more coastline than any other country — lots of cat-watching spots!",
+  "Ottawa's Parliament Hill is home to iconic architecture (🏛️).",
+  "CN Tower in Toronto was the world's tallest free-standing structure until 2007."
+];
+let konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiPos = 0;
 
-  function animate() {
-    const dx = (catTarget.x - catPagePos.x) * 0.05;
-    const dy = (catTarget.y - catPagePos.y) * 0.05;
-    if(Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5){
-      catPagePos.x += dx;
-      catPagePos.y += dy;
-      catPageCat.style.left = catPagePos.x + 'px';
-      catPageCat.style.top = catPagePos.y + 'px';
-      requestAnimationFrame(animate);
-    } else {
-      setTimeout(catMove, 1000 + Math.random()*2000);
-    }
-  }
-  animate();
+/* ---------------------------
+   Utility helpers
+   --------------------------- */
+function rand(min, max){ return Math.random()*(max-min)+min; }
+function createToy(x,y,emoji){
+  const id = ++toyId;
+  const el = document.createElement('div');
+  el.className = 'toy';
+  el.textContent = emoji;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.dataset.id = id;
+  stage.appendChild(el);
+  const t = {id, el, x, y, emoji};
+  toys.push(t);
+  return t;
+}
+function removeToy(t){
+  if(!t) return;
+  t.el.remove();
+  toys = toys.filter(x=>x.id!==t.id);
 }
 
-catMove();
+/* ---------------------------
+   Cat behavior
+   --------------------------- */
+let cat = {
+  x: gameWidth*0.5,
+  y: gameHeight*0.6,
+  vx: 0,
+  vy: 0,
+  speed: 2.2,
+  target: null,
+  state: 'idle' // idle / chase
+};
 
-catPageCat.addEventListener('click', () => {
-  alert('The cat teleports you to a magical place!');
+function updateCat(dt){
+  // choose a target (closest toy) if any
+  if(toys.length>0){
+    // find closest toy
+    let closest = null;
+    let bestDist = Infinity;
+    toys.forEach(t=>{
+      const dx = t.x - cat.x;
+      const dy = t.y - cat.y;
+      const d = Math.hypot(dx,dy);
+      if(d < bestDist){ bestDist = d; closest = t; }
+    });
+    cat.target = closest;
+    cat.state = 'chase';
+  } else {
+    // patrol mode: wander slowly
+    cat.state = 'idle';
+    if(!cat.wanderTarget || Math.hypot(cat.wanderTarget.x-cat.x, cat.wanderTarget.y-cat.y) < 20){
+      cat.wanderTarget = { x: rand(60, gameWidth-60), y: rand(120, gameHeight-160) };
+    }
+    cat.target = { x: cat.wanderTarget.x, y: cat.wanderTarget.y };
+  }
+
+  // move toward target smoothly
+  if(cat.target){
+    const tx = cat.target.x;
+    const ty = cat.target.y;
+    const dx = tx - cat.x;
+    const dy = ty - cat.y;
+    const dist = Math.hypot(dx,dy) || 1;
+    const nx = dx/dist, ny = dy/dist;
+    const sp = (cat.state==='chase') ? cat.speed*1.6 : cat.speed*0.7;
+    cat.vx += (nx*sp - cat.vx) * 0.08;
+    cat.vy += (ny*sp - cat.vy) * 0.08;
+    cat.x += cat.vx;
+    cat.y += cat.vy;
+  }
+
+  // bounds limit
+  cat.x = Math.max(8, Math.min(gameWidth-32, cat.x));
+  cat.y = Math.max(80, Math.min(gameHeight-80, cat.y));
+
+  // update DOM
+  catEl.style.left = (cat.x - 8) + 'px';
+  catEl.style.top = (cat.y - 24) + 'px';
+
+  // face direction
+  if(cat.vx < -0.1) catEl.style.transform = 'scaleX(-1)';
+  else if(cat.vx > 0.1) catEl.style.transform = 'scaleX(1)';
+
+  // if chasing and close enough, "eat" toy
+  if(cat.state==='chase' && cat.target && cat.target.id){
+    const dx = cat.target.x - cat.x;
+    const dy = cat.target.y - cat.y;
+    const d = Math.hypot(dx,dy);
+    if(d < 28){
+      // caught it
+      score += 1;
+      scoreEl.textContent = 'Toys caught: ' + score;
+      // tiny pop animation
+      catEl.animate([{transform: 'scale(1)'},{transform:'scale(1.14)'},{transform:'scale(1)'}],{duration:320});
+      // play little text purr (text animation) by adding a floating heart
+      const heart = document.createElement('div');
+      heart.textContent = '💚';
+      heart.style.position = 'absolute';
+      heart.style.left = (cat.x) + 'px';
+      heart.style.top = (cat.y - 30) + 'px';
+      heart.style.zIndex = 60;
+      heart.style.opacity = 1;
+      heart.style.fontSize = '18px';
+      stage.appendChild(heart);
+      heart.animate([{transform:'translateY(0)', opacity:1}, {transform:'translateY(-30px)', opacity:0}], {duration:900}).onfinish = ()=>heart.remove();
+
+      // remove toy
+      removeToy(cat.target);
+      cat.target = null;
+      cat.state = 'idle';
+    }
+  }
+}
+
+/* ---------------------------
+   Game loop
+   --------------------------- */
+let last = performance.now();
+function loop(now){
+  const dt = (now - last)/1000;
+  last = now;
+  updateCat(dt);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ---------------------------
+   Input: placing toys on click
+   --------------------------- */
+stage.addEventListener('click', (e)=>{
+  // ignore clicks on HUD panels: check if target is stage itself
+  const target = e.target;
+  const forbidden = target.closest('.panel') || target.id === 'meow-btn' || target.closest('.small-panel');
+  if(forbidden) return;
+
+  const rect = stage.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  // spawn toy slightly above click
+  const emoji = currentToy;
+  createToy(x, y, emoji);
+
+  // quick visual feedback: spawn small puff
+  const puff = document.createElement('div');
+  puff.style.position = 'absolute';
+  puff.style.left = x + 'px';
+  puff.style.top = y + 'px';
+  puff.style.transform = 'translate(-50%,-50%)';
+  puff.style.pointerEvents = 'none';
+  puff.style.zIndex = 18;
+  puff.textContent = '✨';
+  puff.style.fontSize = '18px';
+  stage.appendChild(puff);
+  setTimeout(()=>puff.remove(),400);
 });
-window.addEventListener('resize', () => {
-  catPagePos.x = window.innerWidth/2;
-  catPagePos.y = window.innerHeight/2;
-  catTarget = {...catPagePos};
+
+/* ---------------------------
+   UI: random fact + toy selector
+   --------------------------- */
+factBtn.addEventListener('click', ()=>{
+  const f = facts[Math.floor(Math.random()*facts.length)];
+  factArea.textContent = f;
 });
+
+placeTypeEl.addEventListener('click', ()=>{
+  // cycle toy type
+  const idx = toyTypes.indexOf(currentToy);
+  currentToy = toyTypes[(idx+1) % toyTypes.length];
+  placeTypeEl.textContent = 'Toy: ' + currentToy;
+});
+
+/* ---------------------------
+   Seasonal emojis + maple leaves
+   --------------------------- */
+const seasonsList = [
+  {name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','☘️','🌼','🐝']},
+  {name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🌻','🌴','🍹','🦋','🐞']},
+  {name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🦉','🌰','🍄']},
+  {name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🌲','☕','🧣']}
+];
+let seasonIndex = 0;
+function populateSeason(){
+  // clear
+  seasonalContainer.innerHTML = '';
+  const s = seasonsList[seasonIndex];
+  stage.style.background = `linear-gradient(180deg, ${s.gradient[0]}22, #f9f9f9 60%)`;
+  // leafy background (maple leaf small)
+  // create slow maple leaves behind emojis
+  for(let i=0;i<12;i++){
+    const leaf = document.createElement('div');
+    leaf.className = 'leaf';
+    leaf.textContent = '🍁';
+    leaf.style.left = (Math.random()*100)+'%';
+    leaf.style.top = (-Math.random()*40-10)+'%';
+    leaf.style.fontSize = (12 + Math.random()*30) + 'px';
+    leaf.style.animationDuration = (8 + Math.random()*14) + 's';
+    leaf.style.opacity = (0.06 + Math.random()*0.12);
+    document.getElementById('bg-layer').appendChild(leaf);
+  }
+
+  // seasonal emojis floating
+  for(let i=0;i<22;i++){
+    const e = s.elements[Math.floor(Math.random()*s.elements.length)];
+    const el = document.createElement('div');
+    el.className = 'seasonal';
+    el.textContent = e;
+    el.style.left = (Math.random()*92 + 3) + '%';
+    el.style.top = (10 + Math.random()*60) + 'vh';
+    el.style.fontSize = (10 + Math.random()*28) + 'px';
+    el.style.opacity = (0.6 + Math.random()*0.6);
+    el.style.animationDuration = (4 + Math.random()*9) + 's';
+    seasonalContainer.appendChild(el);
+  }
+}
+populateSeason();
+setInterval(()=>{
+  // rotate season index
+  document.querySelectorAll('#bg-layer .leaf').forEach(n=>n.remove());
+  seasonIndex = (seasonIndex+1)%seasonsList.length;
+  populateSeason();
+}, 15000);
+
+// season prev/next
+document.getElementById('prev-season').addEventListener('click', ()=>{
+  document.querySelectorAll('#bg-layer .leaf').forEach(n=>n.remove());
+  seasonIndex = (seasonIndex-1 + seasonsList.length)%seasonsList.length;
+  populateSeason();
+});
+document.getElementById('next-season').addEventListener('click', ()=>{
+  document.querySelectorAll('#bg-layer .leaf').forEach(n=>n.remove());
+  seasonIndex = (seasonIndex+1)%seasonsList.length;
+  populateSeason();
+});
+
+/* ---------------------------
+   Konami code easter egg (cat rain)
+   --------------------------- */
+const konamiSeq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiPtr = 0;
+window.addEventListener('keydown', (e)=>{
+  // lowercase for letters
+  const key = e.key.length===1 ? e.key.toLowerCase() : e.key;
+  const expected = konamiSeq[konamiPtr].length===1 ? konamiSeq[konamiPtr] : konamiSeq[konamiPtr];
+  if(key === konamiSeq[konamiPtr].toLowerCase()){
+    konamiPtr++;
+    if(konamiPtr === konamiSeq.length){
+      konamiPtr = 0;
+      triggerCatRain();
+    }
+  } else {
+    konamiPtr = 0;
+  }
+});
+
+function triggerCatRain(){
+  // briefly show meow button
+  meowBtn.style.opacity = 1;
+  meowBtn.style.pointerEvents = 'auto';
+  meowBtn.animate([{opacity:0},{opacity:1}],{duration:500});
+
+  // spawn many cats falling for 3s
+  const pieces = 24;
+  for(let i=0;i<pieces;i++){
+    const n = document.createElement('div');
+    n.textContent = '🐱';
+    n.style.position = 'absolute';
+    n.style.left = (Math.random()*90+5)+'%';
+    n.style.top = '-10%';
+    n.style.fontSize = (18 + Math.random()*40)+'px';
+    n.style.zIndex = 70;
+    stage.appendChild(n);
+    const dur = 2000 + Math.random()*2000;
+    n.animate([{transform:'translateY(0) rotate(0deg)', opacity:1},{transform:'translateY(120vh) rotate(720deg)', opacity:0}],{duration:dur, easing:'ease-in'}).onfinish = ()=>n.remove();
+  }
+}
+
+/* ---------------------------
+   Meow button / animation
+   --------------------------- */
+meowBtn.addEventListener('click', ()=>{
+  // meow text banner
+  const banner = document.createElement('div');
+  banner.textContent = 'M E O W W W W !';
+  banner.style.position = 'absolute';
+  banner.style.left = '50%';
+  banner.style.top = '8%';
+  banner.style.transform = 'translateX(-50%)';
+  banner.style.zIndex = 80;
+  banner.style.fontSize = '32px';
+  banner.style.background = 'rgba(255,255,255,0.9)';
+  banner.style.padding = '8px 14px';
+  banner.style.borderRadius = '10px';
+  stage.appendChild(banner);
+  banner.animate([{opacity:0},{opacity:1},{opacity:0}],{duration:2200}).onfinish = ()=>banner.remove();
+});
+
+/* ---------------------------
+   Resize handling
+   --------------------------- */
+window.addEventListener('resize', ()=>{
+  gameWidth = window.innerWidth;
+  gameHeight = window.innerHeight;
+});
+
+/* ---------------------------
+   Persist toy positions and update arrays regularly
+   --------------------------- */
+function syncToys(){
+  toys.forEach(t=>{
+    // update t.x,t.y from DOM (in case of movement)
+    const r = t.el.getBoundingClientRect();
+    const s = stage.getBoundingClientRect();
+    t.x = r.left + r.width/2 - s.left;
+    t.y = r.top + r.height/2 - s.top;
+  });
+}
+setInterval(syncToys, 250);
+
+/* ---------------------------
+   Small polish: click-to-cycle toy type via right bottom or keyboard t
+   --------------------------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 't'){ // cycle toy
+    const idx = toyTypes.indexOf(currentToy);
+    currentToy = toyTypes[(idx+1)%toyTypes.length];
+    placeTypeEl.textContent = 'Toy: ' + currentToy;
+  }
+});
+
+/* ---------------------------
+   Small: clear toys with 'c' key
+   --------------------------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'c'){
+    toys.slice().forEach(removeToy);
+  }
+});
+
+/* ---------------------------
+   Init placement: center cat
+   --------------------------- */
+function init(){
+  gameWidth = window.innerWidth;
+  gameHeight = window.innerHeight;
+  cat.x = gameWidth*0.5;
+  cat.y = gameHeight*0.6;
+  catEl.style.left = (cat.x - 8) + 'px';
+  catEl.style.top = (cat.y - 24) + 'px';
+  placeTypeEl.textContent = 'Toy: ' + currentToy;
+}
+init();
+
 </script>
-
 </body>
 </html>
