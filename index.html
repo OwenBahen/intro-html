@@ -134,15 +134,93 @@ section.show { opacity:1; transform:translateY(0); }
 .faq-answer { display:none; padding:0.5rem 1rem; background:#f5f5f5; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
 
 /* --- Footer --- */
+<footer>
+  <div id="footer-content">
+    <span id="year-link"><a href="graveyard.html">1997 – 2100</a></span>
+    <div id="video-btns">
+      <div class="video-btn twitch" id="twitch-btn">T</div>
+      <div class="video-btn youtube" id="youtube-btn">Y</div>
+    </div>
+  </div>
+</footer>
+
+<iframe class="video-embed" id="twitch-embed" 
+        src="https://player.twitch.tv/?channel=0in1&parent=localhost" 
+        frameborder="0" allowfullscreen></iframe>
+
+<iframe class="video-embed" id="youtube-embed" 
+        src="https://www.youtube.com/embed/@0in1?rel=0" 
+        frameborder="0" allowfullscreen></iframe>
+
+<style>
 footer {
   text-align:center;
-  padding:2rem;
+  padding:1rem;
   background:#111;
   color:#fff;
   font-size:0.9rem;
-  user-select:none;
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:10000;
 }
-footer a { color:#fff; }
+
+#footer-content {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  padding:0 1rem;
+}
+
+#year-link a {
+  color:#fff;
+  text-decoration:none;
+}
+
+#video-btns {
+  display:flex;
+  gap:0.5rem;
+}
+
+.video-btn {
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:white; font-weight:bold; font-size:1.2rem;
+}
+
+.video-btn.twitch { background:#6441a5; }
+.video-btn.youtube { background:#FF0000; }
+
+.video-embed {
+  position:fixed;
+  bottom:50px; /* above footer */
+  left:1rem;
+  width:320px;
+  height:180px;
+  display:none;
+  border:2px solid #333;
+  z-index:9999;
+}
+
+#youtube-embed { left:340px; }
+
+@media(max-width:600px){
+  .video-embed {
+    width:90%;
+    height:160px;
+    left:5%;
+    bottom:60px;
+  }
+  #youtube-embed { left:5%; bottom:230px; } /* stack on mobile */
+}
+</style>
+
+<script>
 
 /* --- Cat --- */
 #cat {
