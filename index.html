@@ -5,171 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Owenn.ca</title>
 <style>
+/* Reset & basics */
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family:'Helvetica Neue', Arial, sans-serif;
-  background:#f9f9f9;
-  color:#222;
-  line-height:1.6;
-  scroll-behavior:smooth;
-  overflow-x:hidden;
-  cursor:none;
-}
+body { font-family:'Helvetica Neue', Arial, sans-serif; background:#f9f9f9; color:#222; line-height:1.6; overflow-x:hidden; cursor:auto; }
+a { text-decoration:none; color:inherit; }
+
+/* Header */
 header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:1rem 5%;
-  position:sticky;
-  top:0;
-  background:rgba(255,255,255,0.9);
-  backdrop-filter:blur(10px);
-  z-index:100;
+  display:flex; justify-content:center; align-items:center;
+  padding:1rem 5%; position:sticky; top:0;
+  background:rgba(255,255,255,0.9); backdrop-filter:blur(10px); z-index:100;
 }
 header h1 { font-size:1.5rem; letter-spacing:2px; }
-nav a {
-  margin-left:1rem;
-  text-decoration:none;
-  color:#333;
-  font-weight:500;
-  transition: color 0.3s ease;
-}
-nav a:hover { color:#3E8E41; }
+
+/* Hero / Seasonal */
 .hero {
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  background:linear-gradient(135deg, #6DBE45, #82C784);
-  background-size:400% 400%;
-  color:white;
-  animation:fadeIn 1.5s ease;
-  position:relative;
-  overflow:hidden;
-  transition:background 2s ease;
+  height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; background:linear-gradient(135deg,#6DBE45,#A7D49B);
+  background-size:400% 400%; color:white; position:relative; overflow:hidden;
 }
 .hero h2 { font-size:3rem; margin-bottom:1rem; }
 .hero p { font-size:1.2rem; max-width:600px; }
 .seasonal-element {
-  position:absolute;
-  pointer-events:none;
-  user-select:none;
-  opacity:0.8;
-  animation:float 4s linear infinite;
+  position:absolute; pointer-events:none; user-select:none;
+  font-size:2rem; opacity:0.8; transition: transform 1s linear;
 }
-@keyframes float {
-  0% { transform:translateY(0) rotate(0deg); }
-  50% { transform:translateY(20px) rotate(180deg); }
-  100% { transform:translateY(0) rotate(360deg); }
-}
-@keyframes fadeIn { from { opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
-section {
-  padding:5rem 10%;
-  opacity:0;
-  transform:translateY(50px);
-  transition: all 0.8s ease-out;
-  position:relative;
-}
-section.show { opacity:1; transform:translateY(0); }
-footer {
-  text-align:center;
-  padding:2rem;
-  background:#111;
-  color:#fff;
-  font-size:0.9rem;
-}
-footer a { color:#fff; text-decoration:underline; }
-.cycle-btns {
-  position:absolute;
-  bottom:2rem;
-  right:2rem;
-  display:flex;
-  gap:0.5rem;
-}
+.cycle-btns { position:absolute; bottom:2rem; right:2rem; display:flex; gap:0.5rem; }
 .cycle-btns button {
-  background:rgba(255,255,255,0.3);
-  border:none;
-  padding:0.5rem 1rem;
-  border-radius:5px;
-  cursor:pointer;
-  font-weight:bold;
-  color:#fff;
-  transition:background 0.3s ease;
+  background:rgba(255,255,255,0.3); border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-weight:bold; color:#fff;
 }
 .cycle-btns button:hover { background:rgba(255,255,255,0.6); }
 
-.affiliations-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:2rem;
-  justify-items:center;
-  align-items:center;
-  margin-top:2rem;
-}
+/* Affiliations */
+.affiliations-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:2rem; justify-items:center; align-items:center; margin-top:2rem; }
 .affiliation {
-  font-size:2.5rem;
-  transition:transform 0.3s ease;
-  padding:1rem;
-  background:rgba(255,255,255,0.2);
-  border-radius:10px;
-  cursor:pointer;
-  text-align:center;
+  background:#eee; padding:1rem; border-radius:10px; text-align:center; font-weight:bold; transition:transform 0.3s ease; cursor:pointer;
 }
 .affiliation:hover { transform:scale(1.1); }
 
-#cat-walk {
-  position:absolute;
-  font-size:2.5rem;
-  pointer-events:auto;
-  cursor:pointer;
-  z-index:1000;
-}
+/* About skills */
+.skills-container { overflow-x:auto; white-space:nowrap; padding:1rem 0; }
+.skill { display:inline-block; background:#3E8E41; color:white; padding:0.5rem 1rem; margin-right:0.5rem; border-radius:5px; font-size:0.9rem; }
 
-.stream-dot {
-  position:fixed;
-  width:40px; height:40px;
-  border-radius:50%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  z-index:1000;
-}
-#twitch-dot {background:#6441A4; left:20px; bottom:100px;}
-#youtube-dot {background:#FF0000; left:70px; bottom:100px;}
+/* FAQ */
+.faq-item { margin-bottom:1rem; }
+.faq-question { cursor:pointer; background:#eee; padding:0.5rem; border-radius:5px; }
+.faq-answer { display:none; padding:0.5rem; }
 
-.stream-embed {
-  position:fixed;
-  width:320px; height:180px;
-  display:none;
-  z-index:999;
-  border:2px solid #333;
-}
+/* Footer */
+footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size:0.9rem; }
+footer a { color:#fff; }
+.no-tel { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 
-.faq-section{margin-top:2rem;}
-.faq-question{cursor:pointer;background:#ddd;padding:0.8rem;margin-top:0.5rem;border-radius:5px;}
-.faq-answer{display:none;padding:0.8rem;background:#eee;margin-bottom:0.5rem;border-radius:5px;}
+/* Cat Emoji */
+#cat { position:absolute; font-size:2rem; pointer-events:auto; cursor:pointer; z-index:1000; }
 
-.skills-scroll{overflow-x:auto;white-space:nowrap;margin-top:1rem;padding-bottom:1rem;}
-.skills-scroll span{display:inline-block;margin-right:1rem;}
-span.no-tel {user-select:none;}
+/* Twitch & YouTube circles */
+#social-circles { position:fixed; bottom:20px; left:20px; z-index:1000; display:flex; gap:10px; }
+.circle { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold; cursor:pointer; }
+#twitch-dot { background:#9146FF; } /* Twitch purple */
+#youtube-dot { background:#FF0000; } /* YouTube red */
+.embed-video { display:none; position:fixed; width:300px; height:200px; z-index:999; background:#000; border:3px solid #fff; border-radius:10px; }
+@media(max-width:500px){.embed-video{width:90%; height:200px;}}
 </style>
 </head>
 <body>
 
 <header>
   <h1>Owen B</h1>
-  <nav>
-    <a href="#about">About</a>
-    <a href="#affiliations">Affiliations</a>
-    <a href="#contact">Contact</a>
-    <a href="https://github.com/owenb1" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="20" alt="GitHub"></a>
-    <a href="https://www.linkedin.com/in/owenb1/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20" alt="LinkedIn"></a>
-  </nav>
 </header>
 
 <section class="hero">
@@ -184,90 +87,101 @@ span.no-tel {user-select:none;}
 <section id="about">
   <h2>About Me</h2>
   <p>Hi! I'm Owen B. This website highlights my professional profile.</p>
-  <div class="skills-scroll">
-    <span>Oracle</span><span>ServiceNow</span><span>Onboarding</span>
-    <span>Immigration</span><span>HR</span><span>Microsoft</span>
+  <div class="skills-container">
+    <div class="skill">Oracle</div>
+    <div class="skill">ServiceNow</div>
+    <div class="skill">Onboarding</div>
+    <div class="skill">Immigration</div>
+    <div class="skill">HR</div>
+    <div class="skill">Microsoft</div>
+    <div class="skill">Excel</div>
   </div>
 </section>
 
 <section id="affiliations">
   <h2>Affiliations & Collaborations</h2>
   <div class="affiliations-grid">
-    <div class="affiliation" onclick="window.open('https://www.humber.ca','_blank')">🎓 Humber College</div>
-    <div class="affiliation" onclick="window.open('https://www.athabascau.ca','_blank')">📚 Athabasca University</div>
-    <div class="affiliation" onclick="window.open('https://www.gfs.com','_blank')">🥫 Gordon Food Service</div>
-    <div class="affiliation" onclick="window.open('https://www.mealsonwheels.ca','_blank')">🚚 Meals on Wheels</div>
-    <div class="affiliation" onclick="window.open('https://www.cnl.ca','_blank')">⚛️ Canadian Nuclear Laboratories</div>
+    <div class="affiliation" onclick="window.open('https://humber.ca','_blank')">Humber College</div>
+    <div class="affiliation" onclick="window.open('https://athabascau.ca','_blank')">Athabasca University</div>
+    <div class="affiliation" onclick="window.open('https://www.gfs.com','_blank')">Gordon Food Service</div>
+    <div class="affiliation" onclick="window.open('https://www.mealsonwheels.ca','_blank')">Meals on Wheels</div>
+    <div class="affiliation" onclick="window.open('https://www.cnl.ca','_blank')">Canadian Nuclear Laboratories</div>
   </div>
 </section>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <p>Reach out at <a href="mailto:Contact@owenn.ca">Contact@owenn.ca</a>.</p>
-</section>
-
-<section class="faq-section">
+<section id="faq">
   <h2>FAQ</h2>
-  <div class="faq-question">What is this site about?</div>
-  <div class="faq-answer">This is my personal/professional showcase site.</div>
-  <div class="faq-question">How can I contact Owen?</div>
-  <div class="faq-answer">Email: Contact@owenn.ca</div>
+  <div class="faq-item">
+    <div class="faq-question">What do you do?</div>
+    <div class="faq-answer">I work on various professional projects in tech and HR.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question">Where are you located?</div>
+    <div class="faq-answer">I am based in Ontario, Canada.</div>
+  </div>
 </section>
 
 <footer>
-  <p>&copy; <span class="no-tel"><a href="graveyard.html">1997 – 2100</a> Owen B</span></p>
+  <p class="no-tel">&copy; <a href="graveyard.html" style="color:#fff;">1997 – 2100</a> Owen B</p>
+  <div style="margin-top:10px;">
+    <a href="https://www.linkedin.com/in/owenb1/" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" style="width:24px;height:24px;margin-right:8px;"></a>
+    <a href="https://github.com/owenb1" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub" style="width:24px;height:24px;"></a>
+  </div>
 </footer>
 
-<div id="cat-walk" onclick="window.location.href='cat.html'">🐈</div>
-<div id="twitch-dot" class="stream-dot">T</div>
-<div id="youtube-dot" class="stream-dot">Y</div>
-<iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" allowfullscreen></iframe>
-<iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/0in1" allowfullscreen></iframe>
+<!-- Cat Emoji -->
+<div id="cat">🐈</div>
+
+<!-- Twitch & YouTube Circles -->
+<div id="social-circles">
+  <div id="twitch-dot" class="circle">T</div>
+  <div id="youtube-dot" class="circle">Y</div>
+</div>
+
+<!-- Embedded Videos -->
+<iframe id="twitch-embed" class="embed-video" src="https://player.twitch.tv/?channel=0in1&parent=localhost" allowfullscreen></iframe>
+<iframe id="youtube-embed" class="embed-video" src="https://www.youtube.com/embed/0in1" allowfullscreen></iframe>
 
 <script>
-// Seasonal random emojis
-const seasons = [
-{name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','🌱','🌷','🐝','🦋']},
-{name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🦋','🌴','🐚','🍉']},
-{name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🌰','🦉','🍄','🕸️']},
-{name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🧣','🌨️','☃️','🎿']}
+// Seasonal cycle with random emojis & size
+const seasons=[
+  {name:'Spring', emojis:['🌸','🍃','🐦','🌱','🦋','🌷']},
+  {name:'Summer', emojis:['☀️','🌴','🌻','🍉','🐝','🦀']},
+  {name:'Fall', emojis:['🍂','🍁','🎃','🦉','🦌','🌰']},
+  {name:'Winter', emojis:['❄️','⛄','🦢','🎿','🌨️','🧣']}
 ];
-let currentSeason=0;
-const heroEl=document.querySelector('.hero');
+let current=0;
+const hero=document.querySelector('.hero');
 function showSeason(idx){
-  heroEl.style.background=`linear-gradient(135deg, ${seasons[idx].gradient[0]}, ${seasons[idx].gradient[1]})`;
+  const gradColors=['#6DBE45','#A7D49B','#3E8E41','#82C784','#A0522D','#E9967A','#2F4F4F','#B0C4DE'];
+  hero.style.background=`linear-gradient(135deg, ${gradColors[idx*2]}, ${gradColors[idx*2+1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  for(let i=0;i<10;i++){
-    const el = seasons[idx].elements[Math.floor(Math.random()*seasons[idx].elements.length)];
+  seasons[idx].emojis.forEach((el,i)=>{
     const div=document.createElement('div');
     div.className='seasonal-element';
-    div.style.top=`${Math.random()*80+10}%`;
-    div.style.left=`${Math.random()*80+10}%`;
-    const size=Math.random()*1+1.2;
-    div.style.fontSize=size+'rem';
+    div.style.top=Math.random()*80+'%';
+    div.style.left=Math.random()*80+'%';
+    div.style.fontSize=(16+Math.random()*24)+'px';
     div.textContent=el;
-    div.style.animationDuration=`${4+Math.random()*6}s`;
-    heroEl.appendChild(div);
-  }
+    hero.appendChild(div);
+  });
 }
-showSeason(currentSeason);
-setInterval(()=>{currentSeason=(currentSeason+1)%seasons.length;showSeason(currentSeason);},15000);
-document.getElementById('prev-season').addEventListener('click',()=>{currentSeason=(currentSeason-1+seasons.length)%seasons.length;showSeason(currentSeason);});
-document.getElementById('next-season').addEventListener('click',()=>{currentSeason=(currentSeason+1)%seasons.length;showSeason(currentSeason);});
+showSeason(current);
+let autoCycle=setInterval(()=>{current=(current+1)%seasons.length;showSeason(current);},15000);
+document.getElementById('prev-season').addEventListener('click',()=>{current=(current-1+seasons.length)%seasons.length;showSeason(current);});
+document.getElementById('next-season').addEventListener('click',()=>{current=(current+1)%seasons.length;showSeason(current);});
 
-// Scroll reveal
-const sections=document.querySelectorAll("section");
-const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{if(sec.getBoundingClientRect().top<trigger) sec.classList.add("show");});};
-window.addEventListener("scroll",revealOnScroll);
-revealOnScroll();
+// FAQ toggle
+document.querySelectorAll('.faq-question').forEach(q=>{
+  q.addEventListener('click',()=>{let a=q.nextElementSibling;a.style.display=(a.style.display==='block')?'none':'block';});
+});
 
-// Cat smooth random walk
-const cat=document.getElementById('cat-walk');
-let catPos={x:100,y:100};
-function moveCatSmooth(){
-  if(Math.random()<0.3){setTimeout(moveCatSmooth,800); return;} // occasional pause
-  let dx=(Math.random()*2-1)*100;
-  let dy=(Math.random()*2-1)*100;
+// Cat movement
+const cat=document.getElementById('cat');
+let catPos={x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight};
+function moveCat(){
+  let dx=(Math.random()*200-100);
+  let dy=(Math.random()*200-100);
   let target={x:Math.min(Math.max(catPos.x+dx,0),window.innerWidth-50), y:Math.min(Math.max(catPos.y+dy,0),window.innerHeight-50)};
   let steps=50, step=0;
   function stepMove(){
@@ -277,26 +191,21 @@ function moveCatSmooth(){
     cat.style.left=catPos.x+'px';
     cat.style.top=catPos.y+'px';
     if(step<steps) requestAnimationFrame(stepMove);
-    else setTimeout(moveCatSmooth, 2000);
+    else setTimeout(moveCat,2000);
   }
   stepMove();
 }
-moveCatSmooth();
+moveCat();
+cat.addEventListener('click',()=>{window.location.href='cat.html';});
 
-// Twitch & YouTube toggle
+// Twitch & YouTube toggles
 const twitchDot=document.getElementById('twitch-dot');
 const ytDot=document.getElementById('youtube-dot');
 const twitchIframe=document.getElementById('twitch-embed');
 const ytIframe=document.getElementById('youtube-embed');
+twitchDot.addEventListener('click',()=>{twitchIframe.style.display=(twitchIframe.style.display==='block')?'none':'block';twitchIframe.style.bottom='100px';twitchIframe.style.left='20px';});
+ytDot.addEventListener('click',()=>{ytIframe.style.display=(ytIframe.style.display==='block')?'none':'block';ytIframe.style.bottom='310px';ytIframe.style.left='20px';});
 
-twitchDot.addEventListener('click',()=>{twitchIframe.style.display = (twitchIframe.style.display==='block')?'none':'block';twitchIframe.style.left='20px';twitchIframe.style.bottom='150px';});
-ytDot.addEventListener('click',()=>{ytIframe.style.display = (ytIframe.style.display==='block')?'none':'block';ytIframe.style.left='70px';ytIframe.style.bottom='150px';});
-
-// FAQ toggle
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click',()=>{let a=q.nextElementSibling;a.style.display=(a.style.display==='block')?'none':'block';});
-});
 </script>
-
 </body>
 </html>
