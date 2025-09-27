@@ -45,8 +45,6 @@ header .social-icons img { width:24px; height:24px; }
   justify-content:center;
   align-items:center;
   text-align:center;
-  background:linear-gradient(135deg,#6DBE45,#A7D49B);
-  background-size:400% 400%;
   color:white;
   position:relative;
   overflow:hidden;
@@ -60,9 +58,7 @@ header .social-icons img { width:24px; height:24px; }
   position:absolute;
   pointer-events:none;
   user-select:none;
-  animation-name:float;
   animation-iteration-count:infinite;
-  animation-timing-function:linear;
 }
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg);}
@@ -133,29 +129,10 @@ section.show { opacity:1; transform:translateY(0); }
 }
 .faq-answer { display:none; padding:0.5rem 1rem; background:#f5f5f5; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
 
-/* --- Footer --- */
-<footer>
-  <div id="footer-content">
-    <span id="year-link"><a href="graveyard.html">1997 – 2100</a></span>
-    <div id="video-btns">
-      <div class="video-btn twitch" id="twitch-btn">T</div>
-      <div class="video-btn youtube" id="youtube-btn">Y</div>
-    </div>
-  </div>
-</footer>
-
-<iframe class="video-embed" id="twitch-embed" 
-        src="https://player.twitch.tv/?channel=0in1&parent=localhost" 
-        frameborder="0" allowfullscreen></iframe>
-
-<iframe class="video-embed" id="youtube-embed" 
-        src="https://www.youtube.com/embed/@0in1?rel=0" 
-        frameborder="0" allowfullscreen></iframe>
-
-<style>
+/* --- Footer / Bottom Bar --- */
 footer {
   text-align:center;
-  padding:1rem;
+  padding:0.5rem 1rem;
   background:#111;
   color:#fff;
   font-size:0.9rem;
@@ -168,59 +145,32 @@ footer {
   align-items:center;
   z-index:10000;
 }
+#year-link a { color:#fff; text-decoration:none; }
 
-#footer-content {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  width:100%;
-  padding:0 1rem;
-}
-
-#year-link a {
-  color:#fff;
-  text-decoration:none;
-}
-
-#video-btns {
+/* --- Video Controls --- */
+#video-bar {
   display:flex;
   gap:0.5rem;
 }
-
 .video-btn {
-  width:40px; height:40px; border-radius:50%;
+  width:50px; height:50px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; color:white; font-weight:bold; font-size:1.2rem;
 }
-
 .video-btn.twitch { background:#6441a5; }
 .video-btn.youtube { background:#FF0000; }
 
 .video-embed {
   position:fixed;
-  bottom:50px; /* above footer */
-  left:1rem;
   width:320px;
   height:180px;
   display:none;
   border:2px solid #333;
   z-index:9999;
 }
-
-#youtube-embed { left:340px; }
-
 @media(max-width:600px){
-  .video-embed {
-    width:90%;
-    height:160px;
-    left:5%;
-    bottom:60px;
-  }
-  #youtube-embed { left:5%; bottom:230px; } /* stack on mobile */
+  .video-embed { width:90%; height:160px; left:5%; }
 }
-</style>
-
-<script>
 
 /* --- Cat --- */
 #cat {
@@ -230,30 +180,8 @@ footer {
   z-index:1000;
 }
 
-/* --- Twitch & YouTube controls --- */
-#video-controls {
-  position:fixed;
-  bottom:1rem;
-  left:1rem;
-  display:flex;
-  flex-direction:column;
-  gap:0.5rem;
-  z-index:10000;
-}
-.video-btn {
-  width:40px; height:40px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color:white; font-weight:bold; font-size:1.2rem;
-}
-.video-btn.twitch { background:#6441a5; }
-.video-btn.youtube { background:#FF0000; }
-.video-embed {
-  position:fixed; bottom:60px; left:1rem;
-  width:320px; height:180px; display:none; border:2px solid #333;
-  z-index:9999;
-}
+/* Mobile header */
 @media(max-width:500px){
-  .video-embed { width:90%; height:160px; left:5%; bottom:50%; transform:translateY(50%);}
   header { flex-direction:column; gap:0.5rem; padding:1rem 5%; }
 }
 </style>
@@ -309,81 +237,26 @@ footer {
 <section id="affiliations">
   <h2>Affiliations & Collaborations</h2>
   <div class="affiliations-grid">
-    <div class="affiliation-box" onclick="window.open('https://www.humber.ca', '_blank')">🎓 Humber College</div>
-    <div class="affiliation-box" onclick="window.open('https://www.athabascau.ca', '_blank')">📚 Athabasca University</div>
-    <div class="affiliation-box" onclick="window.open('https://www.gfs.com', '_blank')">🥫 Gordon Food Service</div>
-    <div class="affiliation-box" onclick="window.open('https://www.mealsonwheels.ca', '_blank')">🚚 Meals on Wheels</div>
-    <div class="affiliation-box" onclick="window.open('https://www.cnl.ca', '_blank')">⚛️ Canadian Nuclear Laboratories</div>
+    <div class="affiliation-box" onclick="window.open('https://www.humber.ca','_blank')">🎓 Humber College</div>
+    <div class="affiliation-box" onclick="window.open('https://www.athabascau.ca','_blank')">📚 Athabasca University</div>
+    <div class="affiliation-box" onclick="window.open('https://www.gfs.com','_blank')">🥫 Gordon Food Service</div>
+    <div class="affiliation-box" onclick="window.open('https://www.mealsonwheels.ca','_blank')">🚚 Meals on Wheels</div>
+    <div class="affiliation-box" onclick="window.open('https://www.cnl.ca','_blank')">⚛️ Canadian Nuclear Laboratories</div>
   </div>
 </section>
 
 <footer>
-  <a href="graveyard.html">&copy; 1997 – 2100 Owen B</a>
+  <span id="year-link"><a href="graveyard.html">1997 – 2100</a></span>
+  <div id="video-bar">
+    <div class="video-btn twitch" id="twitch-btn">T</div>
+    <div class="video-btn youtube" id="youtube-btn">Y</div>
+  </div>
 </footer>
 
 <div id="cat">🐈</div>
 
-<!-- Video Controls -->
-<div id="video-bar">
-  <div class="video-btn twitch" id="twitch-btn">T</div>
-  <div class="video-btn youtube" id="youtube-btn">Y</div>
-</div>
-
-<iframe class="video-embed" id="twitch-embed" 
-        src="https://player.twitch.tv/?channel=0in1&parent=localhost" 
-        frameborder="0" allowfullscreen></iframe>
-
-<iframe class="video-embed" id="youtube-embed" 
-        src="https://www.youtube.com/embed/@0in1?rel=0" 
-        frameborder="0" allowfullscreen></iframe>
-
-<style>
-#video-bar {
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  display:flex;
-  justify-content:flex-start;
-  gap:0.5rem;
-  padding:0.5rem;
-  background:rgba(0,0,0,0.7);
-  z-index:10000;
-}
-
-.video-btn {
-  width:50px; height:50px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color:white; font-weight:bold; font-size:1.2rem;
-}
-
-.video-btn.twitch { background:#6441a5; }
-.video-btn.youtube { background:#FF0000; }
-
-.video-embed {
-  position:fixed;
-  bottom:60px; /* space above the bar */
-  left:1rem;
-  width:320px;
-  height:180px;
-  display:none;
-  border:2px solid #333;
-  z-index:9999;
-}
-
-#youtube-embed { left:340px; } /* shift to the right of Twitch embed on desktop */
-
-@media(max-width:600px){
-  .video-embed {
-    width:90%;
-    height:160px;
-    left:5%;
-    bottom:60px;
-    transform:none;
-  }
-  #youtube-embed { left:5%; bottom:230px; } /* stack above Twitch on mobile */
-}
-</style>
+<iframe class="video-embed" id="twitch-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" frameborder="0" allowfullscreen></iframe>
+<iframe class="video-embed" id="youtube-embed" src="https://www.youtube.com/embed/@0in1?rel=0" frameborder="0" allowfullscreen></iframe>
 
 <script>
 // --- Seasonal Emojis ---
@@ -398,13 +271,13 @@ const hero=document.querySelector('.hero');
 function showSeason(index){
   hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  seasons[index].elements.forEach((el,i)=>{
+  seasons[index].elements.forEach((el)=>{
     const div=document.createElement('div');
     div.className='seasonal-element';
     div.style.top=`${Math.random()*80}%`;
     div.style.left=`${Math.random()*80}%`;
     div.style.fontSize=`${12 + Math.random()*24}px`;
-    div.style.animationDuration=`${5+Math.random()*15}s`;
+    div.style.animation=`float ${5+Math.random()*15}s linear infinite`;
     div.textContent=el;
     hero.appendChild(div);
   });
@@ -425,7 +298,6 @@ const cat=document.getElementById('cat');
 const bed={x:window.innerWidth/2, y:window.innerHeight-100};
 let catPos={x:bed.x, y:bed.y};
 let resting=true;
-
 function moveCat(){
   let target;
   if(resting){
@@ -460,19 +332,38 @@ document.querySelectorAll('.faq-question').forEach(q=>{
   q.addEventListener('click',()=>{ const a=q.nextElementSibling; a.style.display=(a.style.display==='block')?'none':'block'; });
 });
 
-// Twitch & YouTube toggle independent
+// --- Twitch & YouTube toggle independent ---
 const twitchBtn = document.getElementById('twitch-btn');
 const twitchEmbed = document.getElementById('twitch-embed');
 twitchBtn.addEventListener('click', () => {
   twitchEmbed.style.display = twitchEmbed.style.display === 'block' ? 'none' : 'block';
+  positionEmbeds();
 });
 
 const ytBtn = document.getElementById('youtube-btn');
 const ytEmbed = document.getElementById('youtube-embed');
 ytBtn.addEventListener('click', () => {
   ytEmbed.style.display = ytEmbed.style.display === 'block' ? 'none' : 'block';
+  positionEmbeds();
 });
-</script>
 
+// --- Position embeds dynamically ---
+function positionEmbeds(){
+  const spacing=10;
+  if(window.innerWidth>600){
+    twitchEmbed.style.left='10px';
+    twitchEmbed.style.bottom='60px';
+    ytEmbed.style.left='340px';
+    ytEmbed.style.bottom='60px';
+  } else {
+    twitchEmbed.style.left='5%';
+    twitchEmbed.style.bottom='60px';
+    ytEmbed.style.left='5%';
+    ytEmbed.style.bottom='230px';
+  }
+}
+window.addEventListener('resize', positionEmbeds);
+positionEmbeds();
+</script>
 </body>
 </html>
