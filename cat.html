@@ -3,95 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oween Cat Page</title>
-<style>
-body{
-  margin:0; padding:0;
-  font-family:'Helvetica Neue',Arial,sans-serif;
-  background:linear-gradient(135deg,#A0522D,#E9967A);
-  overflow:hidden;
-  color:#fff;
-}
-header{
-  text-align:center;
-  padding:1rem;
-  background:rgba(0,0,0,0.6);
-  position:sticky; top:0;
-  z-index:100;
-}
-header h1{font-size:2rem;}
-#cat-main{
-  position:absolute;
-  font-size:3rem;
-  pointer-events:none;
-  z-index:1000;
-  transition:left 1s ease, top 1s ease;
-}
-#bed{
-  position:absolute;
-  bottom:50px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:2.5rem;
-}
-.pet-gallery{
-  display:flex;
-  flex-wrap:wrap;
-  gap:1rem;
-  justify-content:center;
-  margin-top:120px;
-}
-.pet-item{
-  width:150px; height:150px;
-  background:rgba(255,255,255,0.2);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:15px;
-  font-size:2rem;
-  cursor:pointer;
-  transition:transform 0.3s;
-}
-.pet-item:hover{transform:scale(1.1);}
-</style>
+<title>🐈 Cat Page</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <h1>🐈 Oween's Cat Showcase</h1>
-  <p>Click the cat to return <a href="index.html" style="color:#fff;text-decoration:underline;">home</a></p>
+  <h1>Cat Adventures 🐈</h1>
+  <a href="index.html">⬅ Back to Home</a>
 </header>
 
-<div id="cat-main">🐈</div>
-<div id="bed">🛏️</div>
+<section class="hero">
+  <h2>Welcome to the Cat Kingdom!</h2>
+  <p>Explore the secret life of cats. Watch them roam, pounce, and play around your screen.</p>
+</section>
 
-<div class="pet-gallery">
-  <div class="pet-item">😺</div>
-  <div class="pet-item">😸</div>
-  <div class="pet-item">😻</div>
-  <div class="pet-item">🐾</div>
-  <div class="pet-item">🐾</div>
-  <div class="pet-item">🐾</div>
-</div>
+<section id="cat-fun">
+  <h2>Click the Cat!</h2>
+  <div id="interactive-cat" style="font-size:4rem; cursor:pointer;">🐱</div>
+  <p>Every click triggers a new adventure...</p>
+</section>
 
-<audio autoplay loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
+<section id="cat-gallery">
+  <h2>Gallery of Cats</h2>
+  <div class="affiliations-grid">
+    <div class="affiliation-box">😸 Playful Cat</div>
+    <div class="affiliation-box">😺 Sleepy Cat</div>
+    <div class="affiliation-box">😻 Curious Cat</div>
+    <div class="affiliation-box">😼 Mischievous Cat</div>
+  </div>
+</section>
 
 <script>
-// Cat movement logic
-const cat=document.getElementById('cat-main');
-const bed=document.getElementById('bed');
-let catPos={x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight};
-
-function moveCat(){
-  // Randomly move to bed or random spot
-  const target=(Math.random()<0.4)?{x:bed.offsetLeft, y:bed.offsetTop}: {x:Math.random()*(window.innerWidth-50), y:Math.random()*(window.innerHeight-50)};
-  cat.style.left=target.x+'px';
-  cat.style.top=target.y+'px';
-  setTimeout(moveCat, 2000+Math.random()*3000);
-}
-moveCat();
+const catIcon = document.getElementById('interactive-cat');
+catIcon.addEventListener('click', () => {
+  const emojis = ['🐾','😹','😸','😺','😻','😼','🦁'];
+  const random = emojis[Math.floor(Math.random() * emojis.length)];
+  catIcon.textContent = random;
+});
 </script>
 
 </body>
