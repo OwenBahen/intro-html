@@ -12,26 +12,42 @@ body {
   background:#111;
   color:#fff;
   overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
 }
 header {
   text-align:center;
-  padding:2rem 1rem;
-}
-header h1 {
-  font-size:3rem;
-  letter-spacing:3px;
-  margin:0;
+  margin-top:2rem;
 }
 header h2 {
-  font-size:1.5rem;
+  font-size:2rem;
+  color:orange;
   margin:0;
+}
+header h1 {
+  font-size:4rem;
+  color:#fff;
+  margin:0;
+  letter-spacing:5px;
+}
+.grave {
+  margin-top:3rem;
+  text-align:center;
+}
+.grave p {
+  font-size:1.5rem;
+  color:#ccc;
+  margin:0.5rem 0;
 }
 .skeleton {
   position:absolute;
   font-size:2rem;
+  opacity:0.6;
   pointer-events:none;
-  opacity:0.7;
-  animation:float 10s linear infinite;
+  animation:float 12s linear infinite;
 }
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg); }
@@ -42,6 +58,7 @@ footer {
   text-align:center;
   padding:2rem;
   font-size:0.9rem;
+  color:#888;
 }
 </style>
 </head>
@@ -52,38 +69,43 @@ footer {
   <h1>Oween</h1>
 </header>
 
+<div class="grave">
+  <p>💀 Here Lies Owen Nicholas Bahen 💀</p>
+  <p>1997–2100</p>
+</div>
+
 <footer>
   <p>&copy; 1997–2100 Owen B</p>
 </footer>
 
-<!-- Halloween background music -->
+<!-- Background music -->
 <audio autoplay loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// Random floating skeletons / Halloween emojis
-const emojis = ['💀','☠️','🦴','🕷️','🕸️','🎃','👻','🧟‍♂️','🧛‍♂️','🧙‍♀️'];
-const numEmojis = 25;
+// Subtle floating Halloween emojis for ambiance
+const emojis = ['💀','☠️','🎃','👻','🦴','🕷️'];
+const numEmojis = 10;
 
 for(let i=0;i<numEmojis;i++){
   const span = document.createElement('div');
   span.className='skeleton';
-  span.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
   span.style.top = Math.random()*window.innerHeight + 'px';
   span.style.left = Math.random()*window.innerWidth + 'px';
-  span.style.fontSize = (20 + Math.random()*30)+'px';
-  span.style.animationDuration = (5 + Math.random()*10)+'s';
+  span.style.fontSize = (20 + Math.random()*25)+'px';
+  span.style.animationDuration = (8 + Math.random()*8)+'s';
   document.body.appendChild(span);
 }
 
-// Optional: Animate movement randomly across screen
+// Optional: Move emojis slowly for more life
 function moveEmojis(){
   document.querySelectorAll('.skeleton').forEach(el=>{
     el.style.top = Math.random()*window.innerHeight + 'px';
     el.style.left = Math.random()*window.innerWidth + 'px';
   });
-  setTimeout(moveEmojis, 8000);
+  setTimeout(moveEmojis, 10000);
 }
 moveEmojis();
 </script>
