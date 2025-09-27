@@ -3,173 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Owen's Graveyard – RIP 1997–2100</title>
+<title>Owen's Graveyard Game</title>
 <style>
-  /* --- Reset & Base --- */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Helvetica Neue', Arial, sans-serif; background:#0a0a0a; color:#fff; overflow:hidden; }
-  a { text-decoration:none; color:#fff; }
-  button { cursor:pointer; font-weight:bold; }
+/* Reset & Base */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#111; color:#fff; overflow:hidden; }
+a { text-decoration:none; color:inherit; }
+#game-container { position:relative; width:100vw; height:100vh; overflow:hidden; background:linear-gradient(#111,#222); }
 
-  /* --- Header --- */
-  header { display:flex; justify-content:space-between; align-items:center; padding:1rem; background:rgba(0,0,0,0.7); position:fixed; top:0; width:100%; z-index:1000; }
-  header h1 { font-size:1.5rem; }
-  header button { padding:0.5rem 1rem; background:#222; border:none; border-radius:5px; }
+/* Grave & Ground */
+#grave { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); text-align:center; }
+#grave div { background:#333; padding:1rem 2rem; border-radius:10px 10px 0 0; border:3px solid #555; }
+#ground { position:absolute; bottom:0; width:100%; height:50px; background:#222; border-top:2px solid #555; }
 
-  /* --- Graveyard --- */
-  #graveyard { position:relative; width:100%; height:100vh; background:linear-gradient(to bottom,#000000,#111111); overflow:hidden; }
-  .grave { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); width:120px; height:150px; background:#222; border:3px solid #555; border-radius:10px 10px 0 0; text-align:center; padding-top:5px; }
-  .grave h2 { font-size:0.9rem; margin-bottom:5px; }
-  .grave p { font-size:0.8rem; }
+/* Score & Leaderboard */
+#score-board { position:absolute; top:10px; left:10px; font-size:1.2rem; }
+#leaderboard { position:absolute; top:10px; right:10px; font-size:1.1rem; text-align:right; }
 
-  /* --- Collectibles --- */
-  .collectible { position:absolute; font-size:2rem; cursor:pointer; user-select:none; }
-  #scoreboard { position:fixed; top:60px; right:10px; background:rgba(0,0,0,0.7); padding:0.5rem 1rem; border-radius:5px; }
-  #milestones { margin-top:0.5rem; font-size:0.9rem; line-height:1.2rem; }
+/* Emoji items */
+.emoji { position:absolute; font-size:2rem; cursor:pointer; user-select:none; }
+.floating-text { position:absolute; font-size:1rem; color:#fff; animation:floatUp 1s ease-out forwards; }
+@keyframes floatUp { 0%{opacity:1; transform:translateY(0);} 100%{opacity:0; transform:translateY(-30px);} }
 
-  /* --- Info box --- */
-  #infoBox { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(30,30,30,0.95); padding:2rem; border-radius:10px; display:none; max-width:90%; text-align:center; z-index:2000; }
-  #infoBox button { margin-top:1rem; }
-
-  /* --- Animations --- */
-  @keyframes floatRandom {
-    0% { transform: translate(0,0) rotate(0deg);}
-    25% { transform: translate(30px, -20px) rotate(45deg);}
-    50% { transform: translate(-20px,30px) rotate(90deg);}
-    75% { transform: translate(20px,-25px) rotate(135deg);}
-    100% { transform: translate(0,0) rotate(180deg);}
-  }
+/* Info Button */
+#info-btn { position:absolute; top:50%; right:10px; transform:translateY(-50%); padding:0.5rem 1rem; background:#444; border:none; border-radius:5px; cursor:pointer; }
+#info-box { display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#222; padding:2rem; border:2px solid #555; border-radius:10px; width:80%; max-width:400px; z-index:1000; }
+#info-box h2 { margin-bottom:1rem; }
+#info-box button { margin-top:1rem; padding:0.5rem 1rem; border:none; border-radius:5px; cursor:pointer; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Owen's Graveyard</h1>
-  <div>
-    <button id="infoBtn">ℹ️ Info</button>
-    <button id="backBtn">🏠 Main Page</button>
-  </div>
-</header>
+<div id="game-container">
+  <div id="score-board">Points: 0</div>
+  <div id="leaderboard">Milestones:<br>10<br>25<br>50<br>100</div>
 
-<div id="scoreboard">
-  <div>Score: <span id="score">0</span></div>
-  <div id="milestones">
-    Milestones:<br>
-    🪦 10 🦴 25 💀 50 🧟 75 🦇 100
+  <div id="grave">
+    <div id="grave-msg">RIP 1997 – 2100 "3 Century Man"<br>Born by the roadside, local fame Day 1, ended with same fame.</div>
   </div>
-</div>
-
-<div id="graveyard">
-  <div class="grave" id="mainGrave">
-    <h2>RIP Owen Bahen</h2>
-    <p>1997–2100</p>
-    <p>"Century Man – Born by the Side of the Road, Died Interesting"</p>
+  <div id="ground"></div>
+  <button id="info-btn">i</button>
+  <div id="info-box">
+    <h2>Graveyard Game</h2>
+    <p>Click on emojis to collect points. Higher points appear as you reach milestones. Ghosts give 1 point per click (max 10). Spawn rate increases with your score. Grave messages evolve as you progress.</p>
+    <button onclick="closeInfo()">Close</button>
   </div>
 </div>
 
-<div id="infoBox">
-  <h2>How to Play</h2>
-  <p>Click on the bones 💀, skulls 💀, zombies 🧟, vampires 🧛, bats 🦇, and ghosts 👻 to collect points. 
-  Each type gives different points:</p>
-  <ul style="text-align:left;">
-    <li>🦴 Bone – 1 point</li>
-    <li>💀 Skull – 2 points</li>
-    <li>🧟 Zombie – 3 points</li>
-    <li>🦇 Bat – 4 points</li>
-    <li>🧛 Vampire – 5 points</li>
-    <li>👻 Ghost – 1 point (clickable)</li>
-  </ul>
-  <p>Reach milestones to unlock new messages and events on the grave!</p>
-  <button id="closeInfo">Close</button>
-</div>
+<audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
 
 <script>
-const graveyard = document.getElementById('graveyard');
-const scoreEl = document.getElementById('score');
-let score = 0;
+// Game variables
+let points = 0;
+let milestoneRates = [10,25,50,100];
+let spawnModifier = 1;
+const gameContainer = document.getElementById('game-container');
+const scoreBoard = document.getElementById('score-board');
+const graveMsg = document.getElementById('grave-msg');
 
-// Collectible types
-const items = [
-  {emoji:'🦴', points:1, speed:0.5, life:5000}, 
-  {emoji:'💀', points:2, speed:0.3, life:5000},
-  {emoji:'🧟', points:3, speed:1, life:7000},
-  {emoji:'🦇', points:4, speed:2, life:4000},
-  {emoji:'🧛', points:5, speed:3, life:3000},
-  {emoji:'👻', points:1, speed:1.2, life:6000}
+// Emoji Definitions
+const emojis = [
+  {symbol:'🦴', points:1, minPoints:1, speed:1, type:'fall'},
+  {symbol:'💀', points:3, minPoints:3, speed:0.5, type:'rise'},
+  {symbol:'🧟', points:5, minPoints:10, speed:1, type:'shuffle'},
+  {symbol:'🦇', points:10, minPoints:30, speed:1.2, type:'zigzag'},
+  {symbol:'🧛', points:25, minPoints:50, speed:2, type:'blink'},
+  {symbol:'👻', points:1, minPoints:0, speed:1, type:'random', maxClicks:10}
 ];
 
-// Milestones
-const milestoneMessages = {
-  10: "Owen smirks from beyond…",
-  25: "The grave rattles…",
-  50: "A spectral mist rises!",
-  75: "Owens eyes glow!",
-  100: "The path to the main page opens!"
-};
+let activeGhostClicks = 0;
 
-// Spawn collectibles
-function spawnItem() {
-  const type = items[Math.floor(Math.random()*items.length)];
-  const div = document.createElement('div');
-  div.className = 'collectible';
-  div.textContent = type.emoji;
-  const startX = Math.random()*(window.innerWidth-50);
-  const startY = Math.random()*(window.innerHeight-150)+50;
-  div.style.left = startX + 'px';
-  div.style.top = startY + 'px';
-  graveyard.appendChild(div);
+// Spawn rate control
+let spawnInterval = 1500;
+function updateSpawnModifier(){
+  if(points >= 100) spawnModifier = 2; // +100%
+  else if(points >=50) spawnModifier = 1.25;
+  else if(points >=25) spawnModifier = 1.25;
+  else if(points >=10) spawnModifier = 1.25;
+  else spawnModifier = 1;
+}
 
-  // Movement
-  const velX = (Math.random()*2-1)*type.speed*2;
-  const velY = (Math.random()*2-1)*type.speed*2;
+// Create Emoji
+function createEmoji(){
+  const availableEmojis = emojis.filter(e => points >= e.minPoints);
+  if(availableEmojis.length===0) return;
 
-  let lifeTimer = setTimeout(()=>{div.remove()}, type.life);
+  const e = availableEmojis[Math.floor(Math.random()*availableEmojis.length)];
+  const emojiDiv = document.createElement('div');
+  emojiDiv.className = 'emoji';
+  emojiDiv.textContent = e.symbol;
 
-  function move(){
-    const rect = div.getBoundingClientRect();
-    let x = rect.left + velX;
-    let y = rect.top + velY;
-    if(x<0 || x>window.innerWidth-30) x = Math.random()*(window.innerWidth-50);
-    if(y<50 || y>window.innerHeight-50) y = Math.random()*window.innerHeight;
-    div.style.left = x + 'px';
-    div.style.top = y + 'px';
-    requestAnimationFrame(move);
-  }
-  move();
+  // Random starting side
+  let side = Math.random() < 0.5 ? 'left':'right';
+  emojiDiv.style.top = Math.random()*(window.innerHeight-100) + 'px';
+  emojiDiv.style[side] = '-50px';
 
-  div.addEventListener('click', ()=>{
-    score += type.points;
-    scoreEl.textContent = score;
-    div.remove();
-    clearTimeout(lifeTimer);
-    updateGrave();
+  gameContainer.appendChild(emojiDiv);
+
+  let pos = parseFloat(emojiDiv.style.top);
+  let left = side==='left'? -50: window.innerWidth+50;
+  const direction = side==='left'? 1:-1;
+
+  let lifetime = 5000 + Math.random()*2000;
+
+  let moveInterval = setInterval(()=>{
+    // Movement
+    if(e.type==='fall') pos += e.speed; 
+    else if(e.type==='rise') pos -= e.speed;
+    else if(e.type==='shuffle') left += e.speed*direction; 
+    else if(e.type==='zigzag'){ 
+      left += e.speed*direction; 
+      pos += Math.sin(left/20)*5;
+    } 
+    else if(e.type==='blink'){ 
+      // appear/disappear randomly
+      emojiDiv.style.display = Math.random()>0.5?'block':'none';
+    } 
+    else if(e.type==='random'){ 
+      left += (Math.random()*4-2); pos += (Math.random()*4-2); 
+    }
+    emojiDiv.style.top = pos+'px';
+    emojiDiv.style.left = left+'px';
+  },50);
+
+  // Remove after lifetime
+  setTimeout(()=>{
+    clearInterval(moveInterval);
+    emojiDiv.remove();
+  },lifetime);
+
+  // Click points
+  emojiDiv.addEventListener('click', ()=>{
+    if(e.symbol==='👻'){
+      if(activeGhostClicks < e.maxClicks){ 
+        points += e.points;
+        activeGhostClicks++;
+      }
+    } else points += e.points;
+
+    showFloatingText(e.symbol==='👻'?'+1':`+${e.points}`, emojiDiv);
+    updateScore();
+    emojiDiv.remove();
   });
 }
 
-// Spawn interval
-setInterval(spawnItem, 800);
+// Floating text
+function showFloatingText(text, el){
+  const t = document.createElement('div');
+  t.className='floating-text';
+  t.textContent = text;
+  t.style.left = el.offsetLeft+'px';
+  t.style.top = el.offsetTop+'px';
+  gameContainer.appendChild(t);
+  setTimeout(()=>t.remove(),1000);
+}
 
-// Update grave messages
+// Update score & milestone
+function updateScore(){
+  scoreBoard.textContent = `Points: ${points}`;
+  updateSpawnModifier();
+  updateGrave();
+}
+
+// Grave messages
 function updateGrave(){
-  for(const milestone in milestoneMessages){
-    if(score >= milestone){
-      const graveMsg = document.querySelector('.grave p:nth-child(3)');
-      graveMsg.textContent = milestoneMessages[milestone];
-    }
-  }
-  if(score >= 100){
-    document.getElementById('backBtn').style.display = 'inline-block';
-  }
+  if(points >=10 && points <25) graveMsg.innerHTML='Your story echoes in the graveyard...';
+  else if(points >=25 && points <50) graveMsg.innerHTML='Local legend: Owen the remarkable.';
+  else if(points >=50 && points <100) graveMsg.innerHTML='Owen, eternal in fame and memory.';
+  else if(points >=100) graveMsg.innerHTML='The century man prevails beyond life!';
 }
 
 // Info Box
-document.getElementById('infoBtn').addEventListener('click', ()=>{document.getElementById('infoBox').style.display='block';});
-document.getElementById('closeInfo').addEventListener('click', ()=>{document.getElementById('infoBox').style.display='none';});
+document.getElementById('info-btn').addEventListener('click',()=>{ document.getElementById('info-box').style.display='block';});
+function closeInfo(){ document.getElementById('info-box').style.display='none';}
 
-// Back to main
-document.getElementById('backBtn').addEventListener('click', ()=>{window.location.href='index.html';});
-document.getElementById('backBtn').style.display='none';
-
+// Spawn loop
+setInterval(()=>{
+  createEmoji();
+}, spawnInterval/spawnModifier);
 </script>
 
 </body>
