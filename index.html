@@ -10,6 +10,15 @@
 body { font-family:'Helvetica Neue', Arial, sans-serif; background:#f9f9f9; color:#222; line-height:1.6; overflow-x:hidden; cursor:auto; }
 a { text-decoration:none; color:inherit; }
 
+#cat {
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  font-size:2.5rem;
+  z-index:10000;
+  cursor:pointer;
+}
+  
 /* Header */
 header {
   display:flex; justify-content:center; align-items:center;
@@ -181,37 +190,35 @@ document.querySelectorAll('.faq-question').forEach(q=>{
 // Cat element
 const cat = document.getElementById('cat');
 
-// Define bed location (bottom center of page)
-const bed = { x: window.innerWidth / 2, y: window.innerHeight - 100 };
+// Starting bed position
+let catPos = { x: window.innerWidth / 2 - 24, y: window.innerHeight - 100 }; // adjust -24 for half of emoji width
+cat.style.left = catPos.x + 'px';
+cat.style.top = catPos.y + 'px';
 
-// Start cat at bed
-let catPos = { x: bed.x, y: bed.y };
-
-// Movement parameters
-let resting = true; // cat starts resting
+let resting = true;
 
 function moveCat() {
   let target;
 
   if (resting) {
-    // Small random shift while resting
+    // small shift while resting
     target = {
-      x: catPos.x + (Math.random() * 20 - 10),
-      y: catPos.y + (Math.random() * 10 - 5)
+      x: catPos.x + (Math.random() * 40 - 20),
+      y: catPos.y + (Math.random() * 20 - 10)
     };
   } else {
-    // Zoomies: larger random movement
+    // zoomies: move anywhere on screen
     target = {
       x: Math.random() * (window.innerWidth - 50),
       y: Math.random() * (window.innerHeight - 50)
     };
   }
 
-  // Keep cat within viewport
+  // Keep inside viewport
   target.x = Math.max(0, Math.min(window.innerWidth - 50, target.x));
   target.y = Math.max(0, Math.min(window.innerHeight - 50, target.y));
 
-  let steps = 60; // smoother movement
+  let steps = 60;
   let step = 0;
 
   function animateStep() {
@@ -222,8 +229,8 @@ function moveCat() {
     cat.style.top = catPos.y + 'px';
     if (step < steps) requestAnimationFrame(animateStep);
     else {
-      // After reaching target, randomly decide if cat rests or does zoomies
-      resting = Math.random() > 0.3; // 70% chance resting, 30% zoomies
+      // Decide next movement
+      resting = Math.random() > 0.3; // 70% resting
       let waitTime = resting ? (2000 + Math.random() * 3000) : (500 + Math.random() * 500);
       setTimeout(moveCat, waitTime);
     }
@@ -238,12 +245,12 @@ moveCat();
 // Click to cat.html
 cat.addEventListener('click', () => { window.location.href = 'cat.html'; });
 
-// Handle resize to reposition bed
+// Handle window resize
 window.addEventListener('resize', () => {
-  bed.x = window.innerWidth / 2;
-  bed.y = window.innerHeight - 100;
+  if(catPos.y > window.innerHeight - 50) catPos.y = window.innerHeight - 100;
 });
 </script>
+
 // Cat movement end
 
 
