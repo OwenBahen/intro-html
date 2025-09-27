@@ -44,9 +44,7 @@ nav a:hover { color:#3E8E41; }
   align-items:center;
   text-align:center;
   background:linear-gradient(135deg, #6DBE45, #82C784);
-  background-size:400% 400%;
   color:white;
-  animation:fadeIn 1.5s ease;
   position:relative;
   overflow:hidden;
 }
@@ -57,26 +55,23 @@ nav a:hover { color:#3E8E41; }
   position:absolute;
   pointer-events:none;
   user-select:none;
-  font-size:2rem;
   opacity:0.8;
-  animation:float 10s linear infinite;
+  animation-name:float;
+  animation-iteration-count:infinite;
+  animation-timing-function:linear;
 }
+
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg); }
   50% { transform:translateY(20px) rotate(180deg); }
   100% { transform:translateY(0) rotate(360deg); }
-}
-@keyframes fadeIn {
-  from { opacity:0; transform:translateY(30px); }
-  to { opacity:1; transform:translateY(0); }
 }
 
 section {
   padding:5rem 10%;
   opacity:0;
   transform:translateY(50px);
-  transition: all 0.8s ease-out;
-  position:relative;
+  transition:all 0.8s ease-out;
 }
 section.show { opacity:1; transform:translateY(0); }
 
@@ -88,6 +83,20 @@ footer {
   font-size:0.9rem;
   position:relative;
 }
+footer .socials {
+  margin-top:1rem;
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+}
+footer svg {
+  width:28px;
+  height:28px;
+  fill:white;
+  transition:fill 0.3s;
+  cursor:pointer;
+}
+footer svg:hover { fill:#3E8E41; }
 footer a.hidden-link {
   color:inherit;
   text-decoration:none;
@@ -119,17 +128,24 @@ footer a.hidden-link {
 
 .affiliations-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:2rem;
-  justify-items:center;
-  align-items:center;
   margin-top:2rem;
 }
 .affiliation {
-  font-size:2.5rem;
-  transition:transform 0.3s ease;
+  background:white;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:1.5rem;
+  text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
 }
-.affiliation:hover { transform:scale(1.1); }
+.affiliation:hover {
+  transform:scale(1.05);
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+.affiliation a { text-decoration:none; color:inherit; font-weight:bold; font-size:1.1rem; }
 
 #cat {
   position:absolute;
@@ -137,60 +153,47 @@ footer a.hidden-link {
   font-size:2rem;
   pointer-events:none;
   z-index:1000;
-  transition: transform 0.05s linear;
+  transition:transform 0.05s linear;
 }
 
-.skills-marquee {
-  overflow:hidden;
-  white-space:nowrap;
-  box-shadow:inset 0 -2px 0 #ddd;
-  margin:2rem 0;
+.stream-embed {
+  display:none;
+  position:fixed;
+  bottom:60px;
+  right:20px;
+  width:300px;
+  height:170px;
+  border:2px solid #333;
+  border-radius:8px;
+  z-index:3000;
 }
-.skills-marquee span {
-  display:inline-block;
-  padding:0 2rem;
-  font-weight:bold;
-  animation:marquee 15s linear infinite;
-}
-@keyframes marquee {
-  0% { transform:translateX(100%); }
-  100% { transform:translateX(-100%); }
-}
-
-/* FAQ accordion */
-.faq { margin-top:2rem; }
-.faq-item {
-  border-bottom:1px solid #ccc;
-}
-.faq-question {
-  padding:1rem;
-  cursor:pointer;
-  font-weight:bold;
-  background:#f0f0f0;
-}
-.faq-answer {
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.5s ease;
-  padding:0 1rem;
-}
-.faq-item.active .faq-answer {
-  max-height:200px;
-  padding:1rem;
-}
-
-/* Twitch + YouTube dots */
 .stream-dot {
   position:fixed;
   bottom:1rem;
-  width:20px;
-  height:20px;
+  width:28px;
+  height:28px;
   border-radius:50%;
   cursor:pointer;
   z-index:2000;
 }
 #twitch-dot { left:1rem; background:#9146FF; }
 #youtube-dot { left:3.5rem; background:#FF0000; }
+
+.skills-bar {
+  margin-top:2rem;
+  display:flex;
+  gap:0.5rem;
+  overflow-x:auto;
+  padding-bottom:0.5rem;
+}
+.skills-bar div {
+  background:#3E8E41;
+  color:white;
+  padding:0.5rem 1rem;
+  border-radius:20px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
 </style>
 </head>
 <body>
@@ -216,29 +219,13 @@ footer a.hidden-link {
 <section id="about">
   <h2>About Me</h2>
   <p>Hi! I'm Owen B. This website highlights my professional profile.</p>
-  <div class="skills-marquee">
-    <span>Oracle</span>
-    <span>ServiceNow</span>
-    <span>Onboarding</span>
-    <span>Immigration</span>
-    <span>HR</span>
-    <span>Microsoft</span>
-    <span>Excel</span>
-    <span>Data Analysis</span>
-  </div>
-  <div class="faq">
-    <div class="faq-item">
-      <div class="faq-question">What is Owenn.ca?</div>
-      <div class="faq-answer"><p>A modern personal site to showcase Owen's work, collaborations, and interests.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">Why the seasons theme?</div>
-      <div class="faq-answer"><p>Ontario’s four seasons inspired the rotating background and floating emojis.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">What’s next?</div>
-      <div class="faq-answer"><p>Expanding projects, collaborations, and new playful features on the site.</p></div>
-    </div>
+  <div class="skills-bar">
+    <div>Oracle</div>
+    <div>ServiceNow</div>
+    <div>Onboarding</div>
+    <div>Immigration</div>
+    <div>HR</div>
+    <div>Microsoft</div>
   </div>
 </section>
 
@@ -260,64 +247,108 @@ footer a.hidden-link {
 
 <footer>
   <p>&copy; 1997–2100 <a href="graveyard.html" class="hidden-link">Owen B</a></p>
+  <div class="socials">
+    <a href="https://github.com/yourgithub" target="_blank" aria-label="GitHub">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.5-.3-5.1-1.2-5.1-5.4 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1.9-.2 1.8-.3 2.7-.3s1.8.1 2.7.3c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.9 0 4.2-2.6 5.1-5.1 5.4.4.3.8 1 .8 2v3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.65 18.35.5 12 .5z"/>
+      </svg>
+    </a>
+    <a href="https://www.linkedin.com/in/owenb1/" target="_blank" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24">
+        <path d="M20.45 20.45h-3.55v-5.6c0-1.34 0-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3.55V9h3.41v1.56h.05c.47-.89 1.62-1.82 3.34-1.82 3.57 0 4.23 2.35 4.23 5.4v6.3zM5.34 7.43a2.06 2.06 0 01-2.06-2.06c0-1.14.92-2.06 2.06-2.06s2.06.92 2.06 2.06c0 1.14-.92 2.06-2.06 2.06zM7.11 20.45H3.57V9h3.54v11.45z"/>
+      </svg>
+    </a>
+  </div>
 </footer>
 
 <div id="cat">🐱</div>
+
+<iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=owenn.ca" allowfullscreen></iframe>
+<iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/live_stream?channel=UCxxxxxxx" allowfullscreen></iframe>
+
 <div id="twitch-dot" class="stream-dot"></div>
 <div id="youtube-dot" class="stream-dot"></div>
 
 <script>
-// Seasons
+// Seasonal emojis
 const seasons = [
-  { gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','🌼'] },
-  { gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🍉'] },
-  { gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🦃','🎃'] },
-  { gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🎄','🧤'] },
+  { gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','🌼','🌱','🐝','🌷','🦋'] },
+  { gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🍉','🏖️','🌞','🦀','🍦'] },
+  { gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🦃','🎃','🕸️','🍎','🦉','🍄'] },
+  { gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🎄','🧤','⛷️','🎁','⛸️'] },
 ];
+
 let current=0;
 const hero=document.querySelector('.hero');
+
 function showSeason(index){
   hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  seasons[index].elements.forEach((el,i)=>{
-    const div=document.createElement('div');
-    div.className='seasonal-element';
-    div.style.top=`${20+i*20}%`;
-    div.style.left=`${10+i*20}%`;
-    div.textContent=el;
-    hero.appendChild(div);
-  });
+
+  const count = 12;
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className='seasonal-element';
+    el.style.top=`${Math.random()*80+10}%`;
+    el.style.left=`${Math.random()*80+10}%`;
+    el.style.fontSize = `${Math.random()*1.5 + 1.5}rem`;
+    el.style.animationDuration = `${Math.random()*8 + 6}s`;
+    const emojiList = seasons[index].elements;
+    el.textContent = emojiList[Math.floor(Math.random()*emojiList.length)];
+    hero.appendChild(el);
+  }
 }
+
 showSeason(current);
 setInterval(()=>{current=(current+1)%seasons.length;showSeason(current);},15000);
-document.getElementById('prev-season').onclick=()=>{current=(current-1+seasons.length)%seasons.length;showSeason(current);};
-document.getElementById('next-season').onclick=()=>{current=(current+1)%seasons.length;showSeason(current);};
+
+document.getElementById('prev-season').addEventListener('click',()=>{
+  current=(current-1+seasons.length)%seasons.length;showSeason(current);
+});
+document.getElementById('next-season').addEventListener('click',()=>{
+  current=(current+1)%seasons.length;showSeason(current);
+});
 
 // Scroll reveal
 const sections=document.querySelectorAll("section");
-const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{if(sec.getBoundingClientRect().top<trigger) sec.classList.add("show");});};
-window.addEventListener("scroll",revealOnScroll);revealOnScroll();
+const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{const top=sec.getBoundingClientRect().top;if(top<trigger) sec.classList.add("show");});};
+window.addEventListener("scroll",revealOnScroll);
+revealOnScroll();
 
 // Cat cursor
 const cat=document.getElementById('cat');
 document.addEventListener('mousemove',e=>{
-  const mouseX=e.clientX, mouseY=e.clientY;
+  const mouseX=e.clientX;
+  const mouseY=e.clientY;
   const catX=parseFloat(cat.style.left)||0;
   const catY=parseFloat(cat.style.top)||0;
-  cat.style.left=`${catX+(mouseX-catX-12)/5}px`;
-  cat.style.top=`${catY+(mouseY-catY-12)/5}px`;
+  const dx=(mouseX-catX-12)/5;
+  const dy=(mouseY-catY-12)/5;
+  cat.style.left=`${catX+dx}px`;
+  cat.style.top=`${catY+dy}px`;
 });
 
-// FAQ
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click',()=>{
-    q.parentElement.classList.toggle('active');
-  });
+// Touch for mobile
+document.addEventListener('touchmove', e=>{
+  const touch = e.touches[0];
+  const mouseX=touch.clientX;
+  const mouseY=touch.clientY;
+  const catX=parseFloat(cat.style.left)||0;
+  const catY=parseFloat(cat.style.top)||0;
+  const dx=(mouseX-catX-12)/8;
+  const dy=(mouseY-catY-12)/8;
+  cat.style.left=`${catX+dx}px`;
+  cat.style.top=`${catY+dy}px`;
 });
 
-// Stream dots
-document.getElementById('twitch-dot').onclick=()=>window.open('https://www.twitch.tv/0in1','_blank');
-document.getElementById('youtube-dot').onclick=()=>window.open('https://www.youtube.com/@0in1','_blank');
+// Twitch/YouTube hidden toggle
+const twitchDot=document.getElementById('twitch-dot');
+const ytDot=document.getElementById('youtube-dot');
+const twitchEmbed=document.getElementById('twitch-embed');
+const ytEmbed=document.getElementById('youtube-embed');
+
+twitchDot.addEventListener('click',()=>{twitchEmbed.style.display=(twitchEmbed.style.display==='block')?'none':'block';});
+ytDot.addEventListener('click',()=>{ytEmbed.style.display=(ytEmbed.style.display==='block')?'none':'block';});
 </script>
 
 </body>
