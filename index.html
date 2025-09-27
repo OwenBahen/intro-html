@@ -6,7 +6,7 @@
 <title>Owenn.ca</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f9f9f9;color:#222;line-height:1.6;scroll-behavior:smooth;overflow-x:hidden;cursor:none;}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f9f9f9;color:#222;line-height:1.6;scroll-behavior:smooth;overflow-x:hidden;}
 header{display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;position:sticky;top:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);z-index:100;}
 header h1{font-size:1.5rem;letter-spacing:2px;}
 nav a{margin-left:1rem;text-decoration:none;color:#333;font-weight:500;transition:color 0.3s;}
@@ -15,10 +15,8 @@ nav a:hover{color:#3E8E41;}
 .hero{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#6DBE45,#82C784);color:white;position:relative;overflow:hidden;}
 .hero h2{font-size:2.5rem;margin-bottom:1rem;}
 .hero p{font-size:1rem;max-width:90%;}
-
 .seasonal-element{position:absolute;pointer-events:none;user-select:none;opacity:0.8;animation-name:float;animation-iteration-count:infinite;animation-timing-function:linear;}
 @keyframes float{0%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(20px) rotate(180deg);}100%{transform:translateY(0) rotate(360deg);}}
-
 section{padding:5rem 5%;opacity:0;transform:translateY(50px);transition:all 0.8s ease-out;}
 section.show{opacity:1;transform:translateY(0);}
 footer{text-align:center;padding:2rem;background:#111;color:#fff;font-size:0.9rem;position:relative;}
@@ -31,18 +29,21 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
 .cycle-btns button{background:rgba(255,255,255,0.3);border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;font-weight:bold;color:#fff;transition:background 0.3s;}
 .cycle-btns button:hover{background:rgba(255,255,255,0.6);}
 .affiliations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-top:2rem;}
-.affiliation{background:white;border:1px solid #ddd;border-radius:10px;padding:1.5rem;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);transition:transform 0.3s ease,box-shadow 0.3s ease;}
+.affiliation{background:white;border:1px solid #ddd;border-radius:10px;padding:1.5rem;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);transition:transform 0.3s ease,box-shadow 0.3s ease;cursor:pointer;}
 .affiliation:hover{transform:scale(1.05);box-shadow:0 4px 10px rgba(0,0,0,0.15);}
 .affiliation a{text-decoration:none;color:inherit;font-weight:bold;font-size:1.1rem;}
-#cat{position:absolute;top:0;left:0;font-size:2rem;pointer-events:none;z-index:1000;transition:transform 0.05s linear;}
 .stream-embed{display:none;position:fixed;width:300px;height:170px;border:2px solid #333;border-radius:8px;z-index:3000;transition:all 0.5s;}
-#twitch-embed{bottom:60px;right:20px;}
-#youtube-embed{bottom:60px;right:340px;}
-.stream-dot{position:fixed;bottom:1rem;width:35px;height:35px;border-radius:50%;cursor:pointer;z-index:2000;}
+@media(max-width:600px){.stream-embed{width:45vw;height:25vw;}}
+.stream-dot{position:fixed;bottom:1rem;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:2000;display:flex;align-items:center;justify-content:center;font-size:20px;color:white;}
 #twitch-dot{left:1rem;background:#9146FF;}
-#youtube-dot{left:3.5rem;background:#FF0000;}
+#youtube-dot{left:4rem;background:#FF0000;}
 .skills-bar{margin-top:2rem;display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:0.5rem;}
 .skills-bar div{background:#3E8E41;color:white;padding:0.5rem 1rem;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.faq-item{margin-top:1rem;border-bottom:1px solid #ddd;}
+.faq-question{padding:0.8rem;cursor:pointer;background:#eee;border-radius:5px;transition:background 0.3s;}
+.faq-question:hover{background:#ddd;}
+.faq-answer{padding:0.8rem 1rem;display:none;background:#f9f9f9;}
+#cat-walk{position:absolute;font-size:2rem;pointer-events:none;z-index:1500;}
 </style>
 </head>
 <body>
@@ -52,6 +53,7 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
   <nav>
     <a href="#about">About</a>
     <a href="#affiliations">Affiliations</a>
+    <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
@@ -76,11 +78,27 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
 <section id="affiliations">
   <h2>Affiliations & Collaborations</h2>
   <div class="affiliations-grid">
-    <div class="affiliation">🎓 <a href="https://humber.ca" target="_blank">Humber College</a></div>
-    <div class="affiliation">📚 <a href="https://athabascau.ca" target="_blank">Athabasca University</a></div>
-    <div class="affiliation">🥫 <a href="https://gfs.com" target="_blank">Gordon Food Service</a></div>
-    <div class="affiliation">🚚 <a href="https://mealsonwheelsamerica.org" target="_blank">Meals on Wheels</a></div>
-    <div class="affiliation">⚛️ <a href="https://cnl.ca" target="_blank">Canadian Nuclear Laboratories</a></div>
+    <div class="affiliation" onclick="window.open('https://humber.ca','_blank')">🎓 Humber College</div>
+    <div class="affiliation" onclick="window.open('https://athabascau.ca','_blank')">📚 Athabasca University</div>
+    <div class="affiliation" onclick="window.open('https://gfs.com','_blank')">🥫 Gordon Food Service</div>
+    <div class="affiliation" onclick="window.open('https://mealsonwheelsamerica.org','_blank')">🚚 Meals on Wheels</div>
+    <div class="affiliation" onclick="window.open('https://cnl.ca','_blank')">⚛️ Canadian Nuclear Laboratories</div>
+  </div>
+</section>
+
+<section id="faq">
+  <h2>FAQ</h2>
+  <div class="faq-item">
+    <div class="faq-question">What is Owenn.ca?</div>
+    <div class="faq-answer">It's my personal website showcasing my professional profile, affiliations, and interests.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question">How can I contact Owen?</div>
+    <div class="faq-answer">You can email me at <a href="mailto:Contact@owenn.ca">Contact@owenn.ca</a>.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question">Where can I see Owen's skills?</div>
+    <div class="faq-answer">Check the About section for a scrolling skills bar.</div>
   </div>
 </section>
 
@@ -93,83 +111,82 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
   <p>&copy; <span class="no-tel">1997–2100</span> <a href="graveyard.html" class="hidden-link">Owen B</a></p>
   <div class="socials">
     <a href="https://github.com/yourgithub" target="_blank" aria-label="GitHub">
-      <svg viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.5-.3-5.1-1.2-5.1-5.4 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1.9-.2 1.8-.3 2.7-.3s1.8.1 2.7.3c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.9 0 4.2-2.6 5.1-5.1 5.4.4.3.8 1 .8 2v3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.65 18.35.5 12 .5z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.5-.3-5.1-1.2-5.1-5.4 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1.9-.2 1.8-.3 2.7-.3s1.8.1 2.7.3c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.9 0 4.2-2.6 5.1-5.1 5.4.4.3.7.9.7 1.8v2.6c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9 0-6.35-5.15-11.5-11.5-11.5z"/></svg>
     </a>
     <a href="https://www.linkedin.com/in/owenb1/" target="_blank" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.6c0-1.34 0-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3.55V9h3.41v1.56h.05c.47-.89 1.62-1.82 3.34-1.82 3.57 0 4.23 2.35 4.23 5.4v6.3zM5.34 7.43a2.06 2.06 0 01-2.06-2.06c0-1.14.92-2.06 2.06-2.06s2.06.92 2.06 2.06c0 1.14-.92 2.06-2.06 2.06zM7.11 20.45H3.57V9h3.54v11.45z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.38-1.12 2.5-2.5 2.5S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 6h4v18h-4V6zm7.5 0h3.8v2.6h.1c.5-.9 1.7-1.9 3.5-1.9 3.8 0 4.5 2.5 4.5 5.7v6.6h-4V12c0-1.4-.03-3.2-1.9-3.2-1.9 0-2.2 1.5-2.2 3v6.6h-4V6z"/></svg>
     </a>
   </div>
 </footer>
 
-<div id="cat">🐱</div>
-
-<div id="twitch-dot" class="stream-dot"></div>
-<div id="youtube-dot" class="stream-dot"></div>
-<iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=owenn.ca" frameborder="0" allowfullscreen scrolling="no"></iframe>
-<iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/0in1?autoplay=0" frameborder="0" allowfullscreen scrolling="no"></iframe>
+<div id="cat-walk">🐱</div>
+<div id="twitch-dot" class="stream-dot">T</div>
+<div id="youtube-dot" class="stream-dot">Y</div>
+<iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" frameborder="0" allowfullscreen></iframe>
+<iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/0in1" frameborder="0" allowfullscreen></iframe>
 
 <script>
-// Seasons with random multiple emojis
-const seasons=[
-  {name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🌱','🐦','🌷','🐞','🌼','🦋']},
-  {name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🦋','🐝','🌞','🌴','🌺']},
-  {name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🦉','🌰','🍄','🦇','🌾']},
-  {name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🧤','🌨','🌲','🦌','☃️','🕯']}
+// Seasonal cycle with random emojis
+const seasons = [
+  {name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','🌱','🌷']},
+  {name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🦋','🌴']},
+  {name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🌰','🦉']},
+  {name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🧣','🌨️']}
 ];
 let current=0;
 const hero=document.querySelector('.hero');
 function showSeason(index){
   hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  for(let i=0;i<12;i++){
-    const el=seasons[index].elements[Math.floor(Math.random()*seasons[index].elements.length)];
+  for(let i=0;i<8;i++){
+    const el = seasons[index].elements[Math.floor(Math.random()*seasons[index].elements.length)];
     const div=document.createElement('div');
     div.className='seasonal-element';
-    div.style.top=`${Math.random()*80}%`;
-    div.style.left=`${Math.random()*90}%`;
-    div.style.fontSize=`${1+Math.random()*2}rem`;
+    div.style.top=`${Math.random()*80+10}%`;
+    div.style.left=`${Math.random()*80+10}%`;
     div.textContent=el;
+    div.style.animationDuration=`${5+Math.random()*5}s`;
     hero.appendChild(div);
   }
 }
 showSeason(current);
-setInterval(()=>{current=(current+1)%seasons.length;showSeason(current);},15000);
+let autoCycle=setInterval(()=>{current=(current+1)%seasons.length;showSeason(current);},15000);
 document.getElementById('prev-season').addEventListener('click',()=>{current=(current-1+seasons.length)%seasons.length;showSeason(current);});
 document.getElementById('next-season').addEventListener('click',()=>{current=(current+1)%seasons.length;showSeason(current);});
 
 // Scroll reveal
 const sections=document.querySelectorAll("section");
-const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{const top=sec.getBoundingClientRect().top;if(top<trigger) sec.classList.add("show");});};
+const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{if(sec.getBoundingClientRect().top<trigger) sec.classList.add("show");});};
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
 
-// Cat cursor
-const cat=document.getElementById('cat');
-let catX=0, catY=0, mouseX=0, mouseY=0;
-document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
-document.addEventListener('touchmove',e=>{mouseX=e.touches[0].clientX;mouseY=e.touches[0].clientY;});
-function moveCat(){
-  catX += (mouseX-catX-12)/5;
-  catY += (mouseY-catY-12)/5;
-  cat.style.left=`${catX}px`;
-  cat.style.top=`${catY}px`;
-  requestAnimationFrame(moveCat);
+// Cat random walk
+const cat=document.getElementById('cat-walk');
+let catPos={x:100,y:100};
+function moveCatRandom(){
+  let dx=(Math.random()*2-1)*20;
+  let dy=(Math.random()*2-1)*20;
+  catPos.x=Math.min(window.innerWidth-50,Math.max(0,catPos.x+dx));
+  catPos.y=Math.min(window.innerHeight-50,Math.max(0,catPos.y+dy));
+  cat.style.left=catPos.x+'px';
+  cat.style.top=catPos.y+'px';
+  setTimeout(moveCatRandom,800);
 }
-moveCat();
+moveCatRandom();
 
-// Twitch/YT toggle
+// Twitch/YT toggles
 const twitchDot=document.getElementById('twitch-dot');
 const ytDot=document.getElementById('youtube-dot');
 const twitchEmbed=document.getElementById('twitch-embed');
 const ytEmbed=document.getElementById('youtube-embed');
-twitchDot.addEventListener('click',()=>{
-  if(twitchEmbed.style.display==='block'){twitchEmbed.style.display='none';}
-  else{twitchEmbed.style.display='block';twitchEmbed.style.bottom='60px';twitchEmbed.style.right='20px';}
-});
-ytDot.addEventListener('click',()=>{
-  if(ytEmbed.style.display==='block'){ytEmbed.style.display='none';}
-  else{ytEmbed.style.display='block';ytEmbed.style.bottom='60px';ytEmbed.style.right='340px';}
+twitchDot.addEventListener('click',()=>{twitchEmbed.style.display=(twitchEmbed.style.display==='block')?'none':'block';twitchEmbed.style.left='50px';twitchEmbed.style.bottom='80px';});
+ytDot.addEventListener('click',()=>{ytEmbed.style.display=(ytEmbed.style.display==='block')?'none':'block';ytEmbed.style.left='100px';ytEmbed.style.bottom='80px';});
+
+// FAQ toggle
+document.querySelectorAll('.faq-question').forEach(q=>{
+  q.addEventListener('click',()=>{q.nextElementSibling.style.display=(q.nextElementSibling.style.display==='block')?'none':'block';});
 });
 </script>
+
 </body>
 </html>
