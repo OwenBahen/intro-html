@@ -23,7 +23,7 @@ footer{text-align:center;padding:2rem;background:#111;color:#fff;font-size:0.9re
 footer .socials{margin-top:1rem;display:flex;justify-content:center;gap:1rem;}
 footer svg{width:28px;height:28px;fill:white;transition:fill 0.3s;cursor:pointer;}
 footer svg:hover{fill:#3E8E41;}
-footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absolute;left:50%;transform:translateX(-50%);bottom:2rem;}
+footer .hidden-link{opacity:0;position:absolute;left:50%;transform:translateX(-50%);bottom:2rem;}
 .no-tel{user-select:none;-webkit-touch-callout:none;}
 .cycle-btns{position:absolute;bottom:2rem;right:2rem;display:flex;gap:0.5rem;}
 .cycle-btns button{background:rgba(255,255,255,0.3);border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;font-weight:bold;color:#fff;transition:background 0.3s;}
@@ -43,7 +43,7 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
 .faq-question{padding:0.8rem;cursor:pointer;background:#eee;border-radius:5px;transition:background 0.3s;}
 .faq-question:hover{background:#ddd;}
 .faq-answer{padding:0.8rem 1rem;display:none;background:#f9f9f9;}
-#cat-walk{position:absolute;font-size:2rem;pointer-events:none;z-index:1500;}
+#cat-walk{position:absolute;font-size:2rem;pointer-events:none;z-index:1500;transition:top 0.5s linear,left 0.5s linear;}
 </style>
 </head>
 <body>
@@ -108,7 +108,7 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
 </section>
 
 <footer>
-  <p>&copy; <span class="no-tel">1997–2100</span> <a href="graveyard.html" class="hidden-link">Owen B</a></p>
+  <p>&copy; <span class="no-tel">1 9 9 7 – 2 1 0 0</span> <a href="graveyard.html" class="hidden-link">Owen B</a></p>
   <div class="socials">
     <a href="https://github.com/yourgithub" target="_blank" aria-label="GitHub">
       <svg viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.5-.3-5.1-1.2-5.1-5.4 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1.9-.2 1.8-.3 2.7-.3s1.8.1 2.7.3c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.9 0 4.2-2.6 5.1-5.1 5.4.4.3.7.9.7 1.8v2.6c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9 0-6.35-5.15-11.5-11.5-11.5z"/></svg>
@@ -119,40 +119,40 @@ footer a.hidden-link{color:inherit;text-decoration:none;opacity:0;position:absol
   </div>
 </footer>
 
-<div id="cat-walk">🐱</div>
+<div id="cat-walk" onclick="window.location.href='cat.html'">🐱</div>
 <div id="twitch-dot" class="stream-dot">T</div>
 <div id="youtube-dot" class="stream-dot">Y</div>
 <iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" frameborder="0" allowfullscreen></iframe>
 <iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/0in1" frameborder="0" allowfullscreen></iframe>
 
 <script>
-// Seasonal cycle with random emojis
+// Seasonal random emojis
 const seasons = [
-  {name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','🌱','🌷']},
-  {name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🦋','🌴']},
-  {name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🌰','🦉']},
-  {name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🧣','🌨️']}
+{name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','🌱','🌷','🐝','🦋']},
+{name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🌻','🦋','🌴','🐚','🍉']},
+{name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🌰','🦉','🍄','🕸️']},
+{name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🧣','🌨️','☃️','🎿']}
 ];
-let current=0;
-const hero=document.querySelector('.hero');
-function showSeason(index){
-  hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
+let currentSeason=0;
+const heroEl=document.querySelector('.hero');
+function showSeason(idx){
+  heroEl.style.background=`linear-gradient(135deg, ${seasons[idx].gradient[0]}, ${seasons[idx].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  for(let i=0;i<8;i++){
-    const el = seasons[index].elements[Math.floor(Math.random()*seasons[index].elements.length)];
+  for(let i=0;i<10;i++){
+    const el = seasons[idx].elements[Math.floor(Math.random()*seasons[idx].elements.length)];
     const div=document.createElement('div');
     div.className='seasonal-element';
     div.style.top=`${Math.random()*80+10}%`;
     div.style.left=`${Math.random()*80+10}%`;
     div.textContent=el;
-    div.style.animationDuration=`${5+Math.random()*5}s`;
-    hero.appendChild(div);
+    div.style.animationDuration=`${4+Math.random()*6}s`;
+    heroEl.appendChild(div);
   }
 }
-showSeason(current);
-let autoCycle=setInterval(()=>{current=(current+1)%seasons.length;showSeason(current);},15000);
-document.getElementById('prev-season').addEventListener('click',()=>{current=(current-1+seasons.length)%seasons.length;showSeason(current);});
-document.getElementById('next-season').addEventListener('click',()=>{current=(current+1)%seasons.length;showSeason(current);});
+showSeason(currentSeason);
+setInterval(()=>{currentSeason=(currentSeason+1)%seasons.length;showSeason(currentSeason);},15000);
+document.getElementById('prev-season').addEventListener('click',()=>{currentSeason=(currentSeason-1+seasons.length)%seasons.length;showSeason(currentSeason);});
+document.getElementById('next-season').addEventListener('click',()=>{currentSeason=(currentSeason+1)%seasons.length;showSeason(currentSeason);});
 
 // Scroll reveal
 const sections=document.querySelectorAll("section");
@@ -160,19 +160,20 @@ const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
 
-// Cat random walk
+// Cat smooth random walk
 const cat=document.getElementById('cat-walk');
 let catPos={x:100,y:100};
-function moveCatRandom(){
-  let dx=(Math.random()*2-1)*20;
-  let dy=(Math.random()*2-1)*20;
+function moveCatSmooth(){
+  if(Math.random()<0.3){setTimeout(moveCatSmooth,800); return;} // occasional pause
+  let dx=(Math.random()*2-1)*30;
+  let dy=(Math.random()*2-1)*30;
   catPos.x=Math.min(window.innerWidth-50,Math.max(0,catPos.x+dx));
   catPos.y=Math.min(window.innerHeight-50,Math.max(0,catPos.y+dy));
   cat.style.left=catPos.x+'px';
   cat.style.top=catPos.y+'px';
-  setTimeout(moveCatRandom,800);
+  setTimeout(moveCatSmooth,1000);
 }
-moveCatRandom();
+moveCatSmooth();
 
 // Twitch/YT toggles
 const twitchDot=document.getElementById('twitch-dot');
@@ -183,9 +184,7 @@ twitchDot.addEventListener('click',()=>{twitchEmbed.style.display=(twitchEmbed.s
 ytDot.addEventListener('click',()=>{ytEmbed.style.display=(ytEmbed.style.display==='block')?'none':'block';ytEmbed.style.left='100px';ytEmbed.style.bottom='80px';});
 
 // FAQ toggle
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click',()=>{q.nextElementSibling.style.display=(q.nextElementSibling.style.display==='block')?'none':'block';});
-});
+document.querySelectorAll('.faq-question').forEach(q=>{q.addEventListener('click',()=>{const ans=q.nextElementSibling;ans.style.display=(ans.style.display==='block')?'none':'block';});});
 </script>
 
 </body>
