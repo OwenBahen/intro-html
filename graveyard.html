@@ -3,57 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Owen Bahen</title>
+<title>Graveyard - Owen Bahen</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="hero">
-  <h1>Owen Bahen</h1>
-  <div class="social-icons">
-    <a href="#" id="youtube-btn">YouTube</a>
-    <a href="#" id="twitch-btn">Twitch</a>
-    <a href="https://www.linkedin.com/in/owenbahen" target="_blank">LinkedIn</a>
-    <a href="https://github.com/owenbahen" target="_blank">GitHub</a>
-  </div>
+  <h1>Graveyard</h1>
 </header>
 
-<section id="videos">
-  <h2>Watch Videos</h2>
-  <div class="video-container">
-    <iframe id="youtube-embed" class="video-embed" src="" frameborder="0" allowfullscreen></iframe>
-    <iframe id="twitch-embed" class="video-embed" src="" frameborder="0" allowfullscreen></iframe>
+<section id="spooky-section">
+  <h2>Rest in Peace 🪦</h2>
+  <p>Explore mysterious gravestones with hovering effects!</p>
+  <div class="gravestones">
+    <div class="gravestone">🪦 Owen's First Project</div>
+    <div class="gravestone">🪦 Old HTML Pages</div>
+    <div class="gravestone">🪦 Forgotten Ideas</div>
+    <div class="gravestone">🪦 Cat Memories</div>
   </div>
 </section>
 
-<section id="faq">
-  <h2>FAQ</h2>
-  <div class="faq-item">
-    <div class="faq-question">What motivates you?</div>
-    <div class="faq-answer">I am motivated by solving problems, creating engaging digital experiences, and continuous learning.</div>
-  </div>
-</section>
-
-<section id="affiliations">
-  <h2>Affiliations & Collaborations</h2>
-  <div class="affiliations-grid">
-    <div class="affiliation-box" onclick="window.open('https://www.humber.ca','_blank')">🎓 Humber College</div>
-    <div class="affiliation-box" onclick="window.open('https://www.athabascau.ca','_blank')">📚 Athabasca University</div>
-    <div class="affiliation-box" onclick="window.open('https://www.gfs.com','_blank')">🥫 Gordon Food Service</div>
-    <div class="affiliation-box" onclick="window.open('https://www.mealsonwheels.ca','_blank')">🚚 Meals on Wheels</div>
-    <div class="affiliation-box" onclick="window.open('https://www.cnl.ca','_blank')">⚛️ Canadian Nuclear Laboratories</div>
-  </div>
-</section>
-
-<!-- Bottom of page -->
 <div style="text-align:center; margin:3rem 0 2rem 0;">
-  <button>Useless Button</button>
-  <div style="font-size:2rem;">🪦</div>
+  <p>Hover over the graves for surprises!</p>
 </div>
 
-<div id="cat">🐈</div>
+<script>
+// --- Hover effect for gravestones ---
+document.querySelectorAll('.gravestone').forEach(g => {
+  g.addEventListener('mouseenter', () => {
+    g.style.transform = 'scale(1.2) rotate(-5deg)';
+    g.style.transition = 'transform 0.3s';
+  });
+  g.addEventListener('mouseleave', () => {
+    g.style.transform = 'scale(1) rotate(0deg)';
+  });
+});
+</script>
 
-<script src="scripts.js"></script>
+<style>
+.gravestones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.gravestone {
+  font-size: 2rem;
+  padding: 1rem;
+  background: rgba(200,200,200,0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+</style>
 
 </body>
 </html>
