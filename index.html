@@ -13,7 +13,7 @@ body {
   line-height:1.6;
   scroll-behavior:smooth;
   overflow-x:hidden;
-  cursor:none; /* hide default cursor */
+  cursor:none;
 }
 header {
   display:flex;
@@ -56,19 +56,15 @@ nav a:hover { color:#3E8E41; }
   position:absolute;
   pointer-events:none;
   user-select:none;
-  font-size:1.5rem;
   opacity:0.8;
-  animation:float 4-10s linear infinite;
+  animation:float 4s linear infinite;
 }
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg); }
   50% { transform:translateY(20px) rotate(180deg); }
   100% { transform:translateY(0) rotate(360deg); }
 }
-@keyframes fadeIn {
-  from { opacity:0; transform:translateY(30px); }
-  to { opacity:1; transform:translateY(0); }
-}
+@keyframes fadeIn { from { opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
 section {
   padding:5rem 10%;
   opacity:0;
@@ -84,7 +80,7 @@ footer {
   color:#fff;
   font-size:0.9rem;
 }
-footer a {color:#fff; text-decoration:underline;}
+footer a { color:#fff; text-decoration:underline; }
 .cycle-btns {
   position:absolute;
   bottom:2rem;
@@ -103,6 +99,7 @@ footer a {color:#fff; text-decoration:underline;}
   transition:background 0.3s ease;
 }
 .cycle-btns button:hover { background:rgba(255,255,255,0.6); }
+
 .affiliations-grid {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -118,8 +115,10 @@ footer a {color:#fff; text-decoration:underline;}
   background:rgba(255,255,255,0.2);
   border-radius:10px;
   cursor:pointer;
+  text-align:center;
 }
 .affiliation:hover { transform:scale(1.1); }
+
 #cat-walk {
   position:absolute;
   font-size:2.5rem;
@@ -127,9 +126,10 @@ footer a {color:#fff; text-decoration:underline;}
   cursor:pointer;
   z-index:1000;
 }
+
 .stream-dot {
   position:fixed;
-  width:30px; height:30px;
+  width:40px; height:40px;
   border-radius:50%;
   display:flex;
   justify-content:center;
@@ -137,19 +137,25 @@ footer a {color:#fff; text-decoration:underline;}
   color:white;
   font-weight:bold;
   cursor:pointer;
-  z-index:100;
+  z-index:1000;
 }
 #twitch-dot {background:#6441A4; left:20px; bottom:100px;}
-#youtube-dot {background:#FF0000; left:60px; bottom:100px;}
+#youtube-dot {background:#FF0000; left:70px; bottom:100px;}
+
 .stream-embed {
   position:fixed;
   width:320px; height:180px;
   display:none;
-  z-index:99;
+  z-index:999;
+  border:2px solid #333;
 }
+
 .faq-section{margin-top:2rem;}
 .faq-question{cursor:pointer;background:#ddd;padding:0.8rem;margin-top:0.5rem;border-radius:5px;}
 .faq-answer{display:none;padding:0.8rem;background:#eee;margin-bottom:0.5rem;border-radius:5px;}
+
+.skills-scroll{overflow-x:auto;white-space:nowrap;margin-top:1rem;padding-bottom:1rem;}
+.skills-scroll span{display:inline-block;margin-right:1rem;}
 span.no-tel {user-select:none;}
 </style>
 </head>
@@ -161,6 +167,8 @@ span.no-tel {user-select:none;}
     <a href="#about">About</a>
     <a href="#affiliations">Affiliations</a>
     <a href="#contact">Contact</a>
+    <a href="https://github.com/owenb1" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="20" alt="GitHub"></a>
+    <a href="https://www.linkedin.com/in/owenb1/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20" alt="LinkedIn"></a>
   </nav>
 </header>
 
@@ -176,13 +184,9 @@ span.no-tel {user-select:none;}
 <section id="about">
   <h2>About Me</h2>
   <p>Hi! I'm Owen B. This website highlights my professional profile.</p>
-  <div class="skills-scroll" style="overflow-x:auto;white-space:nowrap;margin-top:1rem;padding-bottom:1rem;">
-    <span style="display:inline-block;margin-right:1rem;">Oracle</span>
-    <span style="display:inline-block;margin-right:1rem;">ServiceNow</span>
-    <span style="display:inline-block;margin-right:1rem;">Onboarding</span>
-    <span style="display:inline-block;margin-right:1rem;">Immigration</span>
-    <span style="display:inline-block;margin-right:1rem;">HR</span>
-    <span style="display:inline-block;margin-right:1rem;">Microsoft</span>
+  <div class="skills-scroll">
+    <span>Oracle</span><span>ServiceNow</span><span>Onboarding</span>
+    <span>Immigration</span><span>HR</span><span>Microsoft</span>
   </div>
 </section>
 
@@ -211,18 +215,14 @@ span.no-tel {user-select:none;}
 </section>
 
 <footer>
-  <p>&copy; <span class="no-tel"><a href="graveyard.html" style="color:#fff;text-decoration:underline;">1997 – 2100</a> Owen B</span></p>
-  <div style="margin-top:1rem;">
-    <a href="https://github.com/owenb1" target="_blank">GitHub</a> |
-    <a href="https://www.linkedin.com/in/owenb1/" target="_blank">LinkedIn</a>
-  </div>
+  <p>&copy; <span class="no-tel"><a href="graveyard.html">1997 – 2100</a> Owen B</span></p>
 </footer>
 
 <div id="cat-walk" onclick="window.location.href='cat.html'">🐈</div>
-<div id="twitch-dot">T</div>
-<div id="youtube-dot">Y</div>
-<iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" frameborder="0" allowfullscreen></iframe>
-<iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/0in1" frameborder="0" allowfullscreen></iframe>
+<div id="twitch-dot" class="stream-dot">T</div>
+<div id="youtube-dot" class="stream-dot">Y</div>
+<iframe id="twitch-embed" class="stream-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" allowfullscreen></iframe>
+<iframe id="youtube-embed" class="stream-embed" src="https://www.youtube.com/embed/0in1" allowfullscreen></iframe>
 
 <script>
 // Seasonal random emojis
@@ -243,6 +243,8 @@ function showSeason(idx){
     div.className='seasonal-element';
     div.style.top=`${Math.random()*80+10}%`;
     div.style.left=`${Math.random()*80+10}%`;
+    const size=Math.random()*1+1.2;
+    div.style.fontSize=size+'rem';
     div.textContent=el;
     div.style.animationDuration=`${4+Math.random()*6}s`;
     heroEl.appendChild(div);
@@ -264,26 +266,36 @@ const cat=document.getElementById('cat-walk');
 let catPos={x:100,y:100};
 function moveCatSmooth(){
   if(Math.random()<0.3){setTimeout(moveCatSmooth,800); return;} // occasional pause
-  let dx=(Math.random()*2-1)*30;
-  let dy=(Math.random()*2-1)*30;
-  catPos.x=Math.min(window.innerWidth-50,Math.max(0,catPos.x+dx));
-  catPos.y=Math.min(window.innerHeight-50,Math.max(0,catPos.y+dy));
-  cat.style.left=catPos.x+'px';
-  cat.style.top=catPos.y+'px';
-  setTimeout(moveCatSmooth,1000);
+  let dx=(Math.random()*2-1)*100;
+  let dy=(Math.random()*2-1)*100;
+  let target={x:Math.min(Math.max(catPos.x+dx,0),window.innerWidth-50), y:Math.min(Math.max(catPos.y+dy,0),window.innerHeight-50)};
+  let steps=50, step=0;
+  function stepMove(){
+    step++;
+    catPos.x += (target.x-catPos.x)/steps;
+    catPos.y += (target.y-catPos.y)/steps;
+    cat.style.left=catPos.x+'px';
+    cat.style.top=catPos.y+'px';
+    if(step<steps) requestAnimationFrame(stepMove);
+    else setTimeout(moveCatSmooth, 2000);
+  }
+  stepMove();
 }
 moveCatSmooth();
 
-// Twitch/YT toggles
+// Twitch & YouTube toggle
 const twitchDot=document.getElementById('twitch-dot');
 const ytDot=document.getElementById('youtube-dot');
-const twitchEmbed=document.getElementById('twitch-embed');
-const ytEmbed=document.getElementById('youtube-embed');
-twitchDot.addEventListener('click',()=>{twitchEmbed.style.display=(twitchEmbed.style.display==='block')?'none':'block';twitchEmbed.style.left='50px';twitchEmbed.style.bottom='140px';});
-ytDot.addEventListener('click',()=>{ytEmbed.style.display=(ytEmbed.style.display==='block')?'none':'block';ytEmbed.style.left='100px';ytEmbed.style.bottom='140px';});
+const twitchIframe=document.getElementById('twitch-embed');
+const ytIframe=document.getElementById('youtube-embed');
+
+twitchDot.addEventListener('click',()=>{twitchIframe.style.display = (twitchIframe.style.display==='block')?'none':'block';twitchIframe.style.left='20px';twitchIframe.style.bottom='150px';});
+ytDot.addEventListener('click',()=>{ytIframe.style.display = (ytIframe.style.display==='block')?'none':'block';ytIframe.style.left='70px';ytIframe.style.bottom='150px';});
 
 // FAQ toggle
-document.querySelectorAll('.faq-question').forEach(q=>{q.addEventListener('click',()=>{const ans=q.nextElementSibling;ans.style.display=(ans.style.display==='block')?'none':'block';});});
+document.querySelectorAll('.faq-question').forEach(q=>{
+  q.addEventListener('click',()=>{let a=q.nextElementSibling;a.style.display=(a.style.display==='block')?'none':'block';});
+});
 </script>
 
 </body>
