@@ -1,54 +1,132 @@
-/* --- Base / Reset --- */
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker|Playfair+Display:900|Open+Sans');
+
+/* --- Reset & Base --- */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter',Helvetica,Arial,sans-serif; background:#111; color:#eee; overflow-x:hidden; scroll-behavior:smooth; cursor:auto; }
-a { text-decoration:none; color:inherit; }
+body {
+    font-family: 'Open Sans', sans-serif;
+    background:#e9e9e9;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #000;
+    display: grid;
+    grid-template-columns: 300px auto;
+    align-items: center;
+    padding: 100px;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
 
-/* --- Header --- */
-header { display:flex; justify-content:space-between; align-items:center; padding:1rem 10%; position:sticky; top:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:1000; }
-header h1 { font-size:2rem; letter-spacing:2px; color:#82C784; }
-header .social-icons a { margin-left:1rem; display:inline-block; }
-header .social-icons img { width:28px; height:28px; filter:invert(1); transition:transform 0.2s; }
-header .social-icons img:hover { transform:scale(1.2); }
+body:after {
+    content: "Thanks to Unsplash (background image)";
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    color: #919191;
+    font-size: 10pt;
+}
 
-/* --- Hero / Seasonal --- */
-.hero { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; color:#fff; font-weight:bold; }
-.hero h2 { font-size:3rem; margin-bottom:1rem; letter-spacing:1px; }
-.hero p { font-size:1.2rem; max-width:600px; }
+/* --- Headers --- */
+h1 {
+    grid-column: 1 / 3;
+    color: rgb(104, 85, 57);
+    font-size: 48pt;
+    font-family: 'Playfair Display', serif;
+    background-image: linear-gradient(120deg, rgb(30,77,53) 0%, rgb(245, 233, 149) 50%, rgb(28, 33, 104) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 0.2em;
+    background-position: 0 100%;
+    transition: background-size 0.25s ease-in;
+}
+
+/* --- Images --- */
+img {
+    grid-row: 2;
+    grid-column: 1;
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
+    margin: 50px;
+}
+
+/* --- Quick Links --- */
+ul {
+    list-style-type: none;
+    grid-row: 2;
+    grid-column: 2;
+    width: 200px;
+    font-size: 14pt;
+}
+ul:before {
+    content: 'Quick links';
+    font-family: 'Permanent Marker', cursive;
+    color: rgb(28, 33, 104);
+    background-color: rgba(245, 233, 149, 0.5);
+    font-size: 18pt;
+}
+li { padding-top: 10px; }
+
+a {
+    color: rgb(28, 33, 104);
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    vertical-align: bottom;
+}
+a:after {
+    content: "";
+    position: absolute;
+    left: 0; top: 0;
+    width: 400%; height: 100%;
+    background: linear-gradient(to bottom, rgb(245, 233, 149), rgb(245, 233, 149)) center 1.08em/100% 2px no-repeat;
+    z-index: -1;
+    will-change: transform;
+}
+a:hover:after {
+    -webkit-animation: underline-gradient 6s linear infinite;
+    animation: underline-gradient 6s linear infinite;
+    background-image: linear-gradient(90deg, rgba(122,95,255,0.8) 15%, rgba(1,255,137,0.6) 35%, rgba(122,95,255,0.8) 85%);
+}
+@-webkit-keyframes underline-gradient {
+    0% { -webkit-transform: translate3d(0%,0%,0); transform: translate3d(0%,0%,0); }
+    100% { -webkit-transform: translate3d(-75%,0%,0); transform: translate3d(-75%,0%,0); }
+}
+@keyframes underline-gradient {
+    0% { -webkit-transform: translate3d(0%,0%,0); transform: translate3d(0%,0%,0); }
+    100% { -webkit-transform: translate3d(-75%,0%,0); transform: translate3d(-75%,0%,0); }
+}
+
+/* --- Interactive Elements (Seasonal Emojis, Cat, Videos, FAQ) --- */
 .seasonal-element { position:absolute; pointer-events:none; user-select:none; animation-name:float; animation-iteration-count:infinite; animation-timing-function:linear; }
 @keyframes float { 0% { transform:translateY(0) rotate(0deg);} 50% { transform:translateY(20px) rotate(180deg);} 100% { transform:translateY(0) rotate(360deg);} }
-.cycle-btns { position:absolute; bottom:1rem; right:1rem; display:flex; gap:0.5rem; }
-.cycle-btns button { background:rgba(255,255,255,0.2); border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-weight:bold; color:#fff; transition:background 0.3s ease; }
-.cycle-btns button:hover { background:rgba(255,255,255,0.5); }
 
-/* --- Sections --- */
-section { padding:5rem 10%; position:relative; opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
+#cat { position:absolute; font-size:2rem; pointer-events:auto; z-index:1000; }
+
+.video-embed { position:fixed; display:none; width:320px; height:180px; border:2px solid #333; z-index:9999; }
+@media(max-width:600px){ .video-embed { width:90%; height:160px; left:5%; } }
+
+section { padding:5rem 10%; opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; position:relative; }
 section.show { opacity:1; transform:translateY(0); }
 
-/* --- Affiliations --- */
 .affiliations-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:2rem; justify-items:center; align-items:center; margin-top:2rem; }
-.affiliation-box { border:2px solid #82C784; padding:1rem; border-radius:12px; text-align:center; transition:transform 0.3s, background 0.3s; cursor:pointer; background:rgba(255,255,255,0.05); }
-.affiliation-box:hover { transform:scale(1.05); background:rgba(130,199,132,0.2); }
+.affiliation-box { border:2px solid #333; padding:1rem; border-radius:10px; text-align:center; transition:transform 0.3s ease; cursor:pointer; }
+.affiliation-box:hover { transform:scale(1.05); }
 
-/* --- Skills --- */
 .skills-bar { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; }
-.skill { flex:0 0 auto; background:#82C784; color:#111; padding:0.5rem 1rem; border-radius:5px; font-weight:bold; white-space:nowrap; }
+.skill { flex:0 0 auto; background:#82C784; color:#fff; padding:0.5rem 1rem; border-radius:5px; font-weight:bold; }
 
-/* --- FAQ --- */
 .faq-item { margin-bottom:1rem; }
-.faq-question { background:#222; padding:0.7rem; cursor:pointer; border-radius:5px; font-weight:bold; }
-.faq-answer { display:none; padding:0.5rem 1rem; background:#333; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
+.faq-question { background:#eee; padding:0.5rem; cursor:pointer; border-radius:5px; font-weight:bold; }
+.faq-answer { display:none; padding:0.5rem 1rem; background:#f5f5f5; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
 
-/* --- Footer / Video Bar --- */
-footer { background:#111; color:#fff; font-size:0.9rem; position:fixed; bottom:0; left:0; width:100%; z-index:10000; }
-#footer-content { display:flex; justify-content:space-between; align-items:center; padding:0.5rem 2%; }
-#year-link a { color:#82C784; text-decoration:none; }
-#video-bar { display:flex; gap:0.5rem; }
-.video-btn { width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:white; font-weight:bold; font-size:1.2rem; }
-.video-btn.twitch { background:#6441a5; }
-.video-btn.youtube { background:#FF0000; }
-.video-embed { position:fixed; bottom:60px; left:1rem; width:320px; height:180px; display:none; border:2px solid #333; z-index:9999; }
-#youtube-embed { left:340px; }
-@media(max-width:600px){ .video-embed { width:90%; height:160px; left:5%; bottom:60px; transform:none; } #youtube-embed { left:5%; bottom:230px; } header { flex-direction:column; gap:0.5rem; padding:1rem 5%; } }
+/* --- Cycle Buttons --- */
+.cycle-btns { position:absolute; bottom:1rem; right:1rem; display:flex; gap:0.5rem; }
+.cycle-btns button { background:rgba(255,255,255,0.3); border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-weight:bold; color:#fff; transition:background 0.3s ease; }
+.cycle-btns button:hover { background:rgba(255,255,255,0.6); }
 
-/* --- Cat --- */
-#cat { position:absolute; font-size:2rem; pointer-events:auto; z-index:1000; }
+/* --- Responsive Header --- */
+@media(max-width:600px){ header { flex-direction:column; gap:0.5rem; padding:1rem 5%; } }
