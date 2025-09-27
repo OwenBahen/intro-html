@@ -4,41 +4,159 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Owenn.ca</title>
-<link rel="stylesheet" href="styles.css">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display:wght@900&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+<style>
+  /* --- Base Styles --- */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background: #f9f9f9;
+    color: #222;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* --- Header --- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: rgba(255,255,255,0.95);
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+  }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; letter-spacing: 2px; }
+  header .social-icons a { margin-left: 1rem; }
+  header .social-icons img { width: 28px; height: 28px; }
+
+  /* --- Hero Section --- */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    color: white;
+    background: linear-gradient(135deg, #6DBE45, #A7D49B);
+    overflow: hidden;
+  }
+  .hero h2 { font-size: 3rem; margin-bottom: 1rem; font-family: 'Playfair Display', serif; }
+  .hero p { font-size: 1.2rem; max-width: 600px; }
+
+  /* --- Seasonal Emoji Animation --- */
+  .seasonal-emoji {
+    position: absolute;
+    font-size: 24px;
+    animation: float 8s linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg);}
+    50% { transform: translateY(20px) rotate(180deg);}
+    100% { transform: translateY(0) rotate(360deg);}
+  }
+
+  /* --- Grid Sections --- */
+  section {
+    padding: 4rem 5%;
+  }
+  .skills-grid, .affiliations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .skill, .affiliation {
+    background: #82C784;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.7rem 1rem;
+    border-radius: 6px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .skill:hover, .affiliation:hover { transform: scale(1.05); }
+
+  /* --- FAQ Accordion --- */
+  .faq-item { margin-bottom: 1rem; }
+  .faq-question {
+    background: #eee;
+    padding: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .faq-answer {
+    display: none;
+    padding: 0.5rem 1rem;
+    background: #f5f5f5;
+    border-left: 3px solid #82C784;
+    border-radius: 0 5px 5px 0;
+  }
+
+  /* --- Cat --- */
+  #cat {
+    position: fixed;
+    font-size: 2rem;
+    z-index: 999;
+    cursor: pointer;
+  }
+
+  /* --- Video Embeds --- */
+  .video-embed {
+    position: fixed;
+    width: 400px;
+    height: 225px;
+    border: 2px solid #333;
+    display: none;
+    z-index: 1000;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  /* --- Footer --- */
+  footer {
+    text-align: center;
+    margin: 3rem 0;
+    font-size: 14px;
+  }
+
+  /* --- Responsive --- */
+  @media(max-width: 800px){
+    .video-embed { width: 90%; height: 200px; right: 5%; bottom: 20px; }
+    header { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>Owen Bahen</h1>
+  <h1>Owen B</h1>
   <div class="social-icons">
-    <a href="https://www.linkedin.com/in/owenb1/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
-    </a>
-    <a href="https://github.com/owenn" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub">
-    </a>
-    <a href="https://www.youtube.com/@0in1" id="yt-btn">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube">
-    </a>
-    <a href="https://www.twitch.tv/0in1" id="twitch-btn">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitch.svg" alt="Twitch">
-    </a>
+    <a href="#" id="youtube-btn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"></a>
+    <a href="#" id="twitch-btn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitch.svg" alt="Twitch"></a>
   </div>
 </header>
 
 <section class="hero">
   <h2>Welcome to Owenn.ca</h2>
-  <p>A sleek, interactive personal site with seasonal vibes.</p>
-  <div class="cycle-btns">
-    <button id="prev-season">◀</button>
-    <button id="next-season">▶</button>
-  </div>
+  <p>Interactive, polished, and showcase-ready personal website.</p>
+  <div id="emojis-container"></div>
 </section>
 
 <section id="about">
-  <h2>About Me</h2>
-  <p>Hi! I'm Owen Bahen. Explore my skills and affiliations below.</p>
-  <div class="skills-bar">
+  <h2>Skills</h2>
+  <div class="skills-grid">
     <div class="skill">Oracle</div>
     <div class="skill">ServiceNow</div>
     <div class="skill">Onboarding</div>
@@ -48,44 +166,80 @@
   </div>
 </section>
 
+<section id="affiliations">
+  <h2>Affiliations & Collaborations</h2>
+  <div class="affiliations-grid">
+    <div class="affiliation">🎓 Humber College</div>
+    <div class="affiliation">📚 Athabasca University</div>
+    <div class="affiliation">🥫 Gordon Food Service</div>
+    <div class="affiliation">🚚 Meals on Wheels</div>
+    <div class="affiliation">⚛️ Canadian Nuclear Laboratories</div>
+  </div>
+</section>
+
 <section id="faq">
   <h2>FAQ</h2>
-  <div class="faq-item">
-    <div class="faq-question">What is your experience?</div>
-    <div class="faq-answer">I have professional experience in HR and IT systems.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-question">Where are you based?</div>
-    <div class="faq-answer">Ontario, Canada.</div>
-  </div>
   <div class="faq-item">
     <div class="faq-question">What motivates you?</div>
     <div class="faq-answer">I am motivated by solving problems, creating engaging digital experiences, and continuous learning.</div>
   </div>
 </section>
 
-<section id="affiliations">
-  <h2>Affiliations & Collaborations</h2>
-  <div class="affiliations-grid">
-    <div class="affiliation-box" onclick="window.open('https://www.humber.ca','_blank')">🎓 Humber College</div>
-    <div class="affiliation-box" onclick="window.open('https://www.athabascau.ca','_blank')">📚 Athabasca University</div>
-    <div class="affiliation-box" onclick="window.open('https://www.gfs.com','_blank')">🥫 Gordon Food Service</div>
-    <div class="affiliation-box" onclick="window.open('https://www.mealsonwheels.ca','_blank')">🚚 Meals on Wheels</div>
-    <div class="affiliation-box" onclick="window.open('https://www.cnl.ca','_blank')">⚛️ Canadian Nuclear Laboratories</div>
-  </div>
-</section>
-
-<div class="footer">
-  <a href="graveyard.html">&copy; 1997 – 2100 🐾 Owen Bahen</a>
-</div>
-
+<!-- Cat -->
 <div id="cat">🐈</div>
 
 <!-- Video Embeds -->
-<iframe class="video-embed" id="twitch-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" frameborder="0" allowfullscreen></iframe>
-<iframe class="video-embed" id="youtube-embed" src="https://www.youtube.com/embed/@0in1?rel=0" frameborder="0" allowfullscreen></iframe>
-<button id="video-btn">Show Videos</button>
+<iframe id="youtube-embed" class="video-embed" src="https://www.youtube.com/embed/@0in1" allowfullscreen></iframe>
+<iframe id="twitch-embed" class="video-embed" src="https://player.twitch.tv/?channel=0in1&parent=localhost" allowfullscreen></iframe>
 
-<script src="scripts.js"></script>
+<!-- Footer -->
+<footer>🪦 &copy; 1997 – 2100 Owen B</footer>
+
+<!-- Inline JS -->
+<script>
+  // --- Seasonal Emojis ---
+  const emojis = ['🌸','🍃','🐦','☘️','🌼','🐝','☀️','🌻','🌴','🍹','🐞','🦋','🍂','🍁','🎃','🦉','🌰','🍄','❄️','⛄','🦌','🌲','☕','🧣'];
+  const container = document.getElementById('emojis-container');
+  emojis.forEach((e,i)=>{
+    const span = document.createElement('span');
+    span.textContent = e;
+    span.className = 'seasonal-emoji';
+    span.style.top = Math.random()*80+'%';
+    span.style.left = Math.random()*80+'%';
+    span.style.fontSize = (16 + Math.random()*24) + 'px';
+    span.style.animationDuration = (5 + Math.random()*10)+'s';
+    container.appendChild(span);
+  });
+
+  // --- Cat Smooth Animation ---
+  const cat = document.getElementById('cat');
+  let catX = window.innerWidth/2, catY = window.innerHeight/2;
+  let dx = 1 + Math.random()*2, dy = 1 + Math.random()*2;
+  function animateCat(){
+    catX += dx; catY += dy;
+    if(catX<0||catX>window.innerWidth-50) dx*=-1;
+    if(catY<0||catY>window.innerHeight-50) dy*=-1;
+    cat.style.left = catX+'px';
+    cat.style.top = catY+'px';
+    requestAnimationFrame(animateCat);
+  }
+  animateCat();
+  cat.onclick = ()=>{window.location.href='cat.html';};
+
+  // --- FAQ Toggle ---
+  document.querySelectorAll('.faq-question').forEach(q=>{
+    q.onclick = ()=>{ const a = q.nextElementSibling; a.style.display=(a.style.display==='block')?'none':'block'; };
+  });
+
+  // --- Video Toggle ---
+  const ytBtn = document.getElementById('youtube-btn');
+  const twBtn = document.getElementById('twitch-btn');
+  const ytEmbed = document.getElementById('youtube-embed');
+  const twEmbed = document.getElementById('twitch-embed');
+
+  ytBtn.onclick = (e)=>{ e.preventDefault(); ytEmbed.style.display = (ytEmbed.style.display==='block')?'none':'block'; };
+  twBtn.onclick = (e)=>{ e.preventDefault(); twEmbed.style.display = (twEmbed.style.display==='block')?'none':'block'; };
+</script>
+
 </body>
 </html>
