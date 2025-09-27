@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Owenn.ca</title>
 <style>
+/* GENERAL STYLES */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family:'Helvetica Neue', Arial, sans-serif;
@@ -12,19 +13,23 @@ body {
   color:#222;
   line-height:1.6;
   scroll-behavior:smooth;
+  overflow-x:hidden;
+  cursor:auto;
 }
+a { color:#3E8E41; text-decoration:none; }
+a:hover { text-decoration:underline; }
+
+/* HEADER */
 header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:1rem 5%;
-  position:sticky;
-  top:0;
-  background:rgba(255,255,255,0.9);
-  backdrop-filter:blur(10px);
-  z-index:100;
+  text-align:center;
+  padding:1rem;
 }
-header h1 { font-size:1.5rem; letter-spacing:2px; }
+header img {
+  width:30px; height:30px; margin:0 0.5rem; vertical-align:middle;
+}
+header a { font-weight:bold; }
+
+/* HERO / SEASONAL */
 .hero {
   height:100vh;
   display:flex;
@@ -32,11 +37,10 @@ header h1 { font-size:1.5rem; letter-spacing:2px; }
   justify-content:center;
   align-items:center;
   text-align:center;
-  background:linear-gradient(135deg, #6DBE45, #A7D49B);
-  color:white;
   position:relative;
   overflow:hidden;
   transition:background 2s ease;
+  color:white;
 }
 .hero h2 { font-size:3rem; margin-bottom:1rem; }
 .hero p { font-size:1.2rem; max-width:600px; }
@@ -44,21 +48,44 @@ header h1 { font-size:1.5rem; letter-spacing:2px; }
   position:absolute;
   pointer-events:none;
   user-select:none;
-  animation:float 10s linear infinite;
+  opacity:0.8;
+  animation:float linear infinite;
 }
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg); }
   50% { transform:translateY(20px) rotate(180deg); }
   100% { transform:translateY(0) rotate(360deg); }
 }
+.cycle-btns {
+  position:absolute;
+  bottom:2rem;
+  right:2rem;
+  display:flex;
+  gap:0.5rem;
+}
+.cycle-btns button {
+  background:rgba(255,255,255,0.3);
+  border:none;
+  padding:0.5rem 1rem;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+  color:#fff;
+  transition:background 0.3s ease;
+}
+.cycle-btns button:hover { background:rgba(255,255,255,0.6); }
+
+/* SECTIONS */
 section {
-  padding:5rem 5%;
+  padding:5rem 10%;
   opacity:0;
   transform:translateY(50px);
   transition: all 0.8s ease-out;
   position:relative;
 }
 section.show { opacity:1; transform:translateY(0); }
+
+/* AFFILIATIONS */
 .affiliations-grid {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -68,24 +95,59 @@ section.show { opacity:1; transform:translateY(0); }
   margin-top:2rem;
 }
 .affiliation {
+  font-size:1.5rem;
   padding:1rem;
-  border:2px solid #ccc;
-  border-radius:8px;
-  font-size:1.2rem;
-  text-align:center;
+  background:#e3f2fd;
+  border-radius:10px;
   cursor:pointer;
-  transition:transform 0.3s ease, background 0.3s ease;
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+  text-align:center;
 }
-.affiliation:hover { transform:scale(1.1); background:#f0f0f0; }
-.faq-question { cursor:pointer; background:#eee; padding:0.5rem; margin:0.5rem 0; border-radius:5px;}
-.faq-answer { display:none; padding:0.5rem 1rem; background:#f9f9f9; border-left:3px solid #333; margin-bottom:0.5rem; border-radius:0 5px 5px 0; }
-footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size:0.9rem; }
+.affiliation:hover { transform:scale(1.05); box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+
+/* ABOUT SKILLS SCROLL */
+.skills-bar {
+  display:flex;
+  overflow-x:auto;
+  gap:1rem;
+  padding:1rem 0;
+}
+.skills-bar div {
+  flex:0 0 auto;
+  background:#c8e6c9;
+  padding:0.5rem 1rem;
+  border-radius:5px;
+  white-space:nowrap;
+}
+
+/* FAQ */
+.faq-item { margin-bottom:1rem; }
+.faq-item button {
+  width:100%; text-align:left; padding:0.5rem; font-size:1rem; border:none; background:#f0f0f0;
+  border-radius:5px; cursor:pointer;
+}
+.faq-item p { display:none; padding:0.5rem 1rem; background:#fafafa; border-left:3px solid #3E8E41; border-radius:0 5px 5px 0; }
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:2rem;
+  background:#111;
+  color:#fff;
+  font-size:0.9rem;
+}
+footer a { color:#fff; }
+footer a:hover { text-decoration:underline; }
+
+/* CAT */
 #cat {
   position:absolute;
   font-size:2rem;
-  z-index:1000;
   cursor:pointer;
+  z-index:1000;
 }
+
+/* VIDEO CONTROLS */
 #video-controls {
   position:fixed;
   bottom:1rem;
@@ -109,26 +171,18 @@ footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size
 }
 @media(max-width:500px){
   .video-embed { width:90%; height:160px; left:5%; }
-  header { flex-direction:column; gap:0.5rem; }
 }
-.skills-bar {
-  display:flex;
-  overflow-x:auto;
-  gap:1rem;
-  padding:1rem 0;
-}
-.skill { flex:0 0 auto; background:#ddd; padding:0.5rem 1rem; border-radius:5px; white-space:nowrap;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Owen B</h1>
+  <h1>Owenn.ca</h1>
 </header>
 
 <section class="hero">
   <h2>Welcome to Owenn.ca</h2>
-  <p>A clean, modern personal site inspired by Ontario’s four seasons.</p>
+  <p>A personal site inspired by Ontario’s four seasons.</p>
   <div class="cycle-btns">
     <button id="prev-season">◀</button>
     <button id="next-season">▶</button>
@@ -137,14 +191,10 @@ footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size
 
 <section id="about">
   <h2>About Me</h2>
-  <p>Hi! I'm Owen B. This website highlights my professional profile.</p>
+  <p>Hi! I'm Owen B. This site highlights my professional profile.</p>
   <div class="skills-bar">
-    <div class="skill">Oracle</div>
-    <div class="skill">ServiceNow</div>
-    <div class="skill">Onboarding</div>
-    <div class="skill">Immigration</div>
-    <div class="skill">HR</div>
-    <div class="skill">Microsoft</div>
+    <div>Oracle</div><div>ServiceNow</div><div>Onboarding</div><div>Immigration</div>
+    <div>HR</div><div>Microsoft</div><div>Teamwork</div>
   </div>
 </section>
 
@@ -161,23 +211,27 @@ footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size
 
 <section id="faq">
   <h2>FAQ</h2>
-  <div class="faq-question">What is this site?</div>
-  <div class="faq-answer">A personal portfolio and profile of Owen B.</div>
-  <div class="faq-question">How can I contact you?</div>
-  <div class="faq-answer">Email at <a href="mailto:Contact@owenn.ca">Contact@owenn.ca</a></div>
+  <div class="faq-item">
+    <button>What is Owenn.ca?</button>
+    <p>A personal and professional showcase website.</p>
+  </div>
+  <div class="faq-item">
+    <button>How to contact?</button>
+    <p>Email: <a href="mailto:Contact@owenn.ca">Contact@owenn.ca</a></p>
+  </div>
 </section>
 
 <footer>
-  <p><a href="graveyard.html" style="color:white;text-decoration:none;">1997 – 2100</a></p>
+  <p>&copy; <a href="graveyard.html">1997 – 2100</a></p>
   <p>
-    <a href="https://www.linkedin.com/in/owenb1/" target="_blank" style="margin-right:1rem;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="24" alt="LinkedIn"></a>
-    <a href="https://github.com/owenb1" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="24" alt="GitHub"></a>
+    <a href="https://github.com/owenb1" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="24" height="24"></a>
+    <a href="https://www.linkedin.com/in/owenb1/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="24" height="24"></a>
   </p>
 </footer>
 
-<div id="cat">🐈</div>
+<div id="cat">🐱</div>
 
-<!-- Twitch & YouTube fixed buttons -->
+<!-- Video Controls -->
 <div id="video-controls">
   <div class="video-btn twitch" id="twitch-btn">T</div>
   <iframe class="video-embed" id="twitch-embed" 
@@ -191,58 +245,62 @@ footer { text-align:center; padding:2rem; background:#111; color:#fff; font-size
 </div>
 
 <script>
-// Seasonal cycle
+// SEASONS
 const seasons = [
-  { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','☘️','🌼'] },
-  { name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🍃','🐝','🌞','🌴'] },
-  { name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🦉','🎃','🌰'] },
-  { name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🌲','⛷️'] },
+  { gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🌱','🌼','🐦'] },
+  { gradient:['#3E8E41','#82C784'], elements:['☀️','🍹','🌴','🐠','🦋'] },
+  { gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🦉','🕸️'] },
+  { gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🎄','❄️','🐧'] },
 ];
-let current=0;
-const hero=document.querySelector('.hero');
+let currentSeason = 0;
+const hero = document.querySelector('.hero');
 function showSeason(index){
   hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
   seasons[index].elements.forEach((el)=>{
     const div=document.createElement('div');
     div.className='seasonal-element';
-    div.style.top=`${Math.random()*80}%`;
-    div.style.left=`${Math.random()*80}%`;
-    div.style.fontSize=`${14+Math.random()*30}px`;
+    div.style.top=Math.random()*80+'%';
+    div.style.left=Math.random()*80+'%';
+    div.style.fontSize=(Math.random()*1.5+1)+'rem';
     div.textContent=el;
     hero.appendChild(div);
   });
 }
-showSeason(current);
-let autoCycle=setInterval(()=>{current=(current+1)%seasons.length;showSeason(current);},15000);
-document.getElementById('prev-season').addEventListener('click',()=>{current=(current-1+seasons.length)%seasons.length;showSeason(current);});
-document.getElementById('next-season').addEventListener('click',()=>{current=(current+1)%seasons.length;showSeason(current);});
+showSeason(currentSeason);
+let seasonInterval = setInterval(()=>{ currentSeason=(currentSeason+1)%seasons.length; showSeason(currentSeason); },15000);
+document.getElementById('prev-season').addEventListener('click',()=>{ currentSeason=(currentSeason-1+seasons.length)%seasons.length; showSeason(currentSeason); });
+document.getElementById('next-season').addEventListener('click',()=>{ currentSeason=(currentSeason+1)%seasons.length; showSeason(currentSeason); });
 
-// Scroll reveal
+// SCROLL REVEAL
 const sections=document.querySelectorAll("section");
 const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{const top=sec.getBoundingClientRect().top;if(top<trigger) sec.classList.add("show");});};
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
 
 // FAQ toggle
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click',()=>{ const a=q.nextElementSibling; a.style.display=a.style.display==='block'?'none':'block'; });
+document.querySelectorAll('.faq-item button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const p=btn.nextElementSibling;
+    p.style.display = p.style.display==='block'?'none':'block';
+  });
 });
 
-// Cat movement
+// CAT MOVEMENT
 const cat = document.getElementById('cat');
-let bed = { x: window.innerWidth/2, y: window.innerHeight - 100 };
+let bed = { x: window.innerWidth/2, y: window.innerHeight-100 };
 let catPos = { x: bed.x, y: bed.y };
 let resting = true;
+
 function moveCat() {
   let target;
   if(resting){
-    target={x:catPos.x+(Math.random()*20-10), y:catPos.y+(Math.random()*10-5)};
+    target={x: catPos.x+(Math.random()*20-10), y: catPos.y+(Math.random()*10-5)};
   } else {
-    target={x:Math.random()*(window.innerWidth-50), y:Math.random()*(window.innerHeight-50)};
+    target={x: Math.random()*(window.innerWidth-50), y: Math.random()*(window.innerHeight-50)};
   }
-  target.x=Math.max(0,Math.min(window.innerWidth-50,target.x));
-  target.y=Math.max(0,Math.min(window.innerHeight-50,target.y));
+  target.x=Math.max(0, Math.min(window.innerWidth-50,target.x));
+  target.y=Math.max(0, Math.min(window.innerHeight-50,target.y));
   let steps=60, step=0;
   function animateStep(){
     step++;
@@ -253,29 +311,25 @@ function moveCat() {
     if(step<steps) requestAnimationFrame(animateStep);
     else{
       resting=Math.random()>0.3;
-      let waitTime=resting?(2000+Math.random()*3000):(500+Math.random()*500);
+      let waitTime = resting? 2000+Math.random()*3000 : 500+Math.random()*500;
       setTimeout(moveCat,waitTime);
     }
   }
   animateStep();
 }
 moveCat();
-cat.addEventListener('click',()=>{window.location.href='cat.html';});
-window.addEventListener('resize',()=>{bed.x=window.innerWidth/2; bed.y=window.innerHeight-100;});
+cat.addEventListener('click',()=>{ window.location.href='cat.html'; });
+window.addEventListener('resize',()=>{ bed.x=window.innerWidth/2; bed.y=window.innerHeight-100; });
 
 // Twitch & YouTube toggle independent
 const twitchBtn = document.getElementById('twitch-btn');
 const twitchEmbed = document.getElementById('twitch-embed');
-twitchBtn.addEventListener('click', () => {
-  twitchEmbed.style.display = twitchEmbed.style.display === 'block' ? 'none' : 'block';
-});
+twitchBtn.addEventListener('click', () => { twitchEmbed.style.display = twitchEmbed.style.display==='block'?'none':'block'; });
 
 const ytBtn = document.getElementById('youtube-btn');
 const ytEmbed = document.getElementById('youtube-embed');
-ytBtn.addEventListener('click', () => {
-  ytEmbed.style.display = ytEmbed.style.display === 'block' ? 'none' : 'block';
-});
-</script>
+ytBtn.addEventListener('click', () => { ytEmbed.style.display = ytEmbed.style.display==='block'?'none':'block'; });
 
+</script>
 </body>
 </html>
