@@ -3,55 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🪦 Graveyard</title>
+<title>Owen Bahen</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
-  <h1>Welcome to the Graveyard 🪦</h1>
-  <a href="index.html">⬅ Back to Home</a>
+<header class="hero">
+  <h1>Owen Bahen</h1>
+  <div class="social-icons">
+    <a href="#" id="youtube-btn">YouTube</a>
+    <a href="#" id="twitch-btn">Twitch</a>
+    <a href="https://www.linkedin.com/in/owenbahen" target="_blank">LinkedIn</a>
+    <a href="https://github.com/owenbahen" target="_blank">GitHub</a>
+  </div>
 </header>
 
-<section class="hero" style="background: linear-gradient(135deg,#4B4B4B,#1C1C1C); color:white;">
-  <h2>Resting Place of Ideas & Experiments</h2>
-  <p>Here lie the projects, concepts, and doodles that never made it to the main stage.</p>
-</section>
-
-<section id="ghosts">
-  <h2>Ghosts of Creativity 👻</h2>
-  <p>Hover over a tombstone to reveal the forgotten project:</p>
-  <div class="affiliations-grid">
-    <div class="affiliation-box" style="background:#222; color:#fff;">💡 Old Website Concept</div>
-    <div class="affiliation-box" style="background:#222; color:#fff;">🖌 Sketches & Designs</div>
-    <div class="affiliation-box" style="background:#222; color:#fff;">📝 Draft Articles</div>
-    <div class="affiliation-box" style="background:#222; color:#fff;">🧪 Experiment Scripts</div>
+<section id="videos">
+  <h2>Watch Videos</h2>
+  <div class="video-container">
+    <iframe id="youtube-embed" class="video-embed" src="" frameborder="0" allowfullscreen></iframe>
+    <iframe id="twitch-embed" class="video-embed" src="" frameborder="0" allowfullscreen></iframe>
   </div>
 </section>
 
-<section id="rest">
-  <h2>Leave Your Mark</h2>
-  <p>Add an emoji in the comment below to honor a lost idea:</p>
-  <input type="text" id="ghost-input" placeholder="Type an emoji">
-  <button id="ghost-btn">Add to Graveyard</button>
-  <div id="ghost-display" style="margin-top:1rem; font-size:2rem;"></div>
+<section id="faq">
+  <h2>FAQ</h2>
+  <div class="faq-item">
+    <div class="faq-question">What motivates you?</div>
+    <div class="faq-answer">I am motivated by solving problems, creating engaging digital experiences, and continuous learning.</div>
+  </div>
 </section>
 
-<script>
-const input = document.getElementById('ghost-input');
-const btn = document.getElementById('ghost-btn');
-const display = document.getElementById('ghost-display');
+<section id="affiliations">
+  <h2>Affiliations & Collaborations</h2>
+  <div class="affiliations-grid">
+    <div class="affiliation-box" onclick="window.open('https://www.humber.ca','_blank')">🎓 Humber College</div>
+    <div class="affiliation-box" onclick="window.open('https://www.athabascau.ca','_blank')">📚 Athabasca University</div>
+    <div class="affiliation-box" onclick="window.open('https://www.gfs.com','_blank')">🥫 Gordon Food Service</div>
+    <div class="affiliation-box" onclick="window.open('https://www.mealsonwheels.ca','_blank')">🚚 Meals on Wheels</div>
+    <div class="affiliation-box" onclick="window.open('https://www.cnl.ca','_blank')">⚛️ Canadian Nuclear Laboratories</div>
+  </div>
+</section>
 
-btn.addEventListener('click', () => {
-  if(input.value.trim() !== '') {
-    const span = document.createElement('span');
-    span.textContent = input.value;
-    span.style.margin='0 5px';
-    display.appendChild(span);
-    input.value='';
-  }
-});
-</script>
+<!-- Bottom of page -->
+<div style="text-align:center; margin:3rem 0 2rem 0;">
+  <button>Useless Button</button>
+  <div style="font-size:2rem;">🪦</div>
+</div>
+
+<div id="cat">🐈</div>
+
+<script src="scripts.js"></script>
 
 </body>
 </html>
