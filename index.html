@@ -72,7 +72,7 @@ footer a { color:#fff; }
 <body>
 
 <header>
-  <h1>Owen B</h1>
+  <h1>Owen Bahen</h1>
 </header>
 
 <section class="hero">
@@ -86,7 +86,7 @@ footer a { color:#fff; }
 
 <section id="about">
   <h2>About Me</h2>
-  <p>Hi! I'm Owen B. This website highlights my professional profile.</p>
+  <p>Hi! I'm Owen, This website highlights aspects of my life and professional profile.</p>
   <div class="skills-container">
     <div class="skill">Oracle</div>
     <div class="skill">ServiceNow</div>
@@ -113,7 +113,7 @@ footer a { color:#fff; }
   <h2>FAQ</h2>
   <div class="faq-item">
     <div class="faq-question">What do you do?</div>
-    <div class="faq-answer">I work on various professional projects in tech and HR.</div>
+    <div class="faq-answer">I work on various professional projects in tech, HR, and more. I also work on a handful of personal projects at any given time.</div>
   </div>
   <div class="faq-item">
     <div class="faq-question">Where are you located?</div>
@@ -176,27 +176,76 @@ document.querySelectorAll('.faq-question').forEach(q=>{
   q.addEventListener('click',()=>{let a=q.nextElementSibling;a.style.display=(a.style.display==='block')?'none':'block';});
 });
 
-// Cat movement
-const cat=document.getElementById('cat');
-let catPos={x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight};
-function moveCat(){
-  let dx=(Math.random()*200-100);
-  let dy=(Math.random()*200-100);
-  let target={x:Math.min(Math.max(catPos.x+dx,0),window.innerWidth-50), y:Math.min(Math.max(catPos.y+dy,0),window.innerHeight-50)};
-  let steps=50, step=0;
-  function stepMove(){
-    step++;
-    catPos.x += (target.x-catPos.x)/steps;
-    catPos.y += (target.y-catPos.y)/steps;
-    cat.style.left=catPos.x+'px';
-    cat.style.top=catPos.y+'px';
-    if(step<steps) requestAnimationFrame(stepMove);
-    else setTimeout(moveCat,2000);
+// Cat movement start
+<script>
+// Cat element
+const cat = document.getElementById('cat');
+
+// Define bed location (bottom center of page)
+const bed = { x: window.innerWidth / 2, y: window.innerHeight - 100 };
+
+// Start cat at bed
+let catPos = { x: bed.x, y: bed.y };
+
+// Movement parameters
+let resting = true; // cat starts resting
+
+function moveCat() {
+  let target;
+
+  if (resting) {
+    // Small random shift while resting
+    target = {
+      x: catPos.x + (Math.random() * 20 - 10),
+      y: catPos.y + (Math.random() * 10 - 5)
+    };
+  } else {
+    // Zoomies: larger random movement
+    target = {
+      x: Math.random() * (window.innerWidth - 50),
+      y: Math.random() * (window.innerHeight - 50)
+    };
   }
-  stepMove();
+
+  // Keep cat within viewport
+  target.x = Math.max(0, Math.min(window.innerWidth - 50, target.x));
+  target.y = Math.max(0, Math.min(window.innerHeight - 50, target.y));
+
+  let steps = 60; // smoother movement
+  let step = 0;
+
+  function animateStep() {
+    step++;
+    catPos.x += (target.x - catPos.x) / (steps - step + 1);
+    catPos.y += (target.y - catPos.y) / (steps - step + 1);
+    cat.style.left = catPos.x + 'px';
+    cat.style.top = catPos.y + 'px';
+    if (step < steps) requestAnimationFrame(animateStep);
+    else {
+      // After reaching target, randomly decide if cat rests or does zoomies
+      resting = Math.random() > 0.3; // 70% chance resting, 30% zoomies
+      let waitTime = resting ? (2000 + Math.random() * 3000) : (500 + Math.random() * 500);
+      setTimeout(moveCat, waitTime);
+    }
+  }
+
+  animateStep();
 }
+
+// Initialize
 moveCat();
-cat.addEventListener('click',()=>{window.location.href='cat.html';});
+
+// Click to cat.html
+cat.addEventListener('click', () => { window.location.href = 'cat.html'; });
+
+// Handle resize to reposition bed
+window.addEventListener('resize', () => {
+  bed.x = window.innerWidth / 2;
+  bed.y = window.innerHeight - 100;
+});
+</script>
+// Cat movement end
+
 
 // Twitch & YouTube toggles
 const twitchDot=document.getElementById('twitch-dot');
