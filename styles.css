@@ -1,0 +1,54 @@
+/* --- Base / Reset --- */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',Helvetica,Arial,sans-serif; background:#111; color:#eee; overflow-x:hidden; scroll-behavior:smooth; cursor:auto; }
+a { text-decoration:none; color:inherit; }
+
+/* --- Header --- */
+header { display:flex; justify-content:space-between; align-items:center; padding:1rem 10%; position:sticky; top:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:1000; }
+header h1 { font-size:2rem; letter-spacing:2px; color:#82C784; }
+header .social-icons a { margin-left:1rem; display:inline-block; }
+header .social-icons img { width:28px; height:28px; filter:invert(1); transition:transform 0.2s; }
+header .social-icons img:hover { transform:scale(1.2); }
+
+/* --- Hero / Seasonal --- */
+.hero { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; color:#fff; font-weight:bold; }
+.hero h2 { font-size:3rem; margin-bottom:1rem; letter-spacing:1px; }
+.hero p { font-size:1.2rem; max-width:600px; }
+.seasonal-element { position:absolute; pointer-events:none; user-select:none; animation-name:float; animation-iteration-count:infinite; animation-timing-function:linear; }
+@keyframes float { 0% { transform:translateY(0) rotate(0deg);} 50% { transform:translateY(20px) rotate(180deg);} 100% { transform:translateY(0) rotate(360deg);} }
+.cycle-btns { position:absolute; bottom:1rem; right:1rem; display:flex; gap:0.5rem; }
+.cycle-btns button { background:rgba(255,255,255,0.2); border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-weight:bold; color:#fff; transition:background 0.3s ease; }
+.cycle-btns button:hover { background:rgba(255,255,255,0.5); }
+
+/* --- Sections --- */
+section { padding:5rem 10%; position:relative; opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
+section.show { opacity:1; transform:translateY(0); }
+
+/* --- Affiliations --- */
+.affiliations-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:2rem; justify-items:center; align-items:center; margin-top:2rem; }
+.affiliation-box { border:2px solid #82C784; padding:1rem; border-radius:12px; text-align:center; transition:transform 0.3s, background 0.3s; cursor:pointer; background:rgba(255,255,255,0.05); }
+.affiliation-box:hover { transform:scale(1.05); background:rgba(130,199,132,0.2); }
+
+/* --- Skills --- */
+.skills-bar { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; }
+.skill { flex:0 0 auto; background:#82C784; color:#111; padding:0.5rem 1rem; border-radius:5px; font-weight:bold; white-space:nowrap; }
+
+/* --- FAQ --- */
+.faq-item { margin-bottom:1rem; }
+.faq-question { background:#222; padding:0.7rem; cursor:pointer; border-radius:5px; font-weight:bold; }
+.faq-answer { display:none; padding:0.5rem 1rem; background:#333; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
+
+/* --- Footer / Video Bar --- */
+footer { background:#111; color:#fff; font-size:0.9rem; position:fixed; bottom:0; left:0; width:100%; z-index:10000; }
+#footer-content { display:flex; justify-content:space-between; align-items:center; padding:0.5rem 2%; }
+#year-link a { color:#82C784; text-decoration:none; }
+#video-bar { display:flex; gap:0.5rem; }
+.video-btn { width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:white; font-weight:bold; font-size:1.2rem; }
+.video-btn.twitch { background:#6441a5; }
+.video-btn.youtube { background:#FF0000; }
+.video-embed { position:fixed; bottom:60px; left:1rem; width:320px; height:180px; display:none; border:2px solid #333; z-index:9999; }
+#youtube-embed { left:340px; }
+@media(max-width:600px){ .video-embed { width:90%; height:160px; left:5%; bottom:60px; transform:none; } #youtube-embed { left:5%; bottom:230px; } header { flex-direction:column; gap:0.5rem; padding:1rem 5%; } }
+
+/* --- Cat --- */
+#cat { position:absolute; font-size:2rem; pointer-events:auto; z-index:1000; }
