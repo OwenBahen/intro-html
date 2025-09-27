@@ -245,18 +245,67 @@ footer a { color:#fff; }
 
 <div id="cat">🐈</div>
 
-<!-- Twitch & YouTube controls -->
-<div id="video-controls">
+<!-- Video Controls -->
+<div id="video-bar">
   <div class="video-btn twitch" id="twitch-btn">T</div>
-  <iframe class="video-embed" id="twitch-embed" 
-          src="https://player.twitch.tv/?channel=0in1&parent=localhost" 
-          frameborder="0" allowfullscreen></iframe>
-
   <div class="video-btn youtube" id="youtube-btn">Y</div>
-  <iframe class="video-embed" id="youtube-embed" 
-          src="https://www.youtube.com/embed/@0in1?rel=0" 
-          frameborder="0" allowfullscreen></iframe>
 </div>
+
+<iframe class="video-embed" id="twitch-embed" 
+        src="https://player.twitch.tv/?channel=0in1&parent=localhost" 
+        frameborder="0" allowfullscreen></iframe>
+
+<iframe class="video-embed" id="youtube-embed" 
+        src="https://www.youtube.com/embed/@0in1?rel=0" 
+        frameborder="0" allowfullscreen></iframe>
+
+<style>
+#video-bar {
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  display:flex;
+  justify-content:flex-start;
+  gap:0.5rem;
+  padding:0.5rem;
+  background:rgba(0,0,0,0.7);
+  z-index:10000;
+}
+
+.video-btn {
+  width:50px; height:50px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:white; font-weight:bold; font-size:1.2rem;
+}
+
+.video-btn.twitch { background:#6441a5; }
+.video-btn.youtube { background:#FF0000; }
+
+.video-embed {
+  position:fixed;
+  bottom:60px; /* space above the bar */
+  left:1rem;
+  width:320px;
+  height:180px;
+  display:none;
+  border:2px solid #333;
+  z-index:9999;
+}
+
+#youtube-embed { left:340px; } /* shift to the right of Twitch embed on desktop */
+
+@media(max-width:600px){
+  .video-embed {
+    width:90%;
+    height:160px;
+    left:5%;
+    bottom:60px;
+    transform:none;
+  }
+  #youtube-embed { left:5%; bottom:230px; } /* stack above Twitch on mobile */
+}
+</style>
 
 <script>
 // --- Seasonal Emojis ---
@@ -333,14 +382,18 @@ document.querySelectorAll('.faq-question').forEach(q=>{
   q.addEventListener('click',()=>{ const a=q.nextElementSibling; a.style.display=(a.style.display==='block')?'none':'block'; });
 });
 
-// --- Twitch & YouTube toggle ---
-const twitchBtn=document.getElementById('twitch-btn');
-const twitchEmbed=document.getElementById('twitch-embed');
-twitchBtn.addEventListener('click',()=>{twitchEmbed.style.display=twitchEmbed.style.display==='block'?'none':'block';});
+// Twitch & YouTube toggle independent
+const twitchBtn = document.getElementById('twitch-btn');
+const twitchEmbed = document.getElementById('twitch-embed');
+twitchBtn.addEventListener('click', () => {
+  twitchEmbed.style.display = twitchEmbed.style.display === 'block' ? 'none' : 'block';
+});
 
-const ytBtn=document.getElementById('youtube-btn');
-const ytEmbed=document.getElementById('youtube-embed');
-ytBtn.addEventListener('click',()=>{ytEmbed.style.display=ytEmbed.style.display==='block'?'none':'block';});
+const ytBtn = document.getElementById('youtube-btn');
+const ytEmbed = document.getElementById('youtube-embed');
+ytBtn.addEventListener('click', () => {
+  ytEmbed.style.display = ytEmbed.style.display === 'block' ? 'none' : 'block';
+});
 </script>
 
 </body>
