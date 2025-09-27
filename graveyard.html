@@ -3,218 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Owenn.ca – Graveyard Game</title>
+<title>Owen's Graveyard – RIP 1997–2100</title>
 <style>
-/* --- Reset & Base --- */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Helvetica Neue', Arial, sans-serif; background:#0b0b0b; color:#eee; overflow:hidden; }
-a { text-decoration:none; color:inherit; }
+  /* --- Reset & Base --- */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Helvetica Neue', Arial, sans-serif; background:#0a0a0a; color:#fff; overflow:hidden; }
+  a { text-decoration:none; color:#fff; }
+  button { cursor:pointer; font-weight:bold; }
 
-/* --- Header & Buttons --- */
-header { position:fixed; top:0; left:0; width:100%; padding:0.5rem 1rem; background:rgba(0,0,0,0.7); z-index:1000; display:flex; justify-content:space-between; align-items:center; }
-header button { padding:0.5rem 1rem; border:none; border-radius:5px; background:#444; color:#fff; cursor:pointer; }
-header h1 { font-size:1rem; }
+  /* --- Header --- */
+  header { display:flex; justify-content:space-between; align-items:center; padding:1rem; background:rgba(0,0,0,0.7); position:fixed; top:0; width:100%; z-index:1000; }
+  header h1 { font-size:1.5rem; }
+  header button { padding:0.5rem 1rem; background:#222; border:none; border-radius:5px; }
 
-/* --- Graveyard Canvas --- */
-#game-area { position:relative; width:100vw; height:100vh; overflow:hidden; }
+  /* --- Graveyard --- */
+  #graveyard { position:relative; width:100%; height:100vh; background:linear-gradient(to bottom,#000000,#111111); overflow:hidden; }
+  .grave { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); width:120px; height:150px; background:#222; border:3px solid #555; border-radius:10px 10px 0 0; text-align:center; padding-top:5px; }
+  .grave h2 { font-size:0.9rem; margin-bottom:5px; }
+  .grave p { font-size:0.8rem; }
 
-/* --- Gravestone --- */
-#gravestone {
-  position:absolute; bottom:50px; left:50%; transform:translateX(-50%);
-  width:120px; height:180px; background:#333; border-radius:10px 10px 0 0; 
-  text-align:center; padding-top:10px; cursor:pointer; font-weight:bold; color:#fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.5);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-#gravestone.milestone { transform: translateX(-50%) scale(1.2); box-shadow:0 0 20px #fff; }
+  /* --- Collectibles --- */
+  .collectible { position:absolute; font-size:2rem; cursor:pointer; user-select:none; }
+  #scoreboard { position:fixed; top:60px; right:10px; background:rgba(0,0,0,0.7); padding:0.5rem 1rem; border-radius:5px; }
+  #milestones { margin-top:0.5rem; font-size:0.9rem; line-height:1.2rem; }
 
-/* --- Collectibles --- */
-.collectible {
-  position:absolute; font-size:2rem; cursor:pointer;
-  user-select:none;
-  transition: transform 0.2s;
-}
+  /* --- Info box --- */
+  #infoBox { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(30,30,30,0.95); padding:2rem; border-radius:10px; display:none; max-width:90%; text-align:center; z-index:2000; }
+  #infoBox button { margin-top:1rem; }
 
-/* --- Score --- */
-#score-display {
-  position:fixed; top:50px; left:50%; transform:translateX(-50%);
-  font-size:1.2rem; font-weight:bold;
-}
-
-/* --- Leaderboard --- */
-#leaderboard {
-  position:fixed; top:90px; left:50%; transform:translateX(-50%);
-  background:rgba(0,0,0,0.6); padding:0.5rem 1rem; border-radius:5px;
-  max-height:150px; overflow-y:auto; font-size:0.9rem;
-}
-
-/* --- Info Overlay --- */
-#info-overlay {
-  position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); color:#fff;
-  display:none; justify-content:center; align-items:center; text-align:center; padding:2rem; z-index:2000;
-}
-#info-overlay button { margin-top:1rem; }
-
-/* --- Sounds --- */
-audio { display:none; }
+  /* --- Animations --- */
+  @keyframes floatRandom {
+    0% { transform: translate(0,0) rotate(0deg);}
+    25% { transform: translate(30px, -20px) rotate(45deg);}
+    50% { transform: translate(-20px,30px) rotate(90deg);}
+    75% { transform: translate(20px,-25px) rotate(135deg);}
+    100% { transform: translate(0,0) rotate(180deg);}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <button id="info-btn">i</button>
-  <h1>RIP Owen Bahen (1997-2100)</h1>
-  <button id="back-btn" style="display:none;">Back to Main</button>
+  <h1>Owen's Graveyard</h1>
+  <div>
+    <button id="infoBtn">ℹ️ Info</button>
+    <button id="backBtn">🏠 Main Page</button>
+  </div>
 </header>
 
-<div id="game-area"></div>
-
-<div id="score-display">Score: 0</div>
-<div id="leaderboard"><b>Leaderboard:</b><br></div>
-
-<div id="gravestone">🪦 Owen</div>
-
-<div id="info-overlay">
-  <h2>Graveyard Game</h2>
-  <p>Collect bones 🦴 and skulls 💀! Bonus points for skeletons 🦴🦴. Watch out for ghosts 👻! Click the gravestone at milestones for surprises. Reach 200 points to finish.</p>
-  <button id="close-info">Close</button>
+<div id="scoreboard">
+  <div>Score: <span id="score">0</span></div>
+  <div id="milestones">
+    Milestones:<br>
+    🪦 10 🦴 25 💀 50 🧟 75 🦇 100
+  </div>
 </div>
 
-<audio id="collect-sound" src="https://freesound.org/data/previews/341/341695_3248244-lq.mp3"></audio>
-<audio id="milestone-sound" src="https://freesound.org/data/previews/269/269409_5121236-lq.mp3"></audio>
-<audio id="win-sound" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+<div id="graveyard">
+  <div class="grave" id="mainGrave">
+    <h2>RIP Owen Bahen</h2>
+    <p>1997–2100</p>
+    <p>"Century Man – Born by the Side of the Road, Died Interesting"</p>
+  </div>
+</div>
+
+<div id="infoBox">
+  <h2>How to Play</h2>
+  <p>Click on the bones 💀, skulls 💀, zombies 🧟, vampires 🧛, bats 🦇, and ghosts 👻 to collect points. 
+  Each type gives different points:</p>
+  <ul style="text-align:left;">
+    <li>🦴 Bone – 1 point</li>
+    <li>💀 Skull – 2 points</li>
+    <li>🧟 Zombie – 3 points</li>
+    <li>🦇 Bat – 4 points</li>
+    <li>🧛 Vampire – 5 points</li>
+    <li>👻 Ghost – 1 point (clickable)</li>
+  </ul>
+  <p>Reach milestones to unlock new messages and events on the grave!</p>
+  <button id="closeInfo">Close</button>
+</div>
 
 <script>
-// --- Game Variables ---
-const gameArea = document.getElementById('game-area');
-const gravestone = document.getElementById('gravestone');
-const scoreDisplay = document.getElementById('score-display');
-const leaderboardDiv = document.getElementById('leaderboard');
-const infoOverlay = document.getElementById('info-overlay');
-const infoBtn = document.getElementById('info-btn');
-const closeInfo = document.getElementById('close-info');
-const backBtn = document.getElementById('back-btn');
-
+const graveyard = document.getElementById('graveyard');
+const scoreEl = document.getElementById('score');
 let score = 0;
-let collectibles = [];
-let ghosts = [];
-let milestoneReached = false;
 
-// Load leaderboard
-let leaderboard = JSON.parse(localStorage.getItem('graveLeaderboard')) || [];
+// Collectible types
+const items = [
+  {emoji:'🦴', points:1, speed:0.5, life:5000}, 
+  {emoji:'💀', points:2, speed:0.3, life:5000},
+  {emoji:'🧟', points:3, speed:1, life:7000},
+  {emoji:'🦇', points:4, speed:2, life:4000},
+  {emoji:'🧛', points:5, speed:3, life:3000},
+  {emoji:'👻', points:1, speed:1.2, life:6000}
+];
 
-// --- Functions ---
-function updateScoreDisplay() {
-  scoreDisplay.textContent = `Score: ${score}`;
-}
+// Milestones
+const milestoneMessages = {
+  10: "Owen smirks from beyond…",
+  25: "The grave rattles…",
+  50: "A spectral mist rises!",
+  75: "Owens eyes glow!",
+  100: "The path to the main page opens!"
+};
 
-function updateLeaderboard() {
-  leaderboardDiv.innerHTML = "<b>Leaderboard:</b><br>";
-  leaderboard.slice(0,5).forEach((entry,i) => {
-    leaderboardDiv.innerHTML += `${i+1}. ${entry}<br>`;
-  });
-}
+// Spawn collectibles
+function spawnItem() {
+  const type = items[Math.floor(Math.random()*items.length)];
+  const div = document.createElement('div');
+  div.className = 'collectible';
+  div.textContent = type.emoji;
+  const startX = Math.random()*(window.innerWidth-50);
+  const startY = Math.random()*(window.innerHeight-150)+50;
+  div.style.left = startX + 'px';
+  div.style.top = startY + 'px';
+  graveyard.appendChild(div);
 
-function createCollectible() {
-  const emojis = ['🦴','💀','🦴','💀','🦴','💀','🦴🦴'];
-  const points = [1,2,1,2,1,2,5];
-  const idx = Math.floor(Math.random()*emojis.length);
-  const el = document.createElement('div');
-  el.className = 'collectible';
-  el.textContent = emojis[idx];
-  el.style.top = Math.random()*(window.innerHeight-50)+'px';
-  el.style.left = Math.random()*(window.innerWidth-50)+'px';
-  el.dataset.points = points[idx];
-  gameArea.appendChild(el);
-  collectibles.push(el);
+  // Movement
+  const velX = (Math.random()*2-1)*type.speed*2;
+  const velY = (Math.random()*2-1)*type.speed*2;
 
-  // Remove after random time
-  setTimeout(()=>{ if(el.parentNode) el.remove(); collectibles = collectibles.filter(c=>c!==el); }, 5000 + Math.random()*5000);
+  let lifeTimer = setTimeout(()=>{div.remove()}, type.life);
 
-  el.addEventListener('click', ()=>{
-    score += Number(el.dataset.points);
-    document.getElementById('collect-sound').play();
-    el.remove();
-    collectibles = collectibles.filter(c=>c!==el);
-    updateScoreDisplay();
-    checkMilestone();
-  });
-}
-
-function spawnGhost() {
-  const ghost = document.createElement('div');
-  ghost.className = 'collectible';
-  ghost.textContent = '👻';
-  ghost.style.fontSize = '2.5rem';
-  ghost.style.top = Math.random()*(window.innerHeight-50)+'px';
-  ghost.style.left = Math.random()*(window.innerWidth-50)+'px';
-  gameArea.appendChild(ghost);
-  ghosts.push(ghost);
-
-  let dx = (Math.random()*2+1)*(Math.random()<0.5?-1:1);
-  let dy = (Math.random()*2+1)*(Math.random()<0.5?-1:1);
-
-  function move() {
-    let top = parseFloat(ghost.style.top);
-    let left = parseFloat(ghost.style.left);
-    top += dy; left += dx;
-    if(top<0||top>window.innerHeight-30) dy*=-1;
-    if(left<0||left>window.innerWidth-30) dx*=-1;
-    ghost.style.top = top+'px';
-    ghost.style.left = left+'px';
+  function move(){
+    const rect = div.getBoundingClientRect();
+    let x = rect.left + velX;
+    let y = rect.top + velY;
+    if(x<0 || x>window.innerWidth-30) x = Math.random()*(window.innerWidth-50);
+    if(y<50 || y>window.innerHeight-50) y = Math.random()*window.innerHeight;
+    div.style.left = x + 'px';
+    div.style.top = y + 'px';
     requestAnimationFrame(move);
   }
   move();
 
-  setTimeout(()=>{ ghost.remove(); ghosts = ghosts.filter(g=>g!==ghost); }, 10000 + Math.random()*10000);
+  div.addEventListener('click', ()=>{
+    score += type.points;
+    scoreEl.textContent = score;
+    div.remove();
+    clearTimeout(lifeTimer);
+    updateGrave();
+  });
 }
 
-function checkMilestone() {
-  if(score >= 3 && !milestoneReached){
-    milestoneReached = true;
-    gravestone.classList.add('milestone');
-    backBtn.style.display='block';
-    document.getElementById('milestone-sound').play();
+// Spawn interval
+setInterval(spawnItem, 800);
+
+// Update grave messages
+function updateGrave(){
+  for(const milestone in milestoneMessages){
+    if(score >= milestone){
+      const graveMsg = document.querySelector('.grave p:nth-child(3)');
+      graveMsg.textContent = milestoneMessages[milestone];
+    }
   }
-  if(score >= 200){
-    alert("🎉 You reached 200 points! Game complete!");
-    document.getElementById('win-sound').play();
-    saveLeaderboard();
+  if(score >= 100){
+    document.getElementById('backBtn').style.display = 'inline-block';
   }
 }
 
-function saveLeaderboard() {
-  leaderboard.push(score);
-  leaderboard.sort((a,b)=>b-a);
-  localStorage.setItem('graveLeaderboard', JSON.stringify(leaderboard));
-  updateLeaderboard();
-}
+// Info Box
+document.getElementById('infoBtn').addEventListener('click', ()=>{document.getElementById('infoBox').style.display='block';});
+document.getElementById('closeInfo').addEventListener('click', ()=>{document.getElementById('infoBox').style.display='none';});
 
-// --- Game Loop ---
-setInterval(()=>{
-  if(Math.random()<0.7) createCollectible();
-  if(Math.random()<0.05) spawnGhost();
-}, 1000);
+// Back to main
+document.getElementById('backBtn').addEventListener('click', ()=>{window.location.href='index.html';});
+document.getElementById('backBtn').style.display='none';
 
-// --- Gravestone Click ---
-gravestone.addEventListener('click', ()=>{
-  if(score>=3){
-    alert("🪦 Owen Bahen: RIP 1997-2100. Born interesting, died interesting. The gravestone whispers secrets...");
-  } else {
-    alert("🪦 Click collectibles first to awaken the gravestone...");
-  }
-});
-
-// --- Info Overlay ---
-infoBtn.addEventListener('click', ()=> infoOverlay.style.display='flex');
-closeInfo.addEventListener('click', ()=> infoOverlay.style.display='none');
-
-// --- Back Button ---
-backBtn.addEventListener('click', ()=> window.location.href='index.html');
-
-// --- Initial Display ---
-updateScoreDisplay();
-updateLeaderboard();
 </script>
 
 </body>
