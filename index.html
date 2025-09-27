@@ -5,17 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Owenn.ca</title>
 <style>
-/* --- Reset & Base --- */
+/* --- Base / Reset --- */
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  background:#f9f9f9;
-  color:#222;
-  line-height:1.6;
-  overflow-x:hidden;
-  scroll-behavior:smooth;
-  cursor:auto;
-}
+body { font-family:'Inter',Helvetica,Arial,sans-serif; background:#111; color:#eee; overflow-x:hidden; scroll-behavior:smooth; cursor:auto; }
 a { text-decoration:none; color:inherit; }
 
 /* --- Header --- */
@@ -26,18 +18,16 @@ header {
   padding:1rem 10%;
   position:sticky;
   top:0;
-  background:rgba(255,255,255,0.95);
-  backdrop-filter:blur(8px);
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(10px);
   z-index:1000;
 }
-header h1 { font-size:1.5rem; letter-spacing:2px; }
-header .social-icons a {
-  margin-left:1rem;
-  display:inline-block;
-}
-header .social-icons img { width:24px; height:24px; }
+header h1 { font-size:2rem; letter-spacing:2px; color:#82C784; }
+header .social-icons a { margin-left:1rem; display:inline-block; }
+header .social-icons img { width:28px; height:28px; filter:invert(1); transition:transform 0.2s; }
+header .social-icons img:hover { transform:scale(1.2); }
 
-/* --- Hero Section --- */
+/* --- Hero / Seasonal Section --- */
 .hero {
   height:100vh;
   display:flex;
@@ -45,12 +35,12 @@ header .social-icons img { width:24px; height:24px; }
   justify-content:center;
   align-items:center;
   text-align:center;
-  color:white;
   position:relative;
   overflow:hidden;
-  transition:background 2s ease;
+  color:#fff;
+  font-weight:bold;
 }
-.hero h2 { font-size:3rem; margin-bottom:1rem; }
+.hero h2 { font-size:3rem; margin-bottom:1rem; letter-spacing:1px; }
 .hero p { font-size:1.2rem; max-width:600px; }
 
 /* Seasonal emojis */
@@ -58,15 +48,15 @@ header .social-icons img { width:24px; height:24px; }
   position:absolute;
   pointer-events:none;
   user-select:none;
+  animation-name:float;
   animation-iteration-count:infinite;
+  animation-timing-function:linear;
 }
 @keyframes float {
   0% { transform:translateY(0) rotate(0deg);}
   50% { transform:translateY(20px) rotate(180deg);}
   100% { transform:translateY(0) rotate(360deg);}
 }
-
-/* Cycle buttons */
 .cycle-btns {
   position:absolute;
   bottom:1rem;
@@ -75,7 +65,7 @@ header .social-icons img { width:24px; height:24px; }
   gap:0.5rem;
 }
 .cycle-btns button {
-  background:rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.2);
   border:none;
   padding:0.5rem 1rem;
   border-radius:5px;
@@ -84,10 +74,10 @@ header .social-icons img { width:24px; height:24px; }
   color:#fff;
   transition:background 0.3s ease;
 }
-.cycle-btns button:hover { background:rgba(255,255,255,0.6); }
+.cycle-btns button:hover { background:rgba(255,255,255,0.5); }
 
 /* --- Sections --- */
-section { padding:5rem 10%; opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; position:relative;}
+section { padding:5rem 10%; position:relative; opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
 section.show { opacity:1; transform:translateY(0); }
 
 /* --- Affiliations --- */
@@ -100,14 +90,15 @@ section.show { opacity:1; transform:translateY(0); }
   margin-top:2rem;
 }
 .affiliation-box {
-  border:2px solid #333;
+  border:2px solid #82C784;
   padding:1rem;
-  border-radius:10px;
+  border-radius:12px;
   text-align:center;
-  transition:transform 0.3s ease;
+  transition:transform 0.3s, background 0.3s;
   cursor:pointer;
+  background:rgba(255,255,255,0.05);
 }
-.affiliation-box:hover { transform:scale(1.05); }
+.affiliation-box:hover { transform:scale(1.05); background:rgba(130,199,132,0.2); }
 
 /* --- Skills horizontal scroll --- */
 .skills-bar {
@@ -116,23 +107,21 @@ section.show { opacity:1; transform:translateY(0); }
   gap:1rem;
   padding:1rem 0;
 }
-.skill { flex:0 0 auto; background:#82C784; color:#fff; padding:0.5rem 1rem; border-radius:5px; font-weight:bold; }
+.skill { flex:0 0 auto; background:#82C784; color:#111; padding:0.5rem 1rem; border-radius:5px; font-weight:bold; white-space:nowrap; }
 
 /* --- FAQ --- */
 .faq-item { margin-bottom:1rem; }
 .faq-question {
-  background:#eee;
-  padding:0.5rem;
+  background:#222;
+  padding:0.7rem;
   cursor:pointer;
   border-radius:5px;
   font-weight:bold;
 }
-.faq-answer { display:none; padding:0.5rem 1rem; background:#f5f5f5; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
+.faq-answer { display:none; padding:0.5rem 1rem; background:#333; border-left:3px solid #82C784; border-radius:0 5px 5px 0; }
 
 /* --- Footer / Bottom Bar --- */
 footer {
-  text-align:center;
-  padding:0.5rem 1rem;
   background:#111;
   color:#fff;
   font-size:0.9rem;
@@ -140,50 +129,45 @@ footer {
   bottom:0;
   left:0;
   width:100%;
+  z-index:10000;
+}
+#footer-content {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  z-index:10000;
+  padding:0.5rem 2%;
 }
-#year-link a { color:#fff; text-decoration:none; }
-
-/* --- Video Controls --- */
+#year-link a { color:#82C784; text-decoration:none; }
 #video-bar {
   display:flex;
   gap:0.5rem;
 }
 .video-btn {
-  width:50px; height:50px; border-radius:50%;
+  width:45px; height:45px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; color:white; font-weight:bold; font-size:1.2rem;
 }
 .video-btn.twitch { background:#6441a5; }
 .video-btn.youtube { background:#FF0000; }
-
 .video-embed {
   position:fixed;
+  bottom:60px;
+  left:1rem;
   width:320px;
   height:180px;
   display:none;
   border:2px solid #333;
   z-index:9999;
 }
+#youtube-embed { left:340px; }
 @media(max-width:600px){
-  .video-embed { width:90%; height:160px; left:5%; }
+  .video-embed { width:90%; height:160px; left:5%; bottom:60px; transform:none;}
+  #youtube-embed { left:5%; bottom:230px; }
+  header { flex-direction:column; gap:0.5rem; padding:1rem 5%; }
 }
 
 /* --- Cat --- */
-#cat {
-  position:absolute;
-  font-size:2rem;
-  pointer-events:auto;
-  z-index:1000;
-}
-
-/* Mobile header */
-@media(max-width:500px){
-  header { flex-direction:column; gap:0.5rem; padding:1rem 5%; }
-}
+#cat { position:absolute; font-size:2rem; pointer-events:auto; z-index:1000; }
 </style>
 </head>
 <body>
@@ -202,7 +186,7 @@ footer {
 
 <section class="hero">
   <h2>Welcome to Owenn.ca</h2>
-  <p>A clean, modern personal site inspired by Ontario’s four seasons.</p>
+  <p>Experience a sleek, interactive personal site with seasonal vibes.</p>
   <div class="cycle-btns">
     <button id="prev-season">◀</button>
     <button id="next-season">▶</button>
@@ -211,7 +195,7 @@ footer {
 
 <section id="about">
   <h2>About Me</h2>
-  <p>Hi! I'm Owen B. This website highlights my professional profile.</p>
+  <p>Hi! I'm Owen B. Explore my skills and affiliations below.</p>
   <div class="skills-bar">
     <div class="skill">Oracle</div>
     <div class="skill">ServiceNow</div>
@@ -246,10 +230,12 @@ footer {
 </section>
 
 <footer>
-  <span id="year-link"><a href="graveyard.html">1997 – 2100</a></span>
-  <div id="video-bar">
-    <div class="video-btn twitch" id="twitch-btn">T</div>
-    <div class="video-btn youtube" id="youtube-btn">Y</div>
+  <div id="footer-content">
+    <span id="year-link"><a href="graveyard.html">1997 – 2100</a></span>
+    <div id="video-bar">
+      <div class="video-btn twitch" id="twitch-btn">T</div>
+      <div class="video-btn youtube" id="youtube-btn">Y</div>
+    </div>
   </div>
 </footer>
 
@@ -271,13 +257,13 @@ const hero=document.querySelector('.hero');
 function showSeason(index){
   hero.style.background=`linear-gradient(135deg, ${seasons[index].gradient[0]}, ${seasons[index].gradient[1]})`;
   document.querySelectorAll('.seasonal-element').forEach(e=>e.remove());
-  seasons[index].elements.forEach((el)=>{
+  seasons[index].elements.forEach(el=>{
     const div=document.createElement('div');
     div.className='seasonal-element';
     div.style.top=`${Math.random()*80}%`;
     div.style.left=`${Math.random()*80}%`;
     div.style.fontSize=`${12 + Math.random()*24}px`;
-    div.style.animation=`float ${5+Math.random()*15}s linear infinite`;
+    div.style.animationDuration=`${5+Math.random()*15}s`;
     div.textContent=el;
     hero.appendChild(div);
   });
@@ -289,81 +275,46 @@ document.getElementById('next-season').addEventListener('click',()=>{current=(cu
 
 // --- Scroll reveal ---
 const sections=document.querySelectorAll("section");
-const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{const top=sec.getBoundingClientRect().top;if(top<trigger) sec.classList.add("show");});};
+const revealOnScroll=()=>{const trigger=window.innerHeight*0.8;sections.forEach(sec=>{if(sec.getBoundingClientRect().top<trigger) sec.classList.add("show");});};
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
 
 // --- Cat movement ---
 const cat=document.getElementById('cat');
-const bed={x:window.innerWidth/2, y:window.innerHeight-100};
-let catPos={x:bed.x, y:bed.y};
+let catPos={x:window.innerWidth/2, y:window.innerHeight-100};
 let resting=true;
 function moveCat(){
-  let target;
-  if(resting){
-    target={x:catPos.x+(Math.random()*20-10), y:catPos.y+(Math.random()*10-5)};
-  } else {
-    target={x:Math.random()*(window.innerWidth-50), y:Math.random()*(window.innerHeight-50)};
-  }
-  target.x=Math.max(0, Math.min(window.innerWidth-50,target.x));
-  target.y=Math.max(0, Math.min(window.innerHeight-50,target.y));
-  let steps=60, step=0;
+  let target=resting?{x:catPos.x+(Math.random()*20-10),y:catPos.y+(Math.random()*10-5)}:{x:Math.random()*(window.innerWidth-50),y:Math.random()*(window.innerHeight-50)};
+  target.x=Math.max(0,Math.min(window.innerWidth-50,target.x));
+  target.y=Math.max(0,Math.min(window.innerHeight-50,target.y));
+  let steps=60,step=0;
   function animateStep(){
     step++;
-    catPos.x += (target.x-catPos.x)/(steps-step+1);
-    catPos.y += (target.y-catPos.y)/(steps-step+1);
+    catPos.x+=(target.x-catPos.x)/(steps-step+1);
+    catPos.y+=(target.y-catPos.y)/(steps-step+1);
     cat.style.left=catPos.x+'px';
     cat.style.top=catPos.y+'px';
     if(step<steps) requestAnimationFrame(animateStep);
-    else {
-      resting=Math.random()>0.3;
-      let waitTime=resting?(2000+Math.random()*3000):(500+Math.random()*500);
-      setTimeout(moveCat, waitTime);
-    }
+    else {resting=Math.random()>0.3;setTimeout(moveCat,resting?(2000+Math.random()*3000):(500+Math.random()*500));}
   }
   animateStep();
 }
 moveCat();
 cat.addEventListener('click',()=>{window.location.href='cat.html';});
-window.addEventListener('resize',()=>{bed.x=window.innerWidth/2; bed.y=window.innerHeight-100;});
+window.addEventListener('resize',()=>{catPos.x=window.innerWidth/2; catPos.y=window.innerHeight-100;});
 
 // --- FAQ toggle ---
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click',()=>{ const a=q.nextElementSibling; a.style.display=(a.style.display==='block')?'none':'block'; });
-});
+document.querySelectorAll('.faq-question').forEach(q=>{q.addEventListener('click',()=>{ const a=q.nextElementSibling; a.style.display=(a.style.display==='block')?'none':'block'; });});
 
-// --- Twitch & YouTube toggle independent ---
+// --- Video embeds toggle ---
 const twitchBtn = document.getElementById('twitch-btn');
 const twitchEmbed = document.getElementById('twitch-embed');
-twitchBtn.addEventListener('click', () => {
-  twitchEmbed.style.display = twitchEmbed.style.display === 'block' ? 'none' : 'block';
-  positionEmbeds();
-});
+twitchBtn.addEventListener('click', () => { twitchEmbed.style.display = twitchEmbed.style.display==='block'?'none':'block'; });
 
 const ytBtn = document.getElementById('youtube-btn');
 const ytEmbed = document.getElementById('youtube-embed');
-ytBtn.addEventListener('click', () => {
-  ytEmbed.style.display = ytEmbed.style.display === 'block' ? 'none' : 'block';
-  positionEmbeds();
-});
-
-// --- Position embeds dynamically ---
-function positionEmbeds(){
-  const spacing=10;
-  if(window.innerWidth>600){
-    twitchEmbed.style.left='10px';
-    twitchEmbed.style.bottom='60px';
-    ytEmbed.style.left='340px';
-    ytEmbed.style.bottom='60px';
-  } else {
-    twitchEmbed.style.left='5%';
-    twitchEmbed.style.bottom='60px';
-    ytEmbed.style.left='5%';
-    ytEmbed.style.bottom='230px';
-  }
-}
-window.addEventListener('resize', positionEmbeds);
-positionEmbeds();
+ytBtn.addEventListener('click', () => { ytEmbed.style.display = ytEmbed.style.display==='block'?'none':'block'; });
 </script>
+
 </body>
 </html>
