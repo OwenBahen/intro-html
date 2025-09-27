@@ -1,4 +1,3 @@
-<script>
 // --- Seasonal Emojis ---
 const seasons = [
   { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','☘️','🌼','🐝'] },
@@ -61,7 +60,7 @@ function moveCat() {
   const target = resting
     ? { x: catPos.x + (Math.random()*20-10), y: catPos.y + (Math.random()*10-5) }
     : { x: Math.random()*(window.innerWidth-50), y: Math.random()*(window.innerHeight-50) };
-    
+  
   target.x = Math.max(0, Math.min(window.innerWidth-50, target.x));
   target.y = Math.max(0, Math.min(window.innerHeight-50, target.y));
   
@@ -97,17 +96,11 @@ document.querySelectorAll('.faq-question').forEach(q => {
 });
 
 // --- YouTube & Twitch toggle ---
-const twitchBtn = document.querySelector('header .social-icons a[href*="twitch"]');
+const videoBtn = document.getElementById('video-btn');
 const twitchEmbed = document.getElementById('twitch-embed');
-twitchBtn.addEventListener('click', e => {
-  e.preventDefault();
-  twitchEmbed.style.display = (twitchEmbed.style.display === 'block') ? 'none' : 'block';
-});
-
-const ytBtn = document.querySelector('header .social-icons a[href*="youtube"]');
 const ytEmbed = document.getElementById('youtube-embed');
-ytBtn.addEventListener('click', e => {
-  e.preventDefault();
-  ytEmbed.style.display = (ytEmbed.style.display === 'block') ? 'none' : 'block';
+videoBtn.addEventListener('click', () => {
+  const show = (twitchEmbed.style.display === 'block');
+  twitchEmbed.style.display = show ? 'none' : 'block';
+  ytEmbed.style.display = show ? 'none' : 'block';
 });
-</script>
