@@ -181,7 +181,7 @@ footer {
 
 <section class="hero">
   <h2>Welcome to Owenn.ca</h2>
-  <p>Explore my interactive-ready personal site. It is insired by Ontario's four distinct seasons and my personal life.</p>
+  <p>Explore my interactive-ready personal site. It is inspired by Ontario's four distinct seasons and my personal life.</p>
   <div class="cycle-btns">
     <button id="prev-season">◀</button>
     <button id="next-season">▶</button>
@@ -245,10 +245,10 @@ footer {
 <script>
 // --- Seasonal Emojis ---
 const seasons = [
-  { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🌸','🍃','🍃','🍃','🌹','🐦','☘️','🌼','🐝','🐝'] },
-  { name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🌻',''🌹'','🌺','🌷','🍹','🐞','🐞''🦋''🦋''🦋'] },
-  { name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍂','🍂','🍁','🍁','🍁','🎃','🦉','🌰','🍄','🍄‍🟫'] },
-  { name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','❄️','❄️','❄️','⛄','🦌','🌲','🌲','🌲','☕','🧣'] },
+  { name:'Spring', gradient:['#6DBE45','#A7D49B'], elements:['🌸','🍃','🐦','☘️','🌼','🐝'] },
+  { name:'Summer', gradient:['#3E8E41','#82C784'], elements:['☀️','🌻','🌺','🌷','🍹','🐞','🦋'] },
+  { name:'Fall', gradient:['#A0522D','#E9967A'], elements:['🍂','🍁','🎃','🦉','🌰','🍄'] },
+  { name:'Winter', gradient:['#2F4F4F','#B0C4DE'], elements:['❄️','⛄','🦌','🌲','☕','🧣'] },
 ];
 let currentSeason = 0;
 const hero = document.querySelector('.hero');
@@ -278,7 +278,6 @@ document.getElementById('prev-season').addEventListener('click', () => {
   currentSeason = (currentSeason - 1 + seasons.length) % seasons.length;
   showSeason(currentSeason);
 });
-
 document.getElementById('next-season').addEventListener('click', () => {
   currentSeason = (currentSeason + 1) % seasons.length;
   showSeason(currentSeason);
@@ -296,24 +295,19 @@ const revealOnScroll = () => {
 window.addEventListener("scroll", revealOnScroll);
 revealOnScroll();
 
-// --- Cat smooth movement (updated) ---
+// --- Cat smooth movement ---
 const cat = document.getElementById('cat');
 let catPos = { x: window.innerWidth/2, y: window.innerHeight-100 };
 let catVel = { x: 2 + Math.random()*2, y: 1 + Math.random()*1 };
-
 function animateCat() {
   catPos.x += catVel.x;
   catPos.y += catVel.y;
-
   if(catPos.x < 0 || catPos.x > window.innerWidth-30) catVel.x *= -1;
   if(catPos.y < 0 || catPos.y > window.innerHeight-30) catVel.y *= -1;
-
   cat.style.left = catPos.x + 'px';
   cat.style.top = catPos.y + 'px';
-
   requestAnimationFrame(animateCat);
 }
-
 animateCat();
 cat.addEventListener('click', () => { window.location.href='cat.html'; });
 window.addEventListener('resize', () => { catPos.x = window.innerWidth/2; catPos.y = window.innerHeight-100; });
@@ -329,12 +323,10 @@ document.querySelectorAll('.faq-question').forEach(q => {
 // --- YouTube & Twitch toggle ---
 const youtubeEmbed = document.getElementById('youtube-embed');
 const twitchEmbed = document.getElementById('twitch-embed');
-
 document.getElementById('yt-btn').addEventListener('click', e => {
   e.preventDefault();
   youtubeEmbed.style.display = (youtubeEmbed.style.display === 'block') ? 'none' : 'block';
 });
-
 document.getElementById('twitch-btn').addEventListener('click', e => {
   e.preventDefault();
   twitchEmbed.style.display = (twitchEmbed.style.display === 'block') ? 'none' : 'block';
