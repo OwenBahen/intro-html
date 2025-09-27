@@ -3,61 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graveyard - Owen Bahen</title>
-<link rel="stylesheet" href="styles.css">
+<title>Graveyard – Owen Bahen</title>
+<style>
+/* --- Base spooky theme --- */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color:#f5f5f5;
+  font-family: 'Courier New', monospace;
+  overflow:hidden;
+  height:100vh;
+  position:relative;
+}
+h1,h2,p { text-align:center; }
+
+header {
+  padding:1rem;
+  background:rgba(0,0,0,0.7);
+  border-bottom:2px solid #444;
+}
+header h1 {
+  font-size:1.8rem;
+  color:#f2f2f2;
+  text-shadow:2px 2px 4px #000;
+}
+header p {
+  margin-top:0.5rem;
+  font-size:0.9rem;
+  color:#aaa;
+  font-style:italic;
+}
+
+#game {
+  position:relative;
+  width:100%;
+  height:calc(100vh - 140px);
+  overflow:hidden;
+  cursor:crosshair;
+}
+
+.bone, .skull, .skeleton {
+  position:absolute;
+  font-size:2rem;
+  animation: floatUp 4s linear forwards;
+}
+@keyframes floatUp {
+  from { transform:translateY(100vh); opacity:1; }
+  to { transform:translateY(-20vh); opacity:0; }
+}
+
+/* Scoreboard */
+#scoreboard {
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:rgba(20,20,20,0.8);
+  border:2px solid #666;
+  padding:0.5rem 1rem;
+  border-radius:8px;
+  font-size:1rem;
+  z-index:100;
+}
+
+/* RIP Stone */
+#rip-stone {
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:300px;
+  background:#222;
+  border:3px solid #555;
+  border-radius:20px 20px 0 0;
+  text-align:center;
+  padding:1rem;
+  color:#f0f0f0;
+  font-size:0.9rem;
+  line-height:1.4;
+  box-shadow:0 -5px 20px rgba(0,0,0,0.7);
+}
+#rip-stone h2 {
+  margin-bottom:0.5rem;
+  font-size:1.2rem;
+  color:#ff4444;
+}
+#rip-stone p {
+  font-size:0.8rem;
+  color:#ccc;
+}
+</style>
 </head>
 <body>
 
-<header class="hero">
-  <h1>Graveyard</h1>
+<header>
+  <h1>☠️ Graveyard of Owen Bahen ☠️</h1>
+  <p>"3 Century Man" – RIP 1997 – 2100</p>
 </header>
 
-<section id="spooky-section">
-  <h2>Rest in Peace 🪦</h2>
-  <p>Explore mysterious gravestones with hovering effects!</p>
-  <div class="gravestones">
-    <div class="gravestone">🪦 Owen's First Project</div>
-    <div class="gravestone">🪦 Old HTML Pages</div>
-    <div class="gravestone">🪦 Forgotten Ideas</div>
-    <div class="gravestone">🪦 Cat Memories</div>
-  </div>
-</section>
+<div id="game">
+  <div id="scoreboard">💀 Bones: 0</div>
+</div>
 
-<div style="text-align:center; margin:3rem 0 2rem 0;">
-  <p>Hover over the graves for surprises!</p>
+<div id="rip-stone">
+  <h2>RIP Owen Bahen</h2>
+  <p>Born on the side of the road,<br>
+  Local Newspaper – Day 1.<br>
+  Ended the same with local fame.<br>
+  Born interesting, died interesting.</p>
 </div>
 
 <script>
-// --- Hover effect for gravestones ---
-document.querySelectorAll('.gravestone').forEach(g => {
-  g.addEventListener('mouseenter', () => {
-    g.style.transform = 'scale(1.2) rotate(-5deg)';
-    g.style.transition = 'transform 0.3s';
+const game = document.getElementById("game");
+const scoreboard = document.getElementById("scoreboard");
+let score = 0;
+
+// Spawn emojis
+function spawnItem() {
+  const types = ["bone","skull","skeleton"];
+  const pick = types[Math.floor(Math.random()*types.length)];
+  const div = document.createElement("div");
+  div.classList.add(pick);
+  div.style.left = Math.random() * (window.innerWidth - 50) + "px";
+  div.style.bottom = "-40px";
+  
+  if (pick==="bone") div.textContent="🦴";
+  if (pick==="skull") div.textContent="💀";
+  if (pick==="skeleton") div.textContent="🕴️"; // skeleton bonus
+  
+  div.addEventListener("click", () => {
+    if (pick==="bone") score += 1;
+    if (pick==="skull") score += 3;
+    if (pick==="skeleton") score += 10;
+    scoreboard.textContent = "💀 Bones: " + score;
+    div.remove();
   });
-  g.addEventListener('mouseleave', () => {
-    g.style.transform = 'scale(1) rotate(0deg)';
-  });
-});
+  
+  game.appendChild(div);
+  setTimeout(()=>div.remove(),4000);
+}
+
+// Spawn loop
+setInterval(spawnItem, 1200);
+
+// Extra: spooky sound (optional placeholder)
+// const audio = new Audio('spooky.mp3'); audio.loop=true; audio.play();
+
 </script>
-
-<style>
-.gravestones {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.gravestone {
-  font-size: 2rem;
-  padding: 1rem;
-  background: rgba(200,200,200,0.2);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-</style>
 
 </body>
 </html>
