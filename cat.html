@@ -3,43 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐈 Cat Page</title>
+<title>Cat Page - Owen Bahen</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
-  <h1>Cat Adventures 🐈</h1>
-  <a href="index.html">⬅ Back to Home</a>
+<header class="hero">
+  <h1>Cat Playground</h1>
 </header>
-
-<section class="hero">
-  <h2>Welcome to the Cat Kingdom!</h2>
-  <p>Explore the secret life of cats. Watch them roam, pounce, and play around your screen.</p>
-</section>
 
 <section id="cat-fun">
   <h2>Click the Cat!</h2>
-  <div id="interactive-cat" style="font-size:4rem; cursor:pointer;">🐱</div>
-  <p>Every click triggers a new adventure...</p>
+  <p>Our cat loves exploring! Click it to teleport to the playground.</p>
 </section>
 
-<section id="cat-gallery">
-  <h2>Gallery of Cats</h2>
-  <div class="affiliations-grid">
-    <div class="affiliation-box">😸 Playful Cat</div>
-    <div class="affiliation-box">😺 Sleepy Cat</div>
-    <div class="affiliation-box">😻 Curious Cat</div>
-    <div class="affiliation-box">😼 Mischievous Cat</div>
-  </div>
-</section>
+<div id="cat">🐈</div>
+
+<div style="text-align:center; margin:3rem 0 2rem 0;">
+  <p>Don't worry, the cat will keep moving!</p>
+  <div style="font-size:2rem;">🐾</div>
+</div>
+
+<script src="scripts.js"></script>
 
 <script>
-const catIcon = document.getElementById('interactive-cat');
-catIcon.addEventListener('click', () => {
-  const emojis = ['🐾','😹','😸','😺','😻','😼','🦁'];
-  const random = emojis[Math.floor(Math.random() * emojis.length)];
-  catIcon.textContent = random;
+// --- Cat movement smooth ---
+const catPageCat = document.getElementById('cat');
+let catPagePos = { x: window.innerWidth/2, y: window.innerHeight/2 };
+let catTarget = {...catPagePos};
+
+function catMove() {
+  catTarget.x += Math.random()*120 - 60;
+  catTarget.y += Math.random()*80 - 40;
+  catTarget.x = Math.max(0, Math.min(window.innerWidth-50, catTarget.x));
+  catTarget.y = Math.max(0, Math.min(window.innerHeight-50, catTarget.y));
+
+  function animate() {
+    const dx = (catTarget.x - catPagePos.x) * 0.05;
+    const dy = (catTarget.y - catPagePos.y) * 0.05;
+    if(Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5){
+      catPagePos.x += dx;
+      catPagePos.y += dy;
+      catPageCat.style.left = catPagePos.x + 'px';
+      catPageCat.style.top = catPagePos.y + 'px';
+      requestAnimationFrame(animate);
+    } else {
+      setTimeout(catMove, 1000 + Math.random()*2000);
+    }
+  }
+  animate();
+}
+
+catMove();
+
+catPageCat.addEventListener('click', () => {
+  alert('The cat teleports you to a magical place!');
+});
+window.addEventListener('resize', () => {
+  catPagePos.x = window.innerWidth/2;
+  catPagePos.y = window.innerHeight/2;
+  catTarget = {...catPagePos};
 });
 </script>
 
