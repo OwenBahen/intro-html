@@ -14,36 +14,82 @@ body {
   height:100vh;
   position:relative;
 }
+
+/* --- Graveyard ground --- */
 .ground {
-  position:absolute; bottom:0; width:100%; height:120px;
-  background: repeating-linear-gradient(45deg,#0f0f0f,#0f0f0f 10px,#141414 10px,#141414 20px);
-  border-top:3px solid #333; z-index:2;
+  position:absolute; bottom:0; width:100%; height:140px;
+  background: linear-gradient(to top, #2a2a2a 0%, #1a1a1a 40%, #2b2b1f 100%);
+  background-image: repeating-linear-gradient(45deg, #2b2b1f, #2b2b1f 5px, #26261b 5px, #26261b 10px);
+  border-top:3px solid #333;
+  z-index:2;
 }
+
+/* --- Gravestone --- */
 .gravestone {
-  position:absolute; bottom:120px; left:50%; transform:translateX(-50%);
-  width:240px; min-height:180px; background:#444; border-radius:120px 120px 0 0;
-  text-align:center; padding:1rem; color:#fff; font-size:0.9rem;
-  box-shadow:0 -4px 12px rgba(0,0,0,0.8); z-index:3; transition:all 0.4s;
+  position:absolute;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%);
+  width:240px;
+  min-height:180px;
+  background:#555;
+  border-radius:120px 120px 0 0;
+  text-align:center;
+  padding:1rem 0.5rem;
+  color:#fff;
+  font-size:0.9rem;
+  box-shadow:0 -4px 12px rgba(0,0,0,0.8);
+  z-index:3;
+  background-image: 
+    linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(255,255,255,0.03) 25%, #555 25%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
-.gravestone h2 { font-size:1.2rem; margin-bottom:0.5rem; }
+.gravestone h2 { font-size:1.2rem; margin-bottom:0.2rem; }
+.gravestone p { margin-top:0.2rem; }
+
+/* --- Score & Info --- */
 .hud { position:absolute; top:10px; left:10px; display:flex; flex-direction:column; gap:0.5rem; z-index:5; }
 .score-box { background:#222; padding:0.5rem 1rem; border-radius:8px; border:1px solid #555; }
-button.info-btn, #returnBtn { background:#333; color:#fff; border:none; padding:0.4rem 0.8rem; border-radius:5px; cursor:pointer; }
-button.info-btn:hover, #returnBtn:hover { background:#555; }
+button.info-btn { background:#333; color:#fff; border:none; padding:0.4rem 0.8rem; border-radius:5px; cursor:pointer; }
+button.info-btn:hover { background:#555; }
+
+/* --- Info popup --- */
 .info-popup {
-  display:none; position:absolute; top:20%; left:50%; transform:translateX(-50%);
-  background:#111; border:2px solid #555; border-radius:10px; padding:1rem;
-  width:80%; max-width:400px; z-index:10; text-align:center;
+  display:none;
+  position:absolute;
+  top:20%;
+  left:50%;
+  transform:translateX(-50%);
+  background:#111;
+  border:2px solid #555;
+  border-radius:10px;
+  padding:1rem;
+  width:80%;
+  max-width:400px;
+  z-index:10;
+  text-align:center;
 }
 .info-popup h3 { margin-bottom:0.5rem; }
 .info-popup button { margin-top:1rem; padding:0.3rem 0.7rem; }
+
+/* --- Falling entities --- */
 .entity { position:absolute; font-size:2rem; cursor:pointer; z-index:4; user-select:none; }
+
+/* Animations */
 @keyframes float-down { 0%{transform:translateY(-50px);opacity:0;}10%{opacity:1;}100%{transform:translateY(100vh);opacity:0;} }
 @keyframes float-up { 0%{transform:translateY(100vh);opacity:0;}10%{opacity:1;}100%{transform:translateY(-50px);opacity:0;} }
 @keyframes zigzag {0%{transform:translate(0,0);}25%{transform:translate(-40px,25vh);}50%{transform:translate(40px,50vh);}75%{transform:translate(-30px,75vh);}100%{transform:translate(0,100vh);} }
 @keyframes quick-pop {0%{transform:scale(0);opacity:0;}20%{transform:scale(1.2);opacity:1;}80%{transform:scale(1);opacity:1;}100%{transform:scale(0);opacity:0;}}
 @keyframes random-move {0%{transform:translate(0,0);}25%{transform:translate(40px,-20px);}50%{transform:translate(-40px,30px);}75%{transform:translate(20px,20px);}100%{transform:translate(0,0);}}
-@media(max-width:600px){.gravestone { width:200px; min-height:150px; font-size:0.75rem;} .entity { font-size:1.6rem; }}
+
+@media(max-width:600px){
+  .gravestone { width:200px; min-height:150px; font-size:0.75rem; }
+  .entity { font-size:1.6rem; }
+}
 </style>
 </head>
 <body>
@@ -67,23 +113,20 @@ button.info-btn:hover, #returnBtn:hover { background:#555; }
 </div>
 
 <div class="ground"></div>
-<button id="returnBtn" style="position:absolute; top:60px; right:10px;" onclick="window.location.href='index.html'">Return to Main</button>
 
 <script>
 let score=0;
 let spawnInterval=2500;
-let unlockedMain=false;
 
 function updateGravestone(){
   const stone=document.getElementById("gravestone");
-  const returnBtn=document.getElementById("returnBtn");
-  if(score>=200){stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>Born interesting, died interesting… risen legendary.</p>`;}
-  else if(score>=100){stone.innerHTML=`<h2>The grave splits open!</h2><p>The century man cannot be contained.</p>`;}
-  else if(score>=50){stone.innerHTML=`<h2>Shadows gather...</h2><p>Owen Bahen grows stronger in death than in life.</p>`;}
+  if(score>=200){stone.innerHTML=`<h2>Legendary Owen</h2><p>Life exceeded limits; death cannot contain him.</p>`;}
+  else if(score>=100){stone.innerHTML=`<h2>The legend rises</h2><p>Even newspapers can't keep up with Owen's feats.</p>`;}
+  else if(score>=50){stone.innerHTML=`<h2>Shadows stir...</h2><p>Owen's influence spreads beyond life.</p>`;}
   else if(score>=25){stone.innerHTML=`<h2>Local fame revived</h2><p>The same paper that announced his birth now reports his return.</p>`;}
-  else if(score>=10){stone.innerHTML=`<h2>Bones rattle louder</h2><p>Whispers spread through the graveyard.</p>`;}
-  else if(score>=3){stone.innerHTML=`<h2>The dead stir…</h2><p>A faint glow appears on the stone.</p>`; returnBtn.style.display='block'; unlockedMain=true;}
-  else{stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`; returnBtn.style.display='none';}
+  else if(score>=10){stone.innerHTML=`<h2>Bones rattle louder</h2><p>Whispers of Owen echo through the graveyard.</p>`;}
+  else if(score>=3){stone.innerHTML=`<h2>The dead stir…</h2><p>A faint glow appears on the stone in Owen's honor.</p>`;}
+  else{stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`;}
 }
 
 function toggleInfo(){
