@@ -1,278 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graveyard – Owen Bahen</title>
-<style>
-/* --- Reset --- */
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: "Trebuchet MS", sans-serif;
-  background: linear-gradient(to top, #0a0a0a 20%, #1c1c2b 100%);
-  color: #eee;
-  overflow:hidden;
-  height:100vh;
-  position:relative;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graveyard Game</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
 
-/* --- Graveyard ground --- */
-.ground {
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:120px;
-  background: repeating-linear-gradient(
-    45deg,
-    #0f0f0f,
-    #0f0f0f 10px,
-    #141414 10px,
-    #141414 20px
-  );
-  border-top:3px solid #333;
-  z-index:2;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Creepster", cursive, sans-serif;
+      background: linear-gradient(#050505, #0f0f0f, #1a1a1a);
+      color: #fff;
+      overflow: hidden;
+    }
 
-/* --- Gravestone --- */
-.gravestone {
-  position:absolute;
-  bottom:120px;
-  left:50%;
-  transform:translateX(-50%);
-  width:240px;
-  height:180px;
-  background:#444;
-  border-radius:120px 120px 0 0;
-  text-align:center;
-  padding:1rem;
-  color:#fff;
-  font-size:0.9rem;
-  box-shadow:0 -4px 12px rgba(0,0,0,0.8);
-  z-index:3;
-}
-.gravestone h2 { font-size:1.2rem; margin-bottom:0.5rem; }
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
 
-/* --- Score & Info --- */
-.hud {
-  position:absolute;
-  top:10px;
-  left:10px;
-  display:flex;
-  flex-direction:column;
-  gap:0.5rem;
-  z-index:5;
-}
-.score-box {
-  background:#222;
-  padding:0.5rem 1rem;
-  border-radius:8px;
-  border:1px solid #555;
-}
-button.info-btn {
-  background:#333;
-  color:#fff;
-  border:none;
-  padding:0.4rem 0.8rem;
-  border-radius:5px;
-  cursor:pointer;
-}
-button.info-btn:hover { background:#555; }
+    /* Ground effect */
+    #ground {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 120px;
+      background: repeating-linear-gradient(
+        45deg,
+        #1a1a1a,
+        #1a1a1a 10px,
+        #111 10px,
+        #111 20px
+      );
+      border-top: 5px solid #222;
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.7);
+      z-index: 1;
+    }
 
-/* --- Info popup --- */
-.info-popup {
-  display:none;
-  position:absolute;
-  top:20%;
-  left:50%;
-  transform:translateX(-50%);
-  background:#111;
-  border:2px solid #555;
-  border-radius:10px;
-  padding:1rem;
-  width:80%;
-  max-width:400px;
-  z-index:10;
-  text-align:center;
-}
-.info-popup h3 { margin-bottom:0.5rem; }
-.info-popup button {
-  margin-top:1rem;
-  padding:0.3rem 0.7rem;
-}
+    /* Gravestone */
+    #gravestone {
+      position: relative;
+      background: #444;
+      border-radius: 30px 30px 10px 10px;
+      padding: 25px 15px 40px 15px;
+      width: 85%;
+      max-width: 400px;
+      text-align: center;
+      border: 3px solid #666;
+      box-shadow: inset 0 0 20px #000, 0 0 30px #111;
+      z-index: 5;
 
-/* --- Return button --- */
-#returnBtn {
-  display:none;
-  margin-top:0.8rem;
-  background:#111;
-  color:#fff;
-  border:1px solid #666;
-  border-radius:5px;
-  padding:0.4rem 0.8rem;
-  cursor:pointer;
-}
-#returnBtn:hover { background:#333; }
+      /* stone texture */
+      background-image: radial-gradient(circle, #555 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
 
-/* --- Falling entities --- */
-.entity {
-  position:absolute;
-  font-size:2rem;
-  cursor:pointer;
-  z-index:4;
-  user-select:none;
-}
+    #gravestone h2 {
+      margin: 10px 0 5px 0;
+      font-size: 1.5em;
+      color: #eee;
+    }
 
-/* Animations */
-@keyframes float-down {
-  0% { transform:translateY(-50px); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(100vh); opacity:0; }
-}
-@keyframes float-up {
-  0% { transform:translateY(100vh); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(-50px); opacity:0; }
-}
-@keyframes zigzag {
-  0% { transform:translate(0,0); }
-  25% { transform:translate(-40px,25vh); }
-  50% { transform:translate(40px,50vh); }
-  75% { transform:translate(-30px,75vh); }
-  100% { transform:translate(0,100vh); }
-}
-@keyframes quick-pop {
-  0% { transform:scale(0); opacity:0; }
-  20% { transform:scale(1.2); opacity:1; }
-  80% { transform:scale(1); opacity:1; }
-  100% { transform:scale(0); opacity:0; }
-}
-@keyframes random-move {
-  0% { transform:translate(0,0); }
-  25% { transform:translate(40px,-20px); }
-  50% { transform:translate(-40px,30px); }
-  75% { transform:translate(20px,20px); }
-  100% { transform:translate(0,0); }
-}
+    #gravestone p {
+      font-size: 0.85em;
+      color: #ccc;
+      margin-top: 15px;
+      line-height: 1.4;
+    }
 
-/* --- Mobile adjustments --- */
-@media(max-width:600px){
-  .gravestone { width:200px; height:150px; font-size:0.75rem; }
-  .entity { font-size:1.6rem; }
-}
-</style>
+    /* Scoreboard */
+    #scoreboard {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2em;
+      font-weight: bold;
+      text-shadow: 0 0 8px red;
+      background: rgba(0,0,0,0.6);
+      padding: 5px 15px;
+      border-radius: 10px;
+    }
+
+    /* Floating entities */
+    .entity {
+      position: absolute;
+      font-size: 1.8em;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+      z-index: 2;
+    }
+
+    .entity:active {
+      transform: scale(1.3);
+    }
+
+    /* Info button */
+    #info-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #222;
+      color: #fff;
+      padding: 5px 10px;
+      border: 2px solid #555;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9em;
+      z-index: 3;
+    }
+
+    #info-box {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      width: 260px;
+      background: rgba(0,0,0,0.9);
+      color: #eee;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      line-height: 1.4;
+      z-index: 20;
+    }
+
+    /* Back to Homepage */
+    #home-btn {
+      display: none;
+      margin-top: 15px;
+      background: crimson;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.95em;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 600px) {
+      .entity {
+        font-size: 1.4em;
+      }
+      #gravestone {
+        width: 90%;
+        padding: 20px 10px 30px 10px;
+      }
+      #gravestone h2 {
+        font-size: 1.2em;
+      }
+      #gravestone p {
+        font-size: 0.75em;
+      }
+      #scoreboard {
+        font-size: 1em;
+      }
+      #info-box {
+        width: 200px;
+        font-size: 0.8em;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div id="game-container">
+    <div id="scoreboard">Score: 0</div>
+    <button id="info-btn">ℹ️ Info</button>
+    <div id="info-box">
+      💀 Tap bones, skulls, and spooky creatures to earn points.  
+      🦴 Bones = 1 pt  
+      💀 Skulls = 3 pts  
+      🧟 Zombies = 5 pts  
+      🦇 Bats = 10 pts  
+      🧛 Vampires = 25 pts  
+      👻 Ghosts = 1 pt (special!)  
+      <br><br>
+      🎯 New creatures unlock as your score rises. Can you reach 1000?
+    </div>
+    <div id="gravestone">
+      <h2>RIP Owen 1997–2100</h2>
+      <p>"3 Century Man"<br>
+         Born on the side of the road, remembered in local fame.<br>
+         Born interesting, died interesting.</p>
+      <button id="home-btn" onclick="goHome()">🏠 Back to Homepage</button>
+    </div>
+    <div id="ground"></div>
+  </div>
 
-<div class="hud">
-  <div class="score-box">Score: <span id="score">0</span></div>
-  <button class="info-btn" onclick="toggleInfo()">Info</button>
-</div>
+  <script>
+    let score = 0;
+    const scoreboard = document.getElementById("scoreboard");
+    const homeBtn = document.getElementById("home-btn");
+    const infoBtn = document.getElementById("info-btn");
+    const infoBox = document.getElementById("info-box");
 
-<div class="info-popup" id="infoPopup">
-  <h3>💀 Graveyard Game</h3>
-  <p>Click spooky emojis to collect points.<br>
-  🦴 Bone = 1<br>💀 Skull = 3<br>🧟 Zombie = 5<br>🦇 Bat = 10<br>🧛 Vampire = 25<br>👻 Ghost = 1 (bonus, moves around)<br>
-  Unlock more as your score rises!</p>
-  <button onclick="toggleInfo()">Close</button>
-</div>
+    // Toggle info
+    infoBtn.addEventListener("click", () => {
+      infoBox.style.display = (infoBox.style.display === "block") ? "none" : "block";
+    });
 
-<div class="gravestone" id="gravestone">
-  <h2>RIP Owen Bahen</h2>
-  <p>1997 – 2100<br>"3 Century Man"</p>
-</div>
+    // Entities config
+    const entities = [
+      {emoji: "🦴", points: 1, minScore: 0},
+      {emoji: "💀", points: 3, minScore: 3},
+      {emoji: "🧟", points: 5, minScore: 10},
+      {emoji: "🦇", points: 10, minScore: 30},
+      {emoji: "🧛", points: 25, minScore: 50},
+      {emoji: "👻", points: 1, minScore: 0}
+    ];
 
-<div class="ground"></div>
+    function spawnEntity() {
+      const container = document.getElementById("game-container");
+      if (!container) return;
 
-<script>
-let score = 0;
-let spawnInterval = 2500;
-let milestones = [3,10,25,50,100,200];
-let unlockedMain = false;
+      const eligible = entities.filter(e => score >= e.minScore);
+      const choice = eligible[Math.floor(Math.random() * eligible.length)];
+      const el = document.createElement("div");
+      el.className = "entity";
+      el.textContent = choice.emoji;
 
-/* Milestone Messages */
-function updateGravestone(){
-  const stone = document.getElementById("gravestone");
-  if(score >= 200){
-    stone.innerHTML = `<h2>RIP Owen Bahen</h2><p>Born interesting, died interesting… risen legendary.</p>`;
-  } else if(score >= 100){
-    stone.innerHTML = `<h2>The grave splits open!</h2><p>The century man cannot be contained.</p>`;
-  } else if(score >= 50){
-    stone.innerHTML = `<h2>Shadows gather...</h2><p>Owen Bahen grows stronger in death than in life.</p>`;
-  } else if(score >= 25){
-    stone.innerHTML = `<h2>Local fame revived</h2><p>The same paper that announced his birth now reports his return.</p>`;
-  } else if(score >= 10){
-    stone.innerHTML = `<h2>Bones rattle louder</h2><p>Whispers spread through the graveyard.</p>`;
-  } else if(score >= 3){
-    stone.innerHTML = `<h2>The dead stir…</h2><p>A faint glow appears on the stone.</p><button id="returnBtn" onclick="window.location.href='index.html'">Return to Main</button>`;
-    unlockedMain = true;
-  } else {
-    stone.innerHTML = `<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`;
-  }
-}
+      el.style.left = Math.random() * (window.innerWidth - 40) + "px";
+      el.style.top = Math.random() * (window.innerHeight - 180) + "px";
 
-/* Info toggle */
-function toggleInfo(){
-  const popup = document.getElementById("infoPopup");
-  popup.style.display = popup.style.display === "block" ? "none" : "block";
-}
+      el.addEventListener("click", () => {
+        score += choice.points;
+        scoreboard.textContent = `Score: ${score}`;
+        el.remove();
 
-/* Entity spawning */
-function spawnEntity(){
-  let choices = [];
-  if(score >= 1) choices.push("bone");
-  if(score >= 3) choices.push("skull");
-  if(score >= 10) choices.push("zombie");
-  if(score >= 30) choices.push("bat");
-  if(score >= 50) choices.push("vampire");
-  if(Math.random() < 0.05) choices.push("ghost"); // occasional
+        if (score >= 10) homeBtn.style.display = "block";
+      });
 
-  if(choices.length === 0) return;
+      container.appendChild(el);
 
-  let type = choices[Math.floor(Math.random()*choices.length)];
-  let entity = document.createElement("div");
-  entity.className = "entity";
+      setTimeout(() => {
+        if (el.parentNode) el.remove();
+      }, 4000);
+    }
 
-  let duration = 6000; 
-  if(type==="bone"){ entity.textContent="🦴"; entity.style.animation="float-down "+duration+"ms linear forwards"; }
-  if(type==="skull"){ entity.textContent="💀"; entity.style.animation="float-up "+duration+"ms linear forwards"; }
-  if(type==="zombie"){ entity.textContent="🧟"; entity.style.animation="float-down "+(duration+2000)+"ms linear forwards"; }
-  if(type==="bat"){ entity.textContent="🦇"; entity.style.animation="zigzag "+(duration-2000)+"ms linear forwards"; }
-  if(type==="vampire"){ entity.textContent="🧛"; entity.style.animation="quick-pop 2500ms linear forwards"; }
-  if(type==="ghost"){ entity.textContent="👻"; entity.style.animation="random-move 4s infinite"; }
+    // Spawn faster as score rises
+    function gameLoop() {
+      spawnEntity();
+      let delay = 1500;
+      if (score >= 25) delay = 1200;
+      if (score >= 50) delay = 900;
+      if (score >= 100) delay = 700;
+      if (score >= 200) delay = 500;
+      setTimeout(gameLoop, delay);
+    }
+    gameLoop();
 
-  entity.style.left = Math.random()*80 + "%";
-  entity.style.top = "0px";
-
-  document.body.appendChild(entity);
-
-  entity.addEventListener("click",()=>{
-    let add=0;
-    if(type==="bone") add=1;
-    if(type==="skull") add=3;
-    if(type==="zombie") add=5;
-    if(type==="bat") add=10;
-    if(type==="vampire") add=25;
-    if(type==="ghost") add=1;
-    score+=add;
-    document.getElementById("score").textContent=score;
-    updateGravestone();
-    entity.remove();
-  });
-
-  setTimeout(()=>{ entity.remove(); }, duration+3000);
-}
-
-/* Spawn loop */
-setInterval(spawnEntity, spawnInterval);
-
-/* Spawn rate progression */
-function adjustSpawnRate(){
-  if(score >= 10 && spawnInterval>2000) spawnInterval=2000;
-  if(score >= 25 && spawnInterval>1500) spawnInterval=1500;
-  if(score >= 50 && spawnInterval>1000) spawnInterval=1000;
-  if(score >= 100 && spawnInterval>700) spawnInterval=700;
-}
-setInterval(adjustSpawnRate, 3000);
-</script>
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
