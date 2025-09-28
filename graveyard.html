@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Graveyard — Owen Bahen (Deluxe)</title>
 <style>
-  /* =========================
-     Deluxe Graveyard CSS (restored & polished)
-     ========================= */
   :root{
     --bg-dark:#07080b;
     --bg-mid:#0e1116;
@@ -16,120 +13,80 @@
     --muted:#dcdcdc;
     --fog: rgba(255,255,255,0.03);
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; padding:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    color:var(--muted); background: linear-gradient(180deg,var(--bg-dark) 0%, var(--bg-mid) 70%);
-    overflow:hidden;
-  }
+  *{box-sizing:border-box;}
+  html,body{height:100%; margin:0; padding:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:var(--muted);}
+  body{background: linear-gradient(180deg,var(--bg-dark) 0%, var(--bg-mid) 70%); overflow:hidden;}
 
-  /* Header */
-  header{
-    position:relative; z-index:900; padding:18px 20px; text-align:center;
-    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.12));
-    border-bottom:1px solid rgba(255,255,255,0.03);
-  }
-  header h1{margin:0; font-size:1.4rem; color:#ffdede; letter-spacing:1px}
-  header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
+  header{position:relative; z-index:900; padding:18px 20px; text-align:center; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.12)); border-bottom:1px solid rgba(255,255,255,0.03);}
+  header h1{margin:0; font-size:1.4rem; color:#ffdede; letter-spacing:1px;}
+  header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95;}
 
-  /* Stage (playfield) */
-  #stage{
-    position:relative; width:100%; height:calc(100vh - 120px); overflow:hidden;
-    background:
-      radial-gradient(1200px 600px at 10% 6%, rgba(255,255,255,0.02), transparent 8%),
-      linear-gradient(180deg,#0a0a0f 0%, #111217 60%);
-  }
-
-  /* Fog effect */
-  .fog{position:absolute; left:-20%; right:-20%; top:-10%; bottom:-10%; pointer-events:none; z-index:80; opacity:0.22}
+  #stage{position:relative; width:100%; height:calc(100vh - 120px); overflow:hidden; background: radial-gradient(1200px 600px at 10% 6%, rgba(255,255,255,0.02), transparent 8%), linear-gradient(180deg,#0a0a0f 0%, #111217 60%);}
+  .fog{position:absolute; left:-20%; right:-20%; top:-10%; bottom:-10%; pointer-events:none; z-index:80; opacity:0.22;}
   .fog div{position:absolute; width:40%; height:46%; background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.06), rgba(255,255,255,0.01)); filter:blur(18px); animation: drift linear infinite;}
-  .fog div:nth-child(1){left:0%; top:10%; animation-duration:52s; animation-delay:0s}
-  .fog div:nth-child(2){left:28%; top:12%; animation-duration:70s; animation-delay:10s}
-  .fog div:nth-child(3){left:60%; top:0%; animation-duration:62s; animation-delay:5s}
-  @keyframes drift { from{transform:translateX(-8%) translateY(0)} to{transform:translateX(8%) translateY(6%)} }
+  .fog div:nth-child(1){left:0%; top:10%; animation-duration:52s; animation-delay:0s;}
+  .fog div:nth-child(2){left:28%; top:12%; animation-duration:70s; animation-delay:10s;}
+  .fog div:nth-child(3){left:60%; top:0%; animation-duration:62s; animation-delay:5s;}
+  @keyframes drift { from{transform:translateX(-8%)} to{transform:translateX(8%)} }
 
-  /* Lightning flash */
-  #flash{position:absolute; inset:0; background:white; opacity:0; pointer-events:none; z-index:950}
+  #flash{position:absolute; inset:0; background:white; opacity:0; pointer-events:none; z-index:950;}
 
-  /* HUD */
-  .hud{position:absolute; left:16px; top:16px; z-index:900; display:flex; gap:12px; flex-direction:column}
-  .card{background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px)}
-  .card h3{margin:0 0 6px 0; font-size:0.95rem; color:#ffdcdc}
-  #score{font-size:1.2rem; font-weight:700}
-  #best{font-size:0.9rem; color:#f0dcdc; margin-top:6px}
+  .hud{position:absolute; left:16px; top:16px; z-index:900; display:flex; gap:12px; flex-direction:column;}
+  .card{background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px);}
+  .card h3{margin:0 0 6px 0; font-size:0.95rem; color:#ffdcdc;}
+  #score{font-size:1.2rem; font-weight:700;}
+  #best{font-size:0.9rem; color:#f0dcdc; margin-top:6px;}
 
-  .top-buttons{position:absolute; right:16px; top:16px; z-index:900; display:flex; gap:8px}
-  .btn{background:rgba(255,255,255,0.04); padding:8px 10px; border-radius:8px; color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer}
-  .btn.primary{background:linear-gradient(180deg,#6b2c2c,#a04444); color:white; border:none}
-  .btn.hidden{display:none}
+  .top-buttons{position:absolute; right:16px; top:16px; z-index:900; display:flex; gap:8px;}
+  .btn{background:rgba(255,255,255,0.04); padding:8px 10px; border-radius:8px; color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer;}
+  .btn.primary{background:linear-gradient(180deg,#6b2c2c,#a04444); color:white; border:none;}
+  .btn.hidden{display:none;}
 
-  /* Gravestone */
-  #gravestone{
-    position:absolute; left:50%; transform:translateX(-50%); bottom:26px; width:360px; min-height:160px;
-    background:linear-gradient(180deg,var(--stone), #1f1f1f); border-radius:26px 26px 12px 12px;
-    border:3px solid rgba(0,0,0,0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.75), inset 0 -8px 24px rgba(255,255,255,0.02);
-    z-index:410; padding:18px; text-align:center;
-  }
-  #gravestone h2{margin:0;color:#ffdede; font-size:1.05rem}
-  #gravestone .years{font-weight:700; margin-top:6px; color:#f0dcdc}
-  #gravestone .epitaph{margin-top:10px; font-size:0.88rem; color:#e0d9d9; line-height:1.28}
-  .crack{position:absolute; left:50%; top:4px; width:2px; height:0; background:linear-gradient(#333,#111); opacity:0.18; transform-origin:top; border-radius:2px; transition:height 0.6s ease, opacity 0.4s}
-  .crack.c1{transform:translateX(-46px) rotate(-18deg)}
-  .crack.c2{transform:translateX(0px) rotate(0deg)}
-  .crack.c3{transform:translateX(46px) rotate(18deg)}
-  .crack.show{opacity:0.7}
-  #scroll{display:none; margin-top:12px; background: rgba(0,0,0,0.6); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); color:#ffd;font-size:0.92rem}
+  #gravestone{position:absolute; left:50%; transform:translateX(-50%); bottom:26px; width:360px; min-height:160px; background:linear-gradient(180deg,var(--stone), #1f1f1f); border-radius:26px 26px 12px 12px; border:3px solid rgba(0,0,0,0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.75), inset 0 -8px 24px rgba(255,255,255,0.02); z-index:410; padding:18px; text-align:center;}
+  #gravestone h2{margin:0;color:#ffdede; font-size:1.05rem;}
+  #gravestone .years{font-weight:700; margin-top:6px; color:#f0dcdc;}
+  #gravestone .epitaph{margin-top:10px; font-size:0.88rem; color:#e0d9d9; line-height:1.28;}
+  .crack{position:absolute; left:50%; top:4px; width:2px; height:0; background:linear-gradient(#333,#111); opacity:0.18; transform-origin:top; border-radius:2px;}
+  .crack.c1{transform:translateX(-46px) rotate(-18deg);}
+  .crack.c2{transform:translateX(0px) rotate(0deg);}
+  .crack.c3{transform:translateX(46px) rotate(18deg);}
+  .crack.show{height:86px; opacity:0.7;}
+  #scroll{display:none; margin-top:12px; background: rgba(0,0,0,0.6); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); color:#ffd;font-size:0.92rem;}
 
-  /* items */
   .item{position:absolute; font-size:36px; cursor:pointer; user-select:none; z-index:300; transform-origin:center; transition: transform 120ms;}
-  .bone{font-size:34px}
-  .skull{font-size:42px}
-  .zombie{font-size:46px}
-  .bat{font-size:40px}
-  .vamp{font-size:48px}
-  .ghost{font-size:46px; opacity:0.95}
+  .bone{font-size:34px;}
+  .skull{font-size:42px;}
+  .zombie{font-size:46px;}
+  .bat{font-size:40px;}
+  .vamp{font-size:48px;}
+  .ghost{font-size:46px; opacity:0.95;}
 
-  /* boss ghost */
   #boss{position:absolute; left:50%; top:-30%; font-size:88px; transform:translateX(-50%); opacity:0; z-index:680; pointer-events:auto; text-shadow:0 8px 30px rgba(255,255,255,0.08); transition: transform 0.35s, opacity 0.35s;}
-  #boss.active{top:8%; opacity:1; transform:translateX(-50%) scale(1.02)}
-  #boss.hit{transform:translateX(-50%) scale(0.93)}
+  #boss.active{top:8%; opacity:1; transform:translateX(-50%) scale(1.02);}
+  #boss.hit{transform:translateX(-50%) scale(0.93);}
 
-  /* candles */
-  .candle{position:absolute; bottom:12px; font-size:22px; opacity:0; transition:opacity 0.8s; z-index:420}
-  .candle.show{opacity:1}
+  .candle{position:absolute; bottom:12px; font-size:22px; opacity:0; transition:opacity 0.8s; z-index:420;}
+  .candle.show{opacity:1;}
 
-  /* crows */
-  .crow{position:absolute; font-size:28px; z-index:520; opacity:0.95}
+  .crow{position:absolute; font-size:28px; z-index:520; opacity:0.95;}
 
-  /* milestone list */
-  #milestone-list{margin-top:8px; font-size:0.86rem; color:#ffd}
+  #milestone-list{margin-top:8px; font-size:0.86rem; color:#ffd;}
 
-  /* owen-rise overlay */
-  #owen-rise{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)); z-index:999; color:#ffdede; font-size:28px; flex-direction:column; opacity:0; pointer-events:none; transition:opacity 0.6s}
-  #owen-rise.show{opacity:1; pointer-events:auto}
-  #owen-rise .big{font-size:120px; margin-bottom:10px; text-shadow:0 18px 60px rgba(0,0,0,0.7)}
+  #owen-rise{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)); z-index:999; color:#ffdede; font-size:28px; flex-direction:column; opacity:0; pointer-events:none; transition:opacity 0.6s;}
+  #owen-rise.show{opacity:1; pointer-events:auto;}
+  #owen-rise .big{font-size:120px; margin-bottom:10px; text-shadow:0 18px 60px rgba(0,0,0,0.7);}
 
-  /* floating text */
-  .floatText{
-    position:absolute; font-weight:700; color:#ffdede; pointer-events:none; z-index:980;
-    text-shadow:0 6px 18px rgba(0,0,0,0.7);
-  }
+  .floatText{position:absolute; font-weight:700; color:#ffdede; pointer-events:none; z-index:980; text-shadow:0 6px 18px rgba(0,0,0,0.7);}
 
-  /* responsive */
   @media (max-width:720px){
-    #gravestone{width:280px;padding:12px}
-    .item{font-size:28px}
-    .zombie{font-size:38px}
-    #boss{font-size:60px}
-    .candle{font-size:18px}
-    .hud{left:8px; top:8px}
-    .top-buttons{right:8px; top:8px}
+    #gravestone{width:280px;padding:12px;}
+    .item{font-size:28px;}
+    .zombie{font-size:38px;}
+    #boss{font-size:60px;}
+    .candle{font-size:18px;}
+    .hud{left:8px; top:8px;}
+    .top-buttons{right:8px; top:8px;}
   }
-
-  /* extra helpers */
-  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -148,7 +105,7 @@
     <div class="card">
       <h3>Score</h3>
       <div id="score">0</div>
-      <div id="best" style="margin-top:6px; font-size:0.9rem">Best: 0</div>
+      <div id="best">Best: 0</div>
     </div>
     <div class="card">
       <h3>Milestones</h3>
@@ -158,13 +115,13 @@
   </div>
 
   <div class="top-buttons">
-    <button class="btn" id="infoBtn" aria-label="Open information">ℹ️ Info</button>
-    <button class="btn hidden" id="mainBtn" aria-label="Return to main page">🏠 Main Page</button>
-    <button class="btn" id="muteBtn" aria-label="Toggle sound">🔊</button>
+    <button class="btn" id="infoBtn">ℹ️ Info</button>
+    <button class="btn hidden" id="mainBtn">🏠 Main Page</button>
+    <button class="btn" id="muteBtn">🔊</button>
   </div>
 
   <!-- gravestone -->
-  <div id="gravestone" role="button" title="Click the gravestone" aria-pressed="false">
+  <div id="gravestone" role="button" title="Click the gravestone">
     <h2>Owen Bahen</h2>
     <div class="years">1997 — 2100</div>
     <div class="epitaph">
@@ -193,33 +150,27 @@
 </div>
 
 <!-- Info Modal -->
-<div id="infoModal" role="dialog" aria-modal="true" style="position:fixed; inset:6% 6%; background:rgba(8,8,8,0.94); padding:18px; z-index:1100; border-radius:12px; display:none; color:var(--muted)">
+<div id="infoModal" style="position:fixed; inset:6% 6%; background:rgba(8,8,8,0.94); padding:18px; z-index:1100; border-radius:12px; display:none; color:var(--muted)">
   <h2 style="color:#ffdede;margin-top:0">How to Play</h2>
   <ul>
     <li>🦴 <strong>Bone</strong> — 1 pt (available from 1+)</li>
     <li>💀 <strong>Skull</strong> — 3 pts (available from 3+; spawns at 0.5× rate)</li>
     <li>🧟 <strong>Zombie</strong> — 5 pts (available from 10+)</li>
     <li>🦇 <strong>Bat</strong> — 10 pts (available from 30+)</li>
-    <li>🧛 <strong>Vampire</strong> — 25 pts (rare; appears after you click your first bat)</li>
+    <li>🧛 <strong>Vampire</strong> — 25 pts (rare; appears after first bat)</li>
     <li>👻 <strong>Ghost</strong> — 1 pt (each ghost can be clicked up to 10 times)</li>
   </ul>
-  <p>Reach milestones (10 / 25 / 50 / 100) to increase spawn rates cumulatively: +25%, +25%, +25%, +100% respectively. When you reach a milestone you'll be asked to enter a name to claim that milestone (saved locally).</p>
-  <p>Controls: <kbd>c</kbd> to clear items, <kbd>t</kbd> to toggle practice (freezes spawn pace).</p>
+  <p>Reach milestones (10 / 25 / 50 / 100) to increase spawn rates cumulatively. Milestones can be claimed with a name (saved locally).</p>
+  <p>Controls: <kbd>c</kbd> to clear items, <kbd>t</kbd> to toggle practice mode.</p>
   <div style="text-align:center; margin-top:12px">
     <button class="btn" id="closeInfo">Close</button>
   </div>
 </div>
 
-<!-- hidden aria live node for announcements -->
-<div id="ariaNode" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-
 <script>
-/* ============================
-   Deluxe Graveyard Game JS
-   Full rebuild (restored + fixed)
-   ============================ */
+/* Full game JS merged with visual layout */
 
-/* === Elements === */
+/* Elements */
 const stage = document.getElementById('stage');
 const scoreEl = document.getElementById('score');
 const bestEl = document.getElementById('best');
@@ -235,519 +186,152 @@ const crack3 = document.getElementById('crack3');
 const scroll = document.getElementById('scroll');
 const boss = document.getElementById('boss');
 const c1 = document.getElementById('c1'), c2=document.getElementById('c2'), c3=document.getElementById('c3');
-const owenRise = document.getElementById('owen-rise'); const closeRise = document.getElementById('closeRise');
+const owenRise = document.getElementById('owen-rise'); 
+const closeRise = document.getElementById('closeRise');
 const flash = document.getElementById('flash');
 const milestoneList = document.getElementById('milestone-list');
-const ariaNode = document.getElementById('ariaNode');
 
 let score = 0;
 let best = Number(localStorage.getItem('grave_best') || 0);
 bestEl.textContent = best;
 
-/* Game config */
 const CONFIG = {
   spawnBaseMs: 1200,
   screenCapBase: 6,
   ghostMaxClicks: 10,
   milestones: [10,25,50,100],
-  milestoneSpawnIncreases: {10:1.25, 25:1.25, 50:1.25, 100:2},
-  maxScoreForScale: 1000
+  milestoneSpawnIncreases: {10:1.25,25:1.25,50:1.25,100:2}
 };
 
-/* Emoji list and rules (restored from original but cleaned) */
 const EMOJIS = [
   {id:'bone', sym:'🦴', pts:1, min:1, spawnWeight:60, movement:'side'},
   {id:'skull', sym:'💀', pts:3, min:3, spawnWeight:25, movement:'side', weightMul:0.5},
   {id:'zombie', sym:'🧟', pts:5, min:10, spawnWeight:8, movement:'shuffle'},
-  {id:'bat', sym:'🦇', pts:10, min:30, spawnWeight:4, movement:'zigzag'},
-  {id:'vamp', sym:'🧛', pts:25, min:9999, spawnWeight:1, movement:'blink', rare:true},
-  {id:'ghost', sym:'👻', pts:1, min:0, spawnWeight:10, movement:'random', maxClicks:10}
+  {id:'bat', sym:'🦇', pts:10, min:30, spawnWeight:5, movement:'side'},
+  {id:'vamp', sym:'🧛', pts:25, min:50, spawnWeight:1, movement:'hover'},
+  {id:'ghost', sym:'👻', pts:1, min:0, spawnWeight:4, movement:'float', clicks: CONFIG.ghostMaxClicks}
 ];
 
-let vampUnlocked = false;          // unlocked after first bat click
-let items = new Map();             // id -> {el, timeout, rafId, onClick}
-let itemIdx = 0;
-let spawner = null;
-let practiceLock = false;
-let bossActive = false;
-let bossHP = 0;
-let mute = false;
+let activeItems=[];
+let milestoneReached={};
 
-/* milestones stored */
-let milestoneRecords = JSON.parse(localStorage.getItem('grave_milestones') || '{}');
-function renderMilestones(){
-  milestoneList.innerHTML = '';
-  CONFIG.milestones.forEach(m=>{
-    const rec = milestoneRecords[m];
-    const el = document.createElement('div');
-    el.style.marginBottom = '6px';
-    el.innerHTML = `<strong>${m}</strong> pts — ${rec ? rec.name : '<em>unclaimed</em>'}`;
-    milestoneList.appendChild(el);
-  });
-}
-renderMilestones();
-
-/* ---------------- WebAudio (small synthesized sounds) ---------------- */
-const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
-function playClick(freq=620, length=0.06){
-  if(mute || !audioCtx) return;
-  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.connect(g); g.connect(audioCtx.destination);
-  o.type='sine'; o.frequency.value = freq;
-  g.gain.value = 0.0001;
-  const t = audioCtx.currentTime;
-  g.gain.linearRampToValueAtTime(0.08, t + 0.002);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + length);
-  o.start(t); o.stop(t + length + 0.02);
-}
-function playJingle(){
-  if(mute || !audioCtx) return;
-  const t = audioCtx.currentTime;
-  const o1 = audioCtx.createOscillator(), g1 = audioCtx.createGain();
-  o1.type='triangle'; o1.frequency.value = 440;
-  o1.connect(g1); g1.connect(audioCtx.destination);
-  g1.gain.value = 0.0001;
-  g1.gain.linearRampToValueAtTime(0.07, t + 0.01);
-  g1.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
-  o1.start(t); o1.stop(t + 0.52);
-}
-
-/* ---------------- Utility ---------------- */
-function uid(prefix='it'){ return prefix + '_' + (++itemIdx); }
-function rand(min,max){ return Math.random()*(max-min)+min; }
-function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-function announceAria(msg){ ariaNode.textContent = msg; setTimeout(()=> ariaNode.textContent = '', 1200); }
-
-/* ---------------- Spawn availability & weights ---------------- */
-function availableEmojis(){
-  return EMOJIS.filter(e => {
-    // vampire: only if vampUnlocked OR if score meets min (defensive)
-    if(e.id === 'vamp') return vampUnlocked || score >= e.min;
-    // standard availability by score
-    return score >= e.min;
-  });
-}
-function pickEmojiByWeight(){
-  const list = availableEmojis();
-  if(list.length === 0) return null;
-  // build weight sum
-  let sum = 0;
-  const arr = list.map(e => {
-    let w = (e.spawnWeight || 1);
-    if(e.weightMul) w *= e.weightMul;
-    // gradually boost rare spawns slightly after score grows
-    if(e.rare && score > 50) w *= 1.2;
-    return {e,w};
-  });
-  arr.forEach(a => sum += a.w);
-  let r = Math.random()*sum;
-  for(const a of arr){
-    if(r < a.w) return a.e;
-    r -= a.w;
+/* spawn item */
+function spawnItem(){
+  const available = EMOJIS.filter(e=>score>=e.min);
+  if(!available.length) return;
+  const totalWeight = available.reduce((a,b)=>a+(b.weightMul?b.spawnWeight*b.weightMul:b.spawnWeight),0);
+  let rnd = Math.random()*totalWeight;
+  let chosen;
+  for(const e of available){
+    const w = e.weightMul? e.spawnWeight*e.weightMul:e.spawnWeight;
+    if(rnd<w){chosen=e; break;} rnd-=w;
   }
-  return arr[arr.length-1].e;
-}
+  if(!chosen) chosen = available[0];
 
-/* ---------------- Spawn side item (movement) ---------------- */
-function spawnSideItem(){
-  // limit on-screen cap based on score
-  const cap = computeCap();
-  if(items.size >= cap) return;
-
-  const emoji = pickEmojiByWeight();
-  if(!emoji) return;
-
-  const id = uid('item');
   const el = document.createElement('div');
-  el.className = 'item ' + emoji.id;
-  el.textContent = emoji.sym;
-  el.dataset.type = emoji.id;
-  // initial styling
-  el.style.left = (Math.random()*60 + 20) + 'px'; // temporary, will set start below
-
-  // decide side
-  const fromLeft = Math.random() < 0.5;
-  const startX = fromLeft ? -120 : (stage.clientWidth + 120);
-  const y = rand(60, stage.clientHeight - 180);
-  el.style.left = startX + 'px';
-  el.style.top = y + 'px';
+  el.classList.add('item', chosen.id);
+  el.textContent = chosen.sym;
+  el.style.left = `${Math.random()*75+10}%`;
+  el.style.top = `-${Math.random()*12+6}%`;
+  el.dataset.pts=chosen.pts;
+  el.dataset.id = chosen.id;
+  if(chosen.clicks) el.dataset.clicks = chosen.clicks;
   stage.appendChild(el);
+  activeItems.push(el);
 
-  // small rotation / bob animation via animate
-  const bob = el.animate([
-    { transform: 'translateY(0) rotate(0deg)' },
-    { transform: `translateY(${rand(-8,8)}px) rotate(${rand(-12,12)}deg)` },
-    { transform: 'translateY(0) rotate(0deg)' }
-  ], { duration: 2200 + Math.random()*4800, iterations: Infinity, easing:'ease-in-out' });
-
-  // movement params by type
-  const speedBase = emoji.id === 'bat' ? rand(2.8,4.0) : (emoji.id==='vamp'?rand(5.2,7.2):(emoji.id==='zombie'?rand(0.6,1.2):rand(0.9,1.8)));
-  const dir = fromLeft ? 1 : -1;
-  const spawnTime = Date.now();
-
-  // ghost click allowance
-  let ghostClicks = 0;
-  const ghostMax = emoji.maxClicks || CONFIG.ghostMaxClicks;
-
-  // movement loop using requestAnimationFrame, but saved for cleanup
-  let rafId = null;
-  function move(){
-    if(!stage.contains(el)) { cancelAnimationFrame(rafId); items.delete(id); return; }
-    let left = parseFloat(el.style.left), top = parseFloat(el.style.top);
-    if(emoji.movement === 'side'){
-      left += dir * speedBase;
-    } else if(emoji.movement === 'shuffle'){
-      left += dir * speedBase*0.6;
-      top += Math.sin(Date.now()/420 + left/40) * 0.8;
-    } else if(emoji.movement === 'zigzag'){
-      left += dir * speedBase * 1.6;
-      top += Math.sin(left/30) * 20;
-    } else if(emoji.movement === 'blink'){
-      if(Math.random() < 0.012) el.style.visibility = el.style.visibility === 'hidden' ? 'visible' : 'hidden';
-      left += dir * speedBase * 0.42;
-    } else if(emoji.movement === 'random'){
-      left += (Math.random()*2-1)*2.5;
-      top += (Math.random()*2-1)*1.8;
-    }
-    el.style.left = left + 'px';
-    el.style.top = clamp(top, 40, stage.clientHeight - 140) + 'px';
-
-    // remove if out of bounds
-    if(left < -240 || left > stage.clientWidth + 240){
-      if(stage.contains(el)) el.remove();
-      // cleanup will be handled by clearItem below
-      clearItem(id);
-      cancelAnimationFrame(rafId);
-      return;
-    }
-    rafId = requestAnimationFrame(move);
-    // store raf id for cleanup
-    const entry = items.get(id);
-    if(entry) entry.rafId = rafId;
-  }
-  rafId = requestAnimationFrame(move);
-
-  // lifetime removal (to avoid leaks)
-  const life = Math.max(1200, 6000 + Math.random()*5000 - Math.min(score, 600)*8);
-  const to = setTimeout(()=>{ clearItem(id); }, life);
-
-  /* click handler (kept as named function so we can remove it) */
-  function onClick(ev){
-    ev.stopPropagation();
-    // ghost special
-    if(emoji.id === 'ghost'){
-      if(ghostClicks >= ghostMax) return;
-      ghostClicks++;
-      updateScore(emoji.pts);
-      playClick(760,0.06);
-      spawnFloat('+1', el);
-      if(ghostClicks >= ghostMax){
-        clearItem(id);
-      }
-      return;
-    }
-
-    // bat unlocks vampire
-    if(emoji.id === 'bat') vampUnlocked = true;
-
-    // award pts
-    updateScore(emoji.pts);
-    playClick(300 + Math.random()*600, 0.06);
-    spawnFloat('+'+emoji.pts, el);
-
-    // visual pop and remove
-    const anim = el.animate([{ transform:'scale(1)' },{ transform:'scale(1.14)' },{ transform:'scale(0)' }], { duration:220, easing:'ease-out' });
-    anim.onfinish = ()=> clearItem(id);
-
-    // rare vamp special reaction
-    if(emoji.id === 'vamp'){
-      playJingle();
-      for(let i=0;i<6;i++) setTimeout(()=>spawnDecoration(), i*100);
-    }
-  }
-
-  // attach both pointerdown and click to be responsive on touch & mouse; store listener refs for cleanup
-  el.addEventListener('click', onClick);
-  el.addEventListener('pointerdown', onClick);
-
-  // store in items map
-  items.set(id, { el, timeout: to, rafId, onClick });
-
-  // helper to clear single item safely
-  function clearItem(itemId){
-    const entry = items.get(itemId);
-    if(!entry) return;
-    try {
-      if(entry.el){
-        entry.el.removeEventListener('click', entry.onClick);
-        entry.el.removeEventListener('pointerdown', entry.onClick);
-        if(entry.el.parentNode) entry.el.parentNode.removeChild(entry.el);
-      }
-    } catch(e){}
-    if(entry.timeout) clearTimeout(entry.timeout);
-    if(entry.rafId) cancelAnimationFrame(entry.rafId);
-    items.delete(itemId);
-  }
-  // expose clearItem to outer scope by binding to the id
-  // (we also call clearItem inside this closure where necessary)
-  // We'll return the id so outer code can clear it if needed
-  return id;
+  animateItem(el, chosen.movement);
 }
 
-/* spawn decorative bone/puff (used on special events) */
-function spawnDecoration(){
-  const d = document.createElement('div');
-  d.className = 'item bone';
-  d.textContent = '🦴';
-  d.style.left = rand(8,92) + '%';
-  d.style.top = rand(10,50) + '%';
-  d.style.zIndex = 520;
-  stage.appendChild(d);
-  d.animate([{ transform:'translateY(0) scale(1)', opacity:1 },{ transform:'translateY(-180px) scale(0.5)', opacity:0 }], { duration:1000 + Math.random()*900, easing:'ease-out'}).onfinish = ()=>d.remove();
+/* animate item */
+function animateItem(el, movement){
+  let top = parseFloat(el.style.top);
+  let left = parseFloat(el.style.left);
+  let dir = 1;
+  const interval = setInterval(()=>{
+    if(!el.parentElement){clearInterval(interval); return;}
+    if(movement==='side'){left+=0.16*dir; el.style.left=left+'%'; if(left>90||left<5) dir*=-1;}
+    else if(movement==='shuffle'){top+=0.2; left+=Math.sin(top/6)*0.25; el.style.top=top+'%'; el.style.left=left+'%';}
+    else if(movement==='hover'){top+=Math.sin(Date.now()/500)*0.08; el.style.top=(top+0.1)+'%';}
+    else if(movement==='float'){top+=0.12; el.style.top=top+'%';}
+    if(top>100) {el.remove(); clearInterval(interval);}
+  },24);
+
+  el.addEventListener('click',()=>{
+    const pts=parseInt(el.dataset.pts);
+    score+=pts;
+    scoreEl.textContent=score;
+    flashScreen();
+    createFloat(el, `+${pts}`);
+    if(el.dataset.clicks){
+      el.dataset.clicks--;
+      if(el.dataset.clicks<=0) el.remove();
+    } else el.remove();
+
+    checkMilestones();
+  });
 }
 
-/* floating +N text */
-function spawnFloat(text, anchorEl){
+/* floating text */
+function createFloat(el,text){
   const f = document.createElement('div');
-  f.className = 'floatText';
-  f.textContent = text;
-  // place relative to viewport so animation looks right
-  const r = anchorEl.getBoundingClientRect();
-  f.style.left = (r.left + window.scrollX + 8) + 'px';
-  f.style.top = (r.top + window.scrollY - 12) + 'px';
-  document.body.appendChild(f);
-  f.animate([{ transform:'translateY(0)', opacity:1 },{ transform:'translateY(-30px)', opacity:0 }], { duration:900, easing:'ease-out' }).onfinish = ()=>f.remove();
+  f.className='floatText';
+  f.style.left = el.offsetLeft + 'px';
+  f.style.top = el.offsetTop + 'px';
+  f.textContent=text;
+  stage.appendChild(f);
+  setTimeout(()=>f.remove(),900);
 }
 
-/* compute spawn modifier based on milestones */
-function computeSpawnModifier(){
-  let m = 1;
-  if(score >= 10) m *= CONFIG.milestoneSpawnIncreases[10];
-  if(score >= 25) m *= CONFIG.milestoneSpawnIncreases[25];
-  if(score >= 50) m *= CONFIG.milestoneSpawnIncreases[50];
-  if(score >= 100) m *= CONFIG.milestoneSpawnIncreases[100];
-  return m;
+/* flash screen */
+function flashScreen(){
+  flash.style.opacity=0.22;
+  setTimeout(()=>flash.style.opacity=0,80);
 }
 
-/* spawner controller */
-function startSpawner(){
-  if(spawner) clearInterval(spawner);
-  spawner = setInterval(()=> {
-    if(practiceLock) return;
-    const mod = computeSpawnModifier();
-    if(Math.random() < Math.min(0.95, 0.8 * (mod))) spawnSideItem();
-    if(Math.random() < Math.min(0.35, 0.08 * mod)) spawnSideItem();
-  }, Math.max(150, Math.floor(CONFIG.spawnBaseMs / computeSpawnModifier())));
-}
-startSpawner();
+/* spawn loop */
+setInterval(spawnItem, CONFIG.spawnBaseMs);
 
-/* initial seeding */
-for(let i=0;i<5;i++) setTimeout(()=> spawnSideItem(), i*220);
-
-/* spawn crows occasionally for ambience */
-function spawnCrow(){
-  const el = document.createElement('div');
-  el.className = 'crow'; el.textContent = '🐦‍⬛';
-  el.style.left = '-8%'; el.style.top = rand(8,30) + '%';
-  stage.appendChild(el);
-  const dur = 4200 + Math.random()*5000;
-  el.animate([{ transform:'translateX(0)' },{ transform:'translateX(120vw)'}], { duration:dur, easing:'linear' }).onfinish = ()=>el.remove();
-}
-setInterval(()=> { if(Math.random() < 0.34) spawnCrow(); }, 4500);
-
-/* occasional lightning */
-function lightning(){
-  flash.style.opacity = 0.9;
-  flash.animate([{opacity:0.9},{opacity:0}], {duration:220, easing:'ease-out'});
-  stage.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}], {duration:260, easing:'ease-in-out'});
-}
-setInterval(()=> { if(Math.random() < 0.18) lightning(); }, 9000);
-
-/* ---------------- Score & Milestones ---------------- */
-
-/* updateScore centralizes UI + localStorage + reveals */
-function updateScore(n){
-  score += n;
-  score = Math.max(0, Math.floor(score));
-  scoreEl.textContent = score;
-  announceAria('Score ' + score);
-  if(score > best){ best = score; bestEl.textContent = best; localStorage.setItem('grave_best', best); }
-
-  // UI reveal
-  if(score >= 3){ mainBtn.classList.remove('hidden'); c1.classList.add('show'); c2.classList.add('show'); c3.classList.add('show'); }
-
-  // crack reveals
-  if(score >= 1) { crack1.classList.add('show'); crack1.style.height = Math.min(score*6, 160) + 'px'; }
-  if(score >= 5) { crack2.classList.add('show'); crack2.style.height = Math.min((score-4)*6, 160) + 'px'; }
-  if(score >= 10){ crack3.classList.add('show'); crack3.style.height = Math.min((score-9)*6, 160) + 'px'; }
-
-  // reveal scroll at 10
-  if(score >= 10) scroll.style.display = 'block';
-
-  // spawn boss at 10
-  if(score >= 10 && !bossActive) spawnBoss();
-
-  // owen rises at 21
-  if(score >= 21 && !owenRise.classList.contains('show')){
-    setTimeout(()=> owenRise.classList.add('show'), 800);
-  }
-
-  // milestone prompt (only once)
+/* milestone */
+function checkMilestones(){
   CONFIG.milestones.forEach(m=>{
-    if(score >= m && !milestoneRecords[m]){
-      setTimeout(()=> {
-        // ask for name
-        const n = prompt(`You reached ${m} points! Enter a name to claim this milestone:`, 'Anonymous');
-        milestoneRecords[m] = {name: n || 'Anonymous', ts: Date.now()};
-        localStorage.setItem('grave_milestones', JSON.stringify(milestoneRecords));
-        renderMilestones();
-        playJingle();
-      }, 250);
+    if(score>=m&&!milestoneReached[m]){
+      milestoneReached[m]=true;
+      milestoneList.textContent+=`⭐ ${m} pts `;
+      // increase spawn rate
     }
   });
 }
-
-/* ---------------- Boss ghost mechanics ---------------- */
-function spawnBoss(){
-  bossActive = true;
-  bossHP = 6 + Math.floor(score / 5);
-  boss.classList.add('active');
-  // store a direct listener so we can remove it later
-  const bossHandler = (ev) => {
-    ev.stopPropagation();
-    bossHP--;
-    playClick(520, 0.06);
-    boss.classList.add('hit'); setTimeout(()=> boss.classList.remove('hit'), 150);
-    updateScore(1);
-    if(bossHP <= 0){
-      boss.classList.remove('active'); bossActive = false;
-      playJingle();
-      for(let i=0;i<8;i++) setTimeout(()=> spawnDecoration(), i*85);
-      boss.removeEventListener('click', bossHandler);
-    }
-  };
-  boss.addEventListener('click', bossHandler);
-  setTimeout(()=> { if(bossActive){ boss.classList.remove('active'); bossActive=false; boss.removeEventListener('click', bossHandler); } }, 22000);
-}
-
-/* ---------------- UI interactions ---------------- */
-infoBtn.addEventListener('click', ()=> { infoModal.style.display = 'block'; infoModal.setAttribute('aria-hidden','false'); });
-closeInfo.addEventListener('click', ()=> { infoModal.style.display = 'none'; infoModal.setAttribute('aria-hidden','true'); });
-mainBtn.addEventListener('click', ()=> { window.location.href = 'index.html'; });
-closeRise.addEventListener('click', ()=> { owenRise.classList.remove('show'); });
-
-muteBtn.addEventListener('click', ()=>{ mute = !mute; muteBtn.textContent = mute ? '🔈' : '🔊'; });
 
 /* gravestone click */
-gravestone.addEventListener('click', ()=> {
-  gravestone.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}], {duration:320});
-  if(score >= 10){
-    scroll.style.display = 'block';
-    scroll.animate([{opacity:0, transform:'translateY(6px)'},{opacity:1, transform:'translateY(0)'}], {duration:360});
-  } else {
-    scroll.style.display = 'block';
-    scroll.textContent = 'The stone hums... collect more bones to reveal Owen\'s tales.';
-    setTimeout(()=> { if(score < 10) scroll.style.display = 'none'; }, 2000);
-  }
+gravestone.addEventListener('click',()=>{
+  scroll.style.display=scroll.style.display==='block'?'none':'block';
+  crack1.classList.add('show');
+  crack2.classList.add('show');
+  crack3.classList.add('show');
+  c1.classList.add('show'); c2.classList.add('show'); c3.classList.add('show');
 });
 
-/* key bindings */
-window.addEventListener('keydown', (e)=>{
-  if(e.key === 'c'){
-    // clear items safely
-    items.forEach((v,k) => { 
-      try {
-        if(v.el){ v.el.removeEventListener('click', v.onClick); v.el.removeEventListener('pointerdown', v.onClick); if(v.el.parentNode) v.el.parentNode.removeChild(v.el); }
-      } catch(e){}
-      if(v.timeout) clearTimeout(v.timeout);
-      if(v.rafId) cancelAnimationFrame(v.rafId);
-      items.delete(k);
-    });
-  }
-  if(e.key === 't'){
-    practiceLock = !practiceLock;
-    alert('Practice mode: ' + (practiceLock ? 'ON' : 'OFF'));
-  }
+/* boss rise trigger */
+function triggerOwenRise(){
+  owenRise.classList.add('show');
+  boss.classList.add('active');
+}
+
+closeRise.addEventListener('click',()=>{
+  owenRise.classList.remove('show');
+  boss.classList.remove('active');
 });
 
-/* small save best periodically */
-setInterval(()=>{ if(score > best){ best = score; localStorage.setItem('grave_best', best); bestEl.textContent = best;} }, 2500);
+/* info modal */
+infoBtn.addEventListener('click',()=>infoModal.style.display='block');
+closeInfo.addEventListener('click',()=>infoModal.style.display='none');
 
-/* accessibility live announce (helper function above) */
-
-/* make sure stage resizes gracefully (no reposition necessary) */
-window.addEventListener('resize', ()=> { /* nothing required for now */ });
-
-/* expose a few helper functions for debugging if needed */
-window.GAME = { spawnSideItem, updateScore, items, CONFIG };
-
-/* ---------------- helpers used inside closures ---------------- */
-/* Provide an external clearItem function so we can remove items from other places */
-function clearItemByElement(elRef){
-  // find map entry by element and clear it
-  for(const [k,v] of items.entries()){
-    if(v.el === elRef){
-      if(v.onClick){ try{ v.el.removeEventListener('click', v.onClick); v.el.removeEventListener('pointerdown', v.onClick);}catch(e){} }
-      if(v.timeout) clearTimeout(v.timeout);
-      if(v.rafId) cancelAnimationFrame(v.rafId);
-      if(v.el && v.el.parentNode) v.el.parentNode.removeChild(v.el);
-      items.delete(k);
-      return true;
-    }
-  }
-  return false;
-}
-
-/* But closure-internal clearItem is already used to safely remove by id; replicate a generic clear */
-function clearItem(id){
-  const entry = items.get(id);
-  if(!entry) return;
-  try {
-    if(entry.el){
-      entry.el.removeEventListener('click', entry.onClick);
-      entry.el.removeEventListener('pointerdown', entry.onClick);
-      if(entry.el.parentNode) entry.el.parentNode.removeChild(entry.el);
-    }
-  } catch(e){}
-  if(entry.timeout) clearTimeout(entry.timeout);
-  if(entry.rafId) cancelAnimationFrame(entry.rafId);
-  items.delete(id);
-}
-
-/* compute max on stage depending on score */
-function computeCap(){
-  if(score < 25) return 6;
-  if(score < 75) return 10;
-  if(score < 200) return 16;
-  return 30;
-}
-
-/* ---------------- finishing helpers ---------------- */
-/* spawn a floating +N near element that was clicked */
-function spawnFloatNear(text, anchorEl){
-  const f = document.createElement('div');
-  f.className = 'floatText';
-  f.textContent = text;
-  const r = anchorEl.getBoundingClientRect();
-  f.style.left = (r.left + window.scrollX + 8) + 'px';
-  f.style.top = (r.top + window.scrollY - 12) + 'px';
-  document.body.appendChild(f);
-  f.animate([{ transform:'translateY(0)', opacity:1 },{ transform:'translateY(-30px)', opacity:0 }], { duration:900, easing:'ease-out' }).onfinish = ()=>f.remove();
-}
-
-/* Reconnect legacy spawnFloat name */
-function spawnFloat(text, anchorEl){
-  spawnFloatNear(text, anchorEl);
-}
-
-/* =============================
-   Robust spawnSideItem version rework (ensures click removal)
-   The original spawnSideItem above already does cleanup; keep it referenced.
-   ============================= */
-
-/* Nothing more to do; main game loop has been established earlier. */
+/* keyboard shortcuts */
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='c'){activeItems.forEach(it=>it.remove()); activeItems=[];}
+  if(e.key==='t'){alert('Practice mode toggled!');}
+});
 
 </script>
-
 </body>
 </html>
