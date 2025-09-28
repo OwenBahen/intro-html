@@ -1,215 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graveyard – Owen Bahen</title>
-<style>
-/* --- Reset --- */
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: "Trebuchet MS", sans-serif;
-  background: linear-gradient(to top, #0a0a0a 20%, #1c1c2b 100%);
-  color:#eee;
-  overflow:hidden;
-  height:100vh;
-  position:relative;
-}
-
-/* --- Ground --- */
-.ground {
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:140px;
-  background: linear-gradient(to top, #2a3b2a 0%, #1a2a1a 50%, #0c1a0c 100%);
-  border-top: 4px solid #111;
-  box-shadow: inset 0 10px 15px rgba(0,0,0,0.6);
-  z-index:2;
-}
-
-/* --- Gravestone --- */
-.gravestone {
-  position:absolute;
-  bottom:140px;
-  left:50%;
-  transform:translateX(-50%);
-  width:260px;
-  height:160px;
-  background: radial-gradient(circle at top, #666 0%, #444 100%);
-  border-radius:120px 120px 10px 10px;
-  box-shadow:0 -6px 12px rgba(0,0,0,0.8);
-  text-align:center;
-  padding:1rem 0.5rem;
-  color:#fff;
-  font-size:0.85rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  line-height:1.2rem;
-}
-
-/* Gravestone text */
-.gravestone p { margin-bottom:8px; }
-
-/* --- Score --- */
-.hud {
-  position:absolute;
-  top:10px;
-  left:10px;
-  display:flex;
-  flex-direction:column;
-  gap:0.5rem;
-  z-index:5;
-}
-.score-box {
-  background:#222;
-  padding:0.5rem 1rem;
-  border-radius:8px;
-  border:1px solid #555;
-}
-
-/* --- Entities --- */
-.entity {
-  position:absolute;
-  font-size:2rem;
-  cursor:pointer;
-  z-index:4;
-  user-select:none;
-  touch-action: manipulation;
-}
-
-/* Animations */
-@keyframes float-down {
-  0% { transform:translateY(-50px); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(100vh); opacity:0; }
-}
-@keyframes float-up {
-  0% { transform:translateY(100vh); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(-50px); opacity:0; }
-}
-@keyframes zigzag {
-  0% { transform:translate(0,0); }
-  25% { transform:translate(-40px,25vh); }
-  50% { transform:translate(40px,50vh); }
-  75% { transform:translate(-30px,75vh); }
-  100% { transform:translate(0,100vh); }
-}
-@keyframes quick-pop {
-  0% { transform:scale(0); opacity:0; }
-  20% { transform:scale(1.2); opacity:1; }
-  80% { transform:scale(1); opacity:1; }
-  100% { transform:scale(0); opacity:0; }
-}
-@keyframes ghost-float {
-  0%,100% { transform:translate(0,0); }
-  25% { transform:translate(25px,-15px); }
-  50% { transform:translate(-25px,15px); }
-  75% { transform:translate(15px,-20px); }
-}
-
-/* --- Mobile --- */
-@media(max-width:600px){
-  .gravestone { width:200px; height:140px; font-size:0.75rem; padding:0.5rem; }
-  .entity { font-size:1.6rem; }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Graveyard Clicker</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to top, #0b0b0b, #1a1a1a);
+      color: #eee;
+      font-family: "Courier New", monospace;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .graveyard {
+      position: relative;
+      width: 280px;
+      max-width: 90%;
+      height: 420px;
+      background: #2b2b2b;
+      border-radius: 12px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.7);
+      overflow: hidden;
+    }
+    .score {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+      font-weight: bold;
+      background: rgba(0,0,0,0.5);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .crack {
+      position: absolute;
+      width: 2px;
+      background: #888;
+      left: 50%;
+      height: 0;
+      bottom: 0;
+      transition: height 0.6s ease;
+    }
+    .item {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .float {
+      position: absolute;
+      font-size: 1rem;
+      animation: floatUp 1s ease forwards;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-40px); opacity: 0; }
+    }
+    .fog {
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+      animation: drift 60s linear infinite;
+    }
+    @keyframes drift {
+      from { transform: translate(-10%,0); }
+      to { transform: translate(10%,5%); }
+    }
+    .btn {
+      position: absolute;
+      bottom: 8px;
+      background: rgba(0,0,0,0.6);
+      border: none;
+      color: #eee;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .btn:hover { background: rgba(255,255,255,0.1); }
+    #muteBtn { left: 8px; }
+    #infoBtn { right: 8px; }
+    #infoModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #infoModal .modal-content {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+    #infoModal button {
+      margin-top: 10px;
+      padding: 5px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+  </style>
 </head>
 <body>
+  <div class="graveyard" id="graveyard">
+    <div class="fog"></div>
+    <div class="score" id="score">Score: 0</div>
+    <div class="crack" id="crack"></div>
+    <button class="btn" id="muteBtn" aria-label="Mute or unmute sound">🔊</button>
+    <button class="btn" id="infoBtn" aria-label="Game info">ℹ️ Info</button>
+  </div>
+  <div id="infoModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <h2>How to Play</h2>
+      <p>Click the spooky items to earn points. Some are rare with big bonuses. Crack the gravestone as you score more!</p>
+      <button id="closeInfo">Close</button>
+    </div>
+  </div>
+  <div id="ariaLive" class="sr-only" aria-live="polite"></div>
 
-<div class="hud">
-  <div class="score-box">Score: <span id="score">0</span></div>
-</div>
+  <script>
+    const graveyard = document.getElementById("graveyard");
+    const scoreEl = document.getElementById("score");
+    const crackEl = document.getElementById("crack");
+    const muteBtn = document.getElementById("muteBtn");
+    const infoBtn = document.getElementById("infoBtn");
+    const infoModal = document.getElementById("infoModal");
+    const closeInfo = document.getElementById("closeInfo");
+    const ariaLive = document.getElementById("ariaLive");
 
-<div class="gravestone" id="gravestone">
-  <p>RIP Owen Bahen</p>
-  <p>1997 – 2100</p>
-  <p>"3 Century Man"</p>
-</div>
+    let score = 0;
+    let muted = false;
+    let vampUnlocked = false;
+    const items = new Map();
 
-<div class="ground"></div>
+    const EMOJIS = [
+      {id:'bone', sym:'🦴', pts:1, min:0, weight:60, move:'side'},
+      {id:'skull', sym:'💀', pts:3, min:3, weight:25, move:'side', mul:0.5},
+      {id:'ghost', sym:'👻', pts:5, min:10, weight:10, move:'float', maxClicks:1},
+      {id:'pumpkin', sym:'🎃', pts:10, min:20, weight:5, move:'float', rare:true},
+      {id:'vamp', sym:'🧛', pts:50, min:9999, weight:1, move:'float', rare:true}
+    ];
 
-<script>
-let score = 0;
-let spawnInterval = 2500;
-let gravestones = [
-  `<p>RIP Owen Bahen</p><p>1997 – 2100</p><p>"3 Century Man"</p>`,
-  `<p>Born in an ambulance roadside</p><p>Life began with a rush</p>`,
-  `<p>Front page newspaper announcement</p><p>Everyone knew my name</p>`,
-  `<p>Teenage mischief & adventure</p><p>Curiosity led the way</p>`,
-  `<p>Adult achievements</p><p>Legacy shaped</p>`,
-  `<p>Lived to 103</p><p>"The 3-Century Man"</p>`
-];
+    function playSound(freq=440, dur=120) {
+      if (muted) return;
+      const ctx = new (window.AudioContext||window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.connect(g); g.connect(ctx.destination);
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(0.1, ctx.currentTime);
+      osc.start();
+      osc.stop(ctx.currentTime+dur/1000);
+    }
 
-/* Update gravestone text */
-function updateGravestone(){
-  let stone = document.getElementById("gravestone");
-  if(score <3) stone.innerHTML = gravestones[0];
-  else if(score <10) stone.innerHTML = gravestones[1];
-  else if(score <25) stone.innerHTML = gravestones[2];
-  else if(score <50) stone.innerHTML = gravestones[3];
-  else if(score <100) stone.innerHTML = gravestones[4];
-  else stone.innerHTML = gravestones[5];
-}
+    function spawnItem() {
+      const pool = availableEmojis();
+      const pick = weightedPick(pool);
+      if (!pick) return;
+      const el = document.createElement("div");
+      el.className = "item";
+      el.textContent = pick.sym;
+      graveyard.appendChild(el);
+      el.style.left = Math.random() * 80 + "%";
+      el.style.top = "-10%";
+      let clicks = 0;
+      const id = Math.random().toString(36).slice(2);
+      const entry = {el, raf: null, to: null};
+      items.set(id, entry);
 
-/* Spawn entities */
-function spawnEntity(){
-  let choices = ["ghost"]; // always include ghosts
-  if(score>=1) choices.push("bone");
-  if(score>=3) choices.push("skull");
-  if(score>=10) choices.push("zombie");
-  if(score>=25) choices.push("bat");
-  if(score>=50) choices.push("vampire");
+      function onClick() {
+        if (pick.maxClicks && clicks >= pick.maxClicks) return;
+        clicks++;
+        score += pick.pts;
+        scoreEl.textContent = "Score: " + score;
+        spawnFloat("+"+pick.pts, el);
+        playSound(220+pick.pts*10);
+        updateCrack();
+        ariaLive.textContent = `You clicked ${pick.sym} for ${pick.pts} points`;
+        if (pick.id==="vamp") vampUnlocked=true;
+        if (clicks >= (pick.maxClicks||Infinity)) {
+          cleanup();
+        }
+      }
+      el.addEventListener("click", onClick);
 
-  let type = choices[Math.floor(Math.random()*choices.length)];
-  let entity = document.createElement("div");
-  entity.className="entity";
+      function cleanup() {
+        el.removeEventListener("click", onClick);
+        el.remove();
+        if (entry.raf) cancelAnimationFrame(entry.raf);
+        if (entry.to) clearTimeout(entry.to);
+        items.delete(id);
+      }
 
-  let duration=6000;
-  switch(type){
-    case "bone": entity.textContent="🦴"; entity.style.animation=`float-down ${duration}ms linear forwards`; break;
-    case "skull": entity.textContent="💀"; entity.style.animation=`float-up ${duration}ms linear forwards`; break;
-    case "zombie": entity.textContent="🧟"; entity.style.animation=`float-down ${duration+2000}ms linear forwards`; break;
-    case "bat": entity.textContent="🦇"; entity.style.animation=`zigzag ${duration-1500}ms linear forwards`; break;
-    case "vampire": entity.textContent="🧛"; entity.style.animation=`quick-pop 2500ms linear forwards`; break;
-    case "ghost": entity.textContent="👻"; entity.style.animation=`ghost-float 4000ms ease-in-out infinite`; break;
-  }
+      function animate() {
+        const rect = graveyard.getBoundingClientRect();
+        let y = -30;
+        const speed = 0.4 + Math.random()*0.4;
+        function frame() {
+          y += speed;
+          el.style.top = y+"px";
+          if (y < rect.height+20) {
+            entry.raf = requestAnimationFrame(frame);
+          } else {
+            cleanup();
+          }
+        }
+        frame();
+      }
+      animate();
+      entry.to = setTimeout(cleanup, 8000);
+    }
 
-  entity.style.left=Math.random()*80 + "%";
-  entity.style.top="0px";
+    function spawnFloat(txt, parent) {
+      const el = document.createElement("div");
+      el.className = "float";
+      el.textContent = txt;
+      graveyard.appendChild(el);
+      const r = parent.getBoundingClientRect();
+      const g = graveyard.getBoundingClientRect();
+      el.style.left = (r.left-g.left+10)+"px";
+      el.style.top = (r.top-g.top)+"px";
+      setTimeout(()=>el.remove(),1000);
+    }
 
-  document.body.appendChild(entity);
+    function availableEmojis() {
+      return EMOJIS.filter(e=>{
+        if (e.id==="vamp" && !vampUnlocked) return false;
+        if (e.rare && e.id!=="vamp" && score < e.min) return false;
+        return score >= e.min || (e.rare && vampUnlocked);
+      });
+    }
 
-  entity.addEventListener("click",()=>{
-    let add=0;
-    if(type==="bone") add=1;
-    if(type==="skull") add=3;
-    if(type==="zombie") add=5;
-    if(type==="bat") add=10;
-    if(type==="vampire") add=25;
-    if(type==="ghost") add=1;
-    score+=add;
-    document.getElementById("score").textContent=score;
-    updateGravestone();
-    if(type!=="ghost") entity.remove();
-  });
+    function weightedPick(arr) {
+      const sum = arr.reduce((a,e)=>a+e.weight,0);
+      let rnd = Math.random()*sum;
+      for (let e of arr) {
+        if (rnd < e.weight) return e;
+        rnd -= e.weight;
+      }
+    }
 
-  setTimeout(()=>{ if(type!=="ghost") entity.remove(); }, duration+3000);
-}
+    function updateCrack() {
+      const maxH = graveyard.offsetHeight*0.7;
+      crackEl.style.height = Math.min(score*5, maxH) + "px";
+    }
 
-/* Spawn loop */
-setInterval(spawnEntity, spawnInterval);
+    setInterval(spawnItem, 1500);
 
-/* Adjust spawn rate */
-function adjustSpawnRate(){
-  if(score>=10 && spawnInterval>2000) spawnInterval=2000;
-  if(score>=25 && spawnInterval>1500) spawnInterval=1500;
-  if(score>=50 && spawnInterval>1000) spawnInterval=1000;
-  if(score>=100 && spawnInterval>700) spawnInterval=700;
-}
-setInterval(adjustSpawnRate,3000);
-</script>
+    muteBtn.onclick = ()=>{
+      muted=!muted;
+      muteBtn.textContent = muted? "🔇" : "🔊";
+    };
+    infoBtn.onclick = ()=> infoModal.style.display="flex";
+    closeInfo.onclick = ()=> infoModal.style.display="none";
+    infoModal.onclick = e=>{ if (e.target===infoModal) infoModal.style.display="none"; };
+  </script>
 </body>
 </html>
