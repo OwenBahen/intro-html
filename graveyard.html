@@ -3,270 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graveyard — Owen Bahen</title>
+<title>Graveyard – Owen Bahen</title>
 <style>
-  :root{
-    --bg1:#0b0b0f;
-    --bg2:#14121a;
-    --accent:#b85b5b;
-    --stone:#2e2e2e;
-    --muted:#cfcfcf;
-    --ground:#1a1a1a;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    background: linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 60%);
-    color:var(--muted);
-    overflow:hidden;
-    min-height:100vh;
-    position:relative;
-  }
-  header{
-    position:relative; z-index:50; padding:18px 20px; text-align:center;
-    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
-    border-bottom:1px solid rgba(255,255,255,0.03);
-  }
-  header h1{margin:0; font-size:1.4rem; color:#ffdddd; letter-spacing:1px}
-  header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.85}
+/* --- Reset --- */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "Trebuchet MS", sans-serif;
+  background: linear-gradient(to top, #0a0a0a 20%, #1c1c2b 100%);
+  color: #eee;
+  overflow:hidden;
+  height:100vh;
+  position:relative;
+}
 
-  #stage{
-    position:relative;
-    width:100%;
-    height:calc(100vh - 120px);
-    overflow:hidden;
-    background:radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,0.02), transparent), linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 60%);
-  }
-  .fog{position:absolute; left:-20%; right:-20%; top:-10%; bottom:-10%; pointer-events:none; z-index:5; opacity:0.22}
-  .fog div{position:absolute; width:40%; height:40%; background: linear-gradient(90deg, rgba(240,240,240,0.02), rgba(240,240,240,0.08), rgba(240,240,240,0.02)); filter:blur(18px); opacity:0.6; animation: drift linear infinite;}
-  .fog div:nth-child(1){left:0%; top:10%; animation-duration:50s; animation-delay:0s}
-  .fog div:nth-child(2){left:30%; top:20%; animation-duration:70s; animation-delay:10s}
-  .fog div:nth-child(3){left:60%; top:0%; animation-duration:60s; animation-delay:5s}
-  @keyframes drift { from{transform:translateX(-10%)} to{transform:translateX(10%)} }
+/* --- Graveyard ground --- */
+.ground {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:120px;
+  background: repeating-linear-gradient(
+    45deg,
+    #0f0f0f,
+    #0f0f0f 10px,
+    #141414 10px,
+    #141414 20px
+  );
+  border-top:3px solid #333;
+  z-index:2;
+}
 
-  #flash{position:absolute; inset:0; background:white; opacity:0; pointer-events:none; z-index:80}
+/* --- Gravestone --- */
+.gravestone {
+  position:absolute;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%);
+  width:240px;
+  height:180px;
+  background:#444;
+  border-radius:120px 120px 0 0;
+  text-align:center;
+  padding:1rem;
+  color:#fff;
+  font-size:0.9rem;
+  box-shadow:0 -4px 12px rgba(0,0,0,0.8);
+  z-index:3;
+}
+.gravestone h2 { font-size:1.2rem; margin-bottom:0.5rem; }
 
-  .hud{position:absolute; left:16px; top:16px; z-index:60; display:flex; gap:12px; flex-direction:column}
-  .card{background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px)}
-  .card h3{margin:0 0 6px 0; font-size:0.95rem; color:#ffdcdc}
-  #score{font-size:1.1rem; font-weight:700}
-  #highscore{font-size:0.95rem; font-weight:600; margin-top:4px;}
+/* --- Score & Info --- */
+.hud {
+  position:absolute;
+  top:10px;
+  left:10px;
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+  z-index:5;
+}
+.score-box {
+  background:#222;
+  padding:0.5rem 1rem;
+  border-radius:8px;
+  border:1px solid #555;
+}
+button.info-btn {
+  background:#333;
+  color:#fff;
+  border:none;
+  padding:0.4rem 0.8rem;
+  border-radius:5px;
+  cursor:pointer;
+}
+button.info-btn:hover { background:#555; }
 
-  .top-buttons{position:absolute; right:16px; top:16px; z-index:60; display:flex; gap:8px}
-  .btn{background:rgba(255,255,255,0.04); padding:8px 10px; border-radius:8px; color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer}
-  .btn.primary{background:linear-gradient(180deg,#6b2c2c,#a04444); color:white; border:none}
-  .btn.hidden{display:none}
+/* --- Info popup --- */
+.info-popup {
+  display:none;
+  position:absolute;
+  top:20%;
+  left:50%;
+  transform:translateX(-50%);
+  background:#111;
+  border:2px solid #555;
+  border-radius:10px;
+  padding:1rem;
+  width:80%;
+  max-width:400px;
+  z-index:10;
+  text-align:center;
+}
+.info-popup h3 { margin-bottom:0.5rem; }
+.info-popup button {
+  margin-top:1rem;
+  padding:0.3rem 0.7rem;
+}
 
-  #gravestone{
-    position:absolute;
-    left:50%; transform:translateX(-50%);
-    bottom:60px;
-    width:320px;
-    min-height:180px;
-    background:linear-gradient(180deg,var(--stone), #202020);
-    border-radius:26px 26px 12px 12px;
-    border:3px solid rgba(0,0,0,0.5);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.7), inset 0 -8px 24px rgba(255,255,255,0.02);
-    z-index:40;
-    padding:12px 18px;
-    text-align:center;
-  }
-  #gravestone h2{margin-top:20px;color:#ffdede; font-size:1.1rem}
-  #gravestone .years{font-weight:700; margin-top:6px; color:#f0dcdc}
-  #gravestone .epitaph{margin-top:12px; font-size:0.85rem; color:#e0d9d9; line-height:1.3}
+/* --- Return button --- */
+#returnBtn {
+  display:none;
+  margin-top:0.8rem;
+  background:#111;
+  color:#fff;
+  border:1px solid #666;
+  border-radius:5px;
+  padding:0.4rem 0.8rem;
+  cursor:pointer;
+}
+#returnBtn:hover { background:#333; }
 
-  .crack{position:absolute; left:50%; top:4px; width:2px; height:0; background:linear-gradient(#333,#111); opacity:0.18; transform-origin:top; border-radius:2px}
-  .crack.c1{transform:translateX(-36px) rotate(-18deg)}
-  .crack.c2{transform:translateX(0px) rotate(0deg)}
-  .crack.c3{transform:translateX(36px) rotate(18deg)}
-  .crack.show{height:70px; opacity:0.7}
+/* --- Falling entities --- */
+.entity {
+  position:absolute;
+  font-size:2rem;
+  cursor:pointer;
+  z-index:4;
+  user-select:none;
+}
 
-  #scroll{
-    display:none;
-    margin-top:12px;
-    background: rgba(0,0,0,0.6);
-    padding:10px;
-    border-radius:8px;
-    border:1px solid rgba(255,255,255,0.03);
-    color:#ffd;
-    font-size:0.9rem;
-  }
+/* Animations */
+@keyframes float-down {
+  0% { transform:translateY(-50px); opacity:0; }
+  10% { opacity:1; }
+  100% { transform:translateY(100vh); opacity:0; }
+}
+@keyframes float-up {
+  0% { transform:translateY(100vh); opacity:0; }
+  10% { opacity:1; }
+  100% { transform:translateY(-50px); opacity:0; }
+}
+@keyframes zigzag {
+  0% { transform:translate(0,0); }
+  25% { transform:translate(-40px,25vh); }
+  50% { transform:translate(40px,50vh); }
+  75% { transform:translate(-30px,75vh); }
+  100% { transform:translate(0,100vh); }
+}
+@keyframes quick-pop {
+  0% { transform:scale(0); opacity:0; }
+  20% { transform:scale(1.2); opacity:1; }
+  80% { transform:scale(1); opacity:1; }
+  100% { transform:scale(0); opacity:0; }
+}
+@keyframes random-move {
+  0% { transform:translate(0,0); }
+  25% { transform:translate(40px,-20px); }
+  50% { transform:translate(-40px,30px); }
+  75% { transform:translate(20px,20px); }
+  100% { transform:translate(0,0); }
+}
 
-  .item{
-    position:absolute; font-size:34px; cursor:pointer; user-select:none; z-index:30; text-shadow:0 6px 16px rgba(0,0,0,0.5);
-    transform-origin:center;
-  }
-
-  #boss{
-    position:absolute; left:50%; top:-40%; font-size:96px; transform:translateX(-50%); opacity:0; z-index:70; pointer-events:auto;
-    text-shadow:0 8px 30px rgba(255,255,255,0.08);
-    transition: transform 0.4s, opacity 0.4s;
-  }
-  #boss.active{top:8%; opacity:1; transform:translateX(-50%) scale(1.02)}
-  #boss.hit{transform:translateX(-50%) scale(0.9)}
-
-  #owen-rise{
-    position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:200; color:#ffdede; font-size:28px; flex-direction:column; opacity:0; pointer-events:none;
-    transition:opacity 0.6s;
-  }
-  #owen-rise.show{opacity:1; pointer-events:auto}
-  #owen-rise .big{font-size:120px; margin-bottom:10px; text-shadow:0 18px 50px rgba(0,0,0,0.7)}
-
-  /* ground */
-  #ground{position:absolute; bottom:0; left:0; width:100%; height:60px; background:linear-gradient(to top, #0a0a0a 0%, #1a1a1a 100%); box-shadow: inset 0 10px 40px rgba(0,0,0,0.7); z-index:10;}
-
-  @media(max-width:720px){
-    #gravestone{width:260px; padding:12px}
-    .item{font-size:28px}
-    #boss{font-size:64px}
-    #owen-rise .big{font-size:90px}
-  }
+/* --- Mobile adjustments --- */
+@media(max-width:600px){
+  .gravestone { width:200px; height:150px; font-size:0.75rem; }
+  .entity { font-size:1.6rem; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>☠️ The Graveyard — Owen Bahen ☠️</h1>
-  <p>"3 Century Man" — RIP 1997 – 2100 — Born interesting. Died interesting.</p>
-</header>
-
-<div id="stage" aria-live="polite">
-  <div class="fog"><div></div><div></div><div></div></div>
-  <div id="flash"></div>
-
-  <div class="hud">
-    <div class="card"><h3>Score</h3><div id="score">0</div></div>
-    <div class="card"><h3>High Score</h3><div id="highscore">0</div></div>
-  </div>
-
-  <div class="top-buttons">
-    <button class="btn" id="infoBtn">ℹ️ Info</button>
-    <button class="btn hidden" id="mainBtn">🏠 Main Page</button>
-  </div>
-
-  <div id="gravestone">
-    <h2>Owen Bahen</h2>
-    <div class="years">1997 — 2100</div>
-    <div class="epitaph">
-      "3 Century Man"<br/>
-      Born on the side of the road — Local newspaper Day 1.<br/>
-      Ended with the same local fame.
-    </div>
-    <div id="scroll">A secret scroll: Owen walked the line between ordinary & extraordinary.</div>
-    <div class="crack c1"></div>
-    <div class="crack c2"></div>
-    <div class="crack c3"></div>
-  </div>
-
-  <div id="boss">👻</div>
-  <div id="owen-rise" role="dialog" aria-hidden="true">
-    <div class="big">🧟‍♂️</div>
-    <div>Owen Rises — The Graveyard Trembles</div>
-    <button class="btn primary" id="closeRise" style="margin-top:18px">Return to Grave</button>
-  </div>
-
-  <div id="ground"></div>
+<div class="hud">
+  <div class="score-box">Score: <span id="score">0</span></div>
+  <button class="info-btn" onclick="toggleInfo()">Info</button>
 </div>
 
-<div id="infoModal" style="position:fixed; inset:12% 8%; background:rgba(0,0,0,0.9); padding:16px; z-index:300; border-radius:12px; display:none; color:var(--muted)">
-  <h2 style="color:#ffdede;margin-top:0">How to Play</h2>
-  <ul>
-    <li>Click bones 🦴 for +1 point, skulls 💀 for +3, skeletons 🦴🦴 for +10 (rare)</li>
-    <li>New items unlock at milestones (zombies, bats, vampires)</li>
-    <li>At 3 points, Main Page unlocks.</li>
-    <li>At 10 points, gravestone reveals scroll and ghost boss appears.</li>
-    <li>At 21 points — Owen Rises finale!</li>
-    <li>Controls: <kbd>c</kbd> clears items; <kbd>t</kbd> toggles spawn pace.</li>
-  </ul>
-  <div style="text-align:center; margin-top:12px"><button class="btn primary" id="closeInfo">Close</button></div>
+<div class="info-popup" id="infoPopup">
+  <h3>💀 Graveyard Game</h3>
+  <p>Click spooky emojis to collect points.<br>
+  🦴 Bone = 1<br>💀 Skull = 3<br>🧟 Zombie = 5<br>🦇 Bat = 10<br>🧛 Vampire = 25<br>👻 Ghost = 1 (bonus, moves around)<br>
+  Unlock more as your score rises!</p>
+  <button onclick="toggleInfo()">Close</button>
 </div>
+
+<div class="gravestone" id="gravestone">
+  <h2>RIP Owen Bahen</h2>
+  <p>1997 – 2100<br>"3 Century Man"</p>
+</div>
+
+<div class="ground"></div>
 
 <script>
-const stage=document.getElementById('stage');
-const scoreDisplay=document.getElementById('score');
-const highDisplay=document.getElementById('highscore');
-const infoModal=document.getElementById('infoModal');
-const infoBtn=document.getElementById('infoBtn');
-const closeInfo=document.getElementById('closeInfo');
-const mainBtn=document.getElementById('mainBtn');
-const scroll=document.getElementById('scroll');
-const gravestone=document.getElementById('gravestone');
-const boss=document.getElementById('boss');
-const owenRise=document.getElementById('owen-rise');
-const closeRise=document.getElementById('closeRise');
+let score = 0;
+let spawnInterval = 2500;
+let milestones = [3,10,25,50,100,200];
+let unlockedMain = false;
 
-let score=0;
-let highscore=parseInt(localStorage.getItem('graveHigh'))||0;
-highDisplay.textContent=highscore;
-let spawnInterval;
-let spawnActive=true;
-let items=[];
-let milestone3=false;
-let milestone10=false;
-let milestone21=false;
-
-function updateScore(points){
-  score+=points;
-  scoreDisplay.textContent=score;
-  if(score>highscore){highscore=score; localStorage.setItem('graveHigh',highscore); highDisplay.textContent=highscore}
-  if(score>=3 && !milestone3){milestone3=true; mainBtn.classList.remove('hidden')}
-  if(score>=10 && !milestone10){milestone10=true; scroll.style.display='block'; boss.classList.add('active')}
-  if(score>=21 && !milestone21){milestone21=true; owenRise.classList.add('show');}
+/* Milestone Messages */
+function updateGravestone(){
+  const stone = document.getElementById("gravestone");
+  if(score >= 200){
+    stone.innerHTML = `<h2>RIP Owen Bahen</h2><p>Born interesting, died interesting… risen legendary.</p>`;
+  } else if(score >= 100){
+    stone.innerHTML = `<h2>The grave splits open!</h2><p>The century man cannot be contained.</p>`;
+  } else if(score >= 50){
+    stone.innerHTML = `<h2>Shadows gather...</h2><p>Owen Bahen grows stronger in death than in life.</p>`;
+  } else if(score >= 25){
+    stone.innerHTML = `<h2>Local fame revived</h2><p>The same paper that announced his birth now reports his return.</p>`;
+  } else if(score >= 10){
+    stone.innerHTML = `<h2>Bones rattle louder</h2><p>Whispers spread through the graveyard.</p>`;
+  } else if(score >= 3){
+    stone.innerHTML = `<h2>The dead stir…</h2><p>A faint glow appears on the stone.</p><button id="returnBtn" onclick="window.location.href='index.html'">Return to Main</button>`;
+    unlockedMain = true;
+  } else {
+    stone.innerHTML = `<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`;
+  }
 }
 
-function spawnItem(){
-  const ems=['🦴','💀','🧟','🦇','🧛','👻'];
-  let weights=[0.4,0.35,0.15,0.05,0.03,0.02];
-  if(score<3){ems.splice(3); weights.splice(3);}
-  else if(score<10){ems.splice(5); weights.splice(5);}
-  const item=document.createElement('div');
-  item.classList.add('item');
-  const choice=Math.random();
-  let cum=0,selected=0;
-  for(let i=0;i<weights.length;i++){cum+=weights[i]; if(choice<cum){selected=i; break}}
-  item.textContent=ems[selected];
-  const size=28+Math.random()*24;
-  item.style.fontSize=size+'px';
-  const x=Math.random()*90;
-  const y=Math.random()*60;
-  item.style.left=x+'%';
-  item.style.top=y+'%';
-  stage.appendChild(item);
-  items.push(item);
-  item.addEventListener('click',()=>{let pts=[1,3,10,5,7,20][selected]; updateScore(pts); stage.removeChild(item); items.splice(items.indexOf(item),1)})
-  setTimeout(()=>{if(stage.contains(item)){stage.removeChild(item); items.splice(items.indexOf(item),1)}},14000)
+/* Info toggle */
+function toggleInfo(){
+  const popup = document.getElementById("infoPopup");
+  popup.style.display = popup.style.display === "block" ? "none" : "block";
 }
 
-function startSpawning(){spawnInterval=setInterval(()=>{if(spawnActive) spawnItem()},800)}
+/* Entity spawning */
+function spawnEntity(){
+  let choices = [];
+  if(score >= 1) choices.push("bone");
+  if(score >= 3) choices.push("skull");
+  if(score >= 10) choices.push("zombie");
+  if(score >= 30) choices.push("bat");
+  if(score >= 50) choices.push("vampire");
+  if(Math.random() < 0.05) choices.push("ghost"); // occasional
 
-startSpawning();
+  if(choices.length === 0) return;
 
-infoBtn.addEventListener('click',()=>{infoModal.style.display='block'})
-closeInfo.addEventListener('click',()=>{infoModal.style.display='none'})
-mainBtn.addEventListener('click',()=>{window.location.href='index.html'})
-closeRise.addEventListener('click',()=>{owenRise.classList.remove('show')})
+  let type = choices[Math.floor(Math.random()*choices.length)];
+  let entity = document.createElement("div");
+  entity.className = "entity";
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='c'){items.forEach(it=>{if(stage.contains(it)) stage.removeChild(it)}); items=[]}
-  if(e.key==='t'){spawnActive=!spawnActive}
-})
+  let duration = 6000; 
+  if(type==="bone"){ entity.textContent="🦴"; entity.style.animation="float-down "+duration+"ms linear forwards"; }
+  if(type==="skull"){ entity.textContent="💀"; entity.style.animation="float-up "+duration+"ms linear forwards"; }
+  if(type==="zombie"){ entity.textContent="🧟"; entity.style.animation="float-down "+(duration+2000)+"ms linear forwards"; }
+  if(type==="bat"){ entity.textContent="🦇"; entity.style.animation="zigzag "+(duration-2000)+"ms linear forwards"; }
+  if(type==="vampire"){ entity.textContent="🧛"; entity.style.animation="quick-pop 2500ms linear forwards"; }
+  if(type==="ghost"){ entity.textContent="👻"; entity.style.animation="random-move 4s infinite"; }
 
-boss.addEventListener('click',()=>{flash(); boss.classList.add('hit'); setTimeout(()=>{boss.classList.remove('hit')},300); updateScore(15)})
+  entity.style.left = Math.random()*80 + "%";
+  entity.style.top = "0px";
 
-function flash(){
-  const f=document.getElementById('flash');
-  f.style.opacity='1';
-  setTimeout(()=>{f.style.opacity='0'},80);
+  document.body.appendChild(entity);
+
+  entity.addEventListener("click",()=>{
+    let add=0;
+    if(type==="bone") add=1;
+    if(type==="skull") add=3;
+    if(type==="zombie") add=5;
+    if(type==="bat") add=10;
+    if(type==="vampire") add=25;
+    if(type==="ghost") add=1;
+    score+=add;
+    document.getElementById("score").textContent=score;
+    updateGravestone();
+    entity.remove();
+  });
+
+  setTimeout(()=>{ entity.remove(); }, duration+3000);
 }
 
-// simple ground texture
-const ctxGround=document.createElement('canvas');
-ctxGround.width=window.innerWidth;
-ctxGround.height=60;
-const gctx=ctxGround.getContext('2d');
-for(let i=0;i<600;i++){gctx.fillStyle='rgba(50,50,50,'+Math.random()*0.2+')'; gctx.fillRect(Math.random()*ctxGround.width,Math.random()*ctxGround.height,2,2);}
-document.getElementById('ground').appendChild(ctxGround);
+/* Spawn loop */
+setInterval(spawnEntity, spawnInterval);
+
+/* Spawn rate progression */
+function adjustSpawnRate(){
+  if(score >= 10 && spawnInterval>2000) spawnInterval=2000;
+  if(score >= 25 && spawnInterval>1500) spawnInterval=1500;
+  if(score >= 50 && spawnInterval>1000) spawnInterval=1000;
+  if(score >= 100 && spawnInterval>700) spawnInterval=700;
+}
+setInterval(adjustSpawnRate, 3000);
 </script>
-
 </body>
 </html>
