@@ -5,62 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graveyard – Owen Bahen</title>
 <style>
-/* --- Reset --- */
-* { margin:0; padding:0; box-sizing:border-box; }
+* {margin:0; padding:0; box-sizing:border-box;}
 body {
-  font-family: "Trebuchet MS", sans-serif;
-  background: linear-gradient(to top, #0a0a0a 20%, #1c1c2b 100%);
+  font-family:"Trebuchet MS",sans-serif;
+  background:linear-gradient(to top,#0a0a0a 15%,#1c1c2b 100%);
   color:#eee;
   overflow:hidden;
   height:100vh;
-  position:relative;
+  perspective:1000px;
 }
 
-/* --- Parallax Ground --- */
+/* Parallax layers */
+.layer { position:absolute; width:100%; height:100%; pointer-events:none; }
+
+/* --- Ground --- */
 .ground {
   position:absolute;
   bottom:0;
   width:100%;
-  height:120px;
-  background: repeating-linear-gradient(
-    135deg,
-    #0a2a0a,
-    #0a2a0a 5px,
-    #0f3a0f 5px,
-    #0f3a0f 10px
-  );
-  border-top:3px solid #333;
+  height:180px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #1a2b1a,
+      #1a2b1a 8px,
+      #223322 8px,
+      #223322 16px
+    ),
+    linear-gradient(to top, #3c3c3c 0%, #1c1c1c 100%);
+  background-blend-mode:overlay;
+  border-top:4px solid #222;
   z-index:2;
+  box-shadow: inset 0 -12px 30px rgba(0,0,0,0.6);
 }
 
 /* --- Gravestone --- */
 .gravestone {
   position:absolute;
-  bottom:120px;
+  bottom:180px;
   left:50%;
   transform:translateX(-50%);
-  width:250px;
-  height:160px;
-  background: linear-gradient(to top, #555 0%, #666 100%);
+  width:260px;
+  height:200px;
+  background:#555;
   border-radius:120px 120px 10px 10px;
   text-align:center;
-  padding:0.5rem 1rem;
+  padding:1rem;
   color:#fff;
-  font-size:0.85rem;
-  box-shadow:0 -6px 15px rgba(0,0,0,0.8);
+  font-size:0.9rem;
+  box-shadow:0 -6px 20px rgba(0,0,0,0.8);
   z-index:3;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  line-height:1.2rem;
+  pointer-events:auto;
+  background-image:
+    linear-gradient(145deg, #666 0%, #444 100%),
+    radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 60%);
+  background-blend-mode:overlay;
+  border:2px solid #222;
+  background-size:cover;
 }
+.gravestone h2 { font-size:1.2rem; margin-bottom:1rem; }
+.gravestone p { margin-top:3rem; font-size:0.85rem; line-height:1.2rem; }
 
-/* Gravestone text styling */
-.gravestone p {
-  margin-bottom:8px;
-}
-
-/* --- Score & Info --- */
+/* --- HUD --- */
 .hud {
   position:absolute;
   top:10px;
@@ -77,50 +83,28 @@ body {
   border:1px solid #555;
 }
 
-/* --- Falling entities --- */
+/* --- Entities --- */
 .entity {
   position:absolute;
   font-size:2rem;
   cursor:pointer;
   z-index:4;
   user-select:none;
-  touch-action: manipulation;
+  pointer-events:auto;
+  text-shadow: 1px 1px 4px #000;
 }
 
 /* Animations */
-@keyframes float-down {
-  0% { transform:translateY(-50px); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(100vh); opacity:0; }
-}
-@keyframes float-up {
-  0% { transform:translateY(100vh); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(-50px); opacity:0; }
-}
-@keyframes zigzag {
-  0% { transform:translate(0,0); }
-  25% { transform:translate(-40px,25vh); }
-  50% { transform:translate(40px,50vh); }
-  75% { transform:translate(-30px,75vh); }
-  100% { transform:translate(0,100vh); }
-}
-@keyframes quick-pop {
-  0% { transform:scale(0); opacity:0; }
-  20% { transform:scale(1.2); opacity:1; }
-  80% { transform:scale(1); opacity:1; }
-  100% { transform:scale(0); opacity:0; }
-}
-@keyframes ghost-float {
-  0%,100% { transform:translate(0,0); }
-  25% { transform:translate(20px,-10px); }
-  50% { transform:translate(-20px,10px); }
-  75% { transform:translate(10px,-15px); }
-}
+@keyframes float-down { 0%{transform:translateY(-50px) scale(0.5);opacity:0;}10%{opacity:1;}100%{transform:translateY(100vh) scale(1);opacity:0;} }
+@keyframes float-up { 0%{transform:translateY(100vh) scale(0.5);opacity:0;}10%{opacity:1;}100%{transform:translateY(-50px) scale(1);opacity:0;} }
+@keyframes zigzag { 0%{transform:translate(0,0);}25%{transform:translate(-40px,25vh) rotate(-10deg);}50%{transform:translate(40px,50vh) rotate(10deg);}75%{transform:translate(-30px,75vh) rotate(-5deg);}100%{transform:translate(0,100vh);} }
+@keyframes quick-pop {0%{transform:scale(0);opacity:0;}20%{transform:scale(1.2);opacity:1;}80%{transform:scale(1);opacity:1;}100%{transform:scale(0);opacity:0;}}
+@keyframes random-move {0%{transform:translate(0,0);}25%{transform:translate(40px,-20px);}50%{transform:translate(-40px,30px);}75%{transform:translate(20px,20px);}100%{transform:translate(0,0);}}
 
 /* --- Mobile adjustments --- */
 @media(max-width:600px){
-  .gravestone { width:200px; height:140px; font-size:0.75rem; padding:0.3rem 0.8rem; }
+  .gravestone { width:200px; height:160px; font-size:0.75rem; }
+  .gravestone p { margin-top:2rem; }
   .entity { font-size:1.6rem; }
 }
 </style>
@@ -132,63 +116,59 @@ body {
 </div>
 
 <div class="gravestone" id="gravestone">
-  <p>RIP Owen Bahen</p>
-  <p>1997 – 2100</p>
-  <p>"3 Century Man"</p>
+  <h2>RIP Owen Bahen</h2>
+  <p>1997 – 2100<br>"3 Century Man"</p>
 </div>
 
 <div class="ground"></div>
 
 <script>
-let score = 0;
-let spawnInterval = 2500;
-let gravestones = [
-  `<p>RIP Owen Bahen</p><p>1997 – 2100</p><p>"3 Century Man"</p>`,
-  `<p>Born in an ambulance roadside</p><p>Life began with a rush</p>`,
-  `<p>Front page newspaper announcement</p><p>Everyone knew my name</p>`,
-  `<p>Childhood adventures & mischief</p><p>Curiosity led the way</p>`,
-  `<p>Milestones through teen & adult years</p><p>Growth and discovery</p>`,
-  `<p>Accomplishments as adult</p><p>Legacy shaped</p>`,
-  `<p>Lived to 103</p><p>"The 3-Century Man"</p>`
+let score=0;
+let spawnInterval=2500;
+let milestones=[
+  {score:3, text:"The dead stir… A faint glow appears on the stone."},
+  {score:10, text:"Bones rattle louder. Whispers spread through the graveyard."},
+  {score:25, text:"Local fame revived. The paper reports his remarkable return."},
+  {score:50, text:"Shadows gather. Owen Bahen grows stronger in death than life."},
+  {score:100, text:"The grave splits open! The century man cannot be contained."},
+  {score:200, text:"Born on roadside in ambulance, famous on the paper, lived 103 years… risen legendary."}
 ];
 
-/* Update gravestone based on score */
+/* Gravestone updates */
 function updateGravestone(){
-  let stone = document.getElementById("gravestone");
-  if(score < 3) stone.innerHTML = gravestones[0];
-  else if(score <10) stone.innerHTML = gravestones[1];
-  else if(score <25) stone.innerHTML = gravestones[2];
-  else if(score <50) stone.innerHTML = gravestones[3];
-  else if(score <100) stone.innerHTML = gravestones[4];
-  else if(score <200) stone.innerHTML = gravestones[5];
-  else stone.innerHTML = gravestones[6];
+  let stone=document.getElementById("gravestone");
+  for(let i=milestones.length-1;i>=0;i--){
+    if(score>=milestones[i].score){
+      stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>${milestones[i].text}</p>`;
+      return;
+    }
+  }
+  stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`;
 }
 
-/* Entity spawning */
+/* Entity spawn */
 function spawnEntity(){
-  let choices = ["ghost"]; // always include ghosts
-  if(score >=1) choices.push("bone");
-  if(score >=3) choices.push("skull");
-  if(score >=10) choices.push("zombie");
-  if(score >=25) choices.push("bat");
-  if(score >=50) choices.push("vampire");
+  let choices=["ghost"]; // always start with ghosts
+  if(score>=1) choices.push("bone");
+  if(score>=3) choices.push("skull");
+  if(score>=10) choices.push("zombie");
+  if(score>=25) choices.push("bat");
+  if(score>=50) choices.push("vampire");
 
-  let type = choices[Math.floor(Math.random()*choices.length)];
-  let entity = document.createElement("div");
+  let type=choices[Math.floor(Math.random()*choices.length)];
+  let entity=document.createElement("div");
   entity.className="entity";
 
   let duration=6000;
-  switch(type){
-    case "bone": entity.textContent="🦴"; entity.style.animation=`float-down ${duration}ms linear forwards`; break;
-    case "skull": entity.textContent="💀"; entity.style.animation=`float-up ${duration}ms linear forwards`; break;
-    case "zombie": entity.textContent="🧟"; entity.style.animation=`float-down ${duration+2000}ms linear forwards`; break;
-    case "bat": entity.textContent="🦇"; entity.style.animation=`zigzag ${duration-1500}ms linear forwards`; break;
-    case "vampire": entity.textContent="🧛"; entity.style.animation=`quick-pop 2500ms linear forwards`; break;
-    case "ghost": entity.textContent="👻"; entity.style.animation=`ghost-float 4000ms ease-in-out infinite`; break;
-  }
+  if(type==="bone"){entity.textContent="🦴";entity.style.animation=`float-down ${duration}ms linear forwards`;}
+  if(type==="skull"){entity.textContent="💀";entity.style.animation=`float-up ${duration}ms linear forwards`;}
+  if(type==="zombie"){entity.textContent="🧟";entity.style.animation=`float-down ${duration+2000}ms linear forwards`;}
+  if(type==="bat"){entity.textContent="🦇";entity.style.animation=`zigzag ${duration-1500}ms linear forwards`;}
+  if(type==="vampire"){entity.textContent="🧛";entity.style.animation=`quick-pop 2500ms linear forwards`;}
+  if(type==="ghost"){entity.textContent="👻";entity.style.animation="random-move 4s infinite";}
 
   entity.style.left=Math.random()*80 + "%";
-  entity.style.top="0px";
+  entity.style.top=Math.random()*30 + "vh";
 
   document.body.appendChild(entity);
 
@@ -206,7 +186,7 @@ function spawnEntity(){
     if(type!=="ghost") entity.remove();
   });
 
-  setTimeout(()=>{ if(type!=="ghost") entity.remove(); }, duration+3000);
+  setTimeout(()=>{if(type!=="ghost") entity.remove();}, duration+3000);
 }
 
 /* Spawn loop */
@@ -214,12 +194,20 @@ setInterval(spawnEntity, spawnInterval);
 
 /* Adjust spawn rate */
 function adjustSpawnRate(){
-  if(score >=10 && spawnInterval>2000) spawnInterval=2000;
-  if(score >=25 && spawnInterval>1500) spawnInterval=1500;
-  if(score >=50 && spawnInterval>1000) spawnInterval=1000;
-  if(score >=100 && spawnInterval>700) spawnInterval=700;
+  if(score>=10 && spawnInterval>2000) spawnInterval=2000;
+  if(score>=25 && spawnInterval>1500) spawnInterval=1500;
+  if(score>=50 && spawnInterval>1000) spawnInterval=1000;
+  if(score>=100 && spawnInterval>700) spawnInterval=700;
 }
-setInterval(adjustSpawnRate, 3000);
+setInterval(adjustSpawnRate,3000);
+
+/* Parallax effect */
+document.addEventListener('mousemove', e=>{
+  const gx=(e.clientX/window.innerWidth-0.5)*20;
+  const gy=(e.clientY/window.innerHeight-0.5)*10;
+  document.querySelector('.gravestone').style.transform=`translateX(calc(-50% + ${gx}px)) translateY(${gy}px)`;
+  document.querySelector('.ground').style.transform=`translateX(${gx/2}px) translateY(${gy/2}px)`;
+});
 </script>
 </body>
 </html>
