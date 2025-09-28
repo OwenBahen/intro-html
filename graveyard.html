@@ -11,63 +11,52 @@
   --stone:#2f2f2f;
   --accent:#b75b5b;
   --muted:#dcdcdc;
-  --fog: rgba(255,255,255,0.03);
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;height:100%;font-family:Inter,sans-serif;background:linear-gradient(180deg,var(--bg-dark) 0%, var(--bg-mid) 70%);overflow:hidden;color:var(--muted);}
 #stage{position:relative;width:100%;height:100vh;overflow:hidden;background:radial-gradient(1200px 600px at 10% 6%, rgba(255,255,255,0.02), transparent 8%), linear-gradient(180deg,#0a0a0f 0%, #111217 60%);}
-.fog{position:absolute;left:-20%;right:-20%;top:-10%;bottom:-10%;pointer-events:none;z-index:80;opacity:0.22;}
+.fog{position:absolute;left:-20%;right:-20%;top:-10%;bottom:-10%;pointer-events:none;z-index:80;opacity:0.18;}
 .fog div{position:absolute;width:40%;height:46%;background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.06), rgba(255,255,255,0.01));filter:blur(18px);animation: drift linear infinite;}
 .fog div:nth-child(1){left:0%; top:10%; animation-duration:52s;}
 .fog div:nth-child(2){left:28%; top:12%; animation-duration:70s;}
 .fog div:nth-child(3){left:60%; top:0%; animation-duration:62s;}
 @keyframes drift { from{transform:translateX(-8%)} to{transform:translateX(8%)} }
-#flash{position:absolute;inset:0;background:white;opacity:0;pointer-events:none;z-index:950;}
-.hud{position:absolute;left:16px;top:16px;z-index:900;display:flex;gap:12px;flex-direction:column;}
-.card{background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);}
-.card h3{margin:0 0 6px 0;font-size:0.95rem;color:#ffdcdc;}
-#score{font-size:1.2rem;font-weight:700;}
-#best{font-size:0.9rem;color:#f0dcdc;margin-top:6px;}
-#milestone-list{font-size:0.86rem;color:#ffd;margin-top:6px;}
-#gravestone{position:absolute;left:50%;bottom:26px;width:360px;min-height:160px;background:linear-gradient(180deg,var(--stone), #1f1f1f);border-radius:26px 26px 12px 12px;border:3px solid rgba(0,0,0,0.5);box-shadow:0 12px 40px rgba(0,0,0,0.75), inset 0 -8px 24px rgba(255,255,255,0.02);padding:18px;text-align:center;z-index:410;cursor:pointer;}
-#gravestone h2{margin:0;color:#ffdede;font-size:1.05rem;}
-#gravestone .years{font-weight:700;margin-top:6px;color:#f0dcdc;}
-#gravestone .epitaph{margin-top:10px;font-size:0.88rem;color:#e0d9d9;line-height:1.28;}
+.hud{position:absolute;left:8px;top:8px;z-index:900;display:flex;gap:8px;flex-direction:column;font-size:0.85rem;}
+.card{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);}
+.card h3{margin:0 0 4px 0;font-size:0.9rem;color:#ffdcdc;}
+#score{font-size:1rem;font-weight:700;}
+#best{font-size:0.8rem;color:#f0dcdc;margin-top:4px;}
+#milestone-list{font-size:0.75rem;color:#ffd;margin-top:4px;}
+#gravestone{position:absolute;left:50%;bottom:16px;width:240px;min-height:120px;background:linear-gradient(180deg,var(--stone), #1f1f1f);border-radius:22px 22px 12px 12px;border:3px solid rgba(0,0,0,0.5);box-shadow:0 8px 28px rgba(0,0,0,0.6), inset 0 -6px 18px rgba(255,255,255,0.02);padding:14px;text-align:center;z-index:410;cursor:pointer;}
+#gravestone h2{margin:0;color:#ffdede;font-size:0.95rem;}
+#gravestone .years{font-weight:700;margin-top:4px;color:#f0dcdc;font-size:0.78rem;}
+#gravestone .epitaph{margin-top:6px;font-size:0.78rem;color:#e0d9d9;line-height:1.2;}
 .crack{position:absolute;left:50%;top:4px;width:2px;height:0;background:linear-gradient(#333,#111);opacity:0.18;transform-origin:top;border-radius:2px;}
-.crack.c1{transform:translateX(-46px) rotate(-18deg);}
+.crack.c1{transform:translateX(-32px) rotate(-18deg);}
 .crack.c2{transform:translateX(0px) rotate(0deg);}
-.crack.c3{transform:translateX(46px) rotate(18deg);}
-.crack.show{height:86px;opacity:0.7;}
-.candle{position:absolute;bottom:12px;font-size:22px;opacity:0;transition:opacity 0.8s;z-index:420;}
+.crack.c3{transform:translateX(32px) rotate(18deg);}
+.crack.show{height:60px;opacity:0.7;}
+.candle{position:absolute;bottom:8px;font-size:18px;opacity:0;transition:opacity 0.8s;z-index:420;}
 .candle.show{opacity:1;}
-.item{position:absolute;font-size:36px;cursor:pointer;user-select:none;z-index:300;transform-origin:center;transition: transform 120ms;}
-.bone{font-size:34px;}
-.skull{font-size:42px;}
-.zombie{font-size:46px;}
-.bat{font-size:40px;}
-.vamp{font-size:48px;}
-.ghost{font-size:46px;opacity:0.95;}
-#boss{position:absolute;left:50%;top:-30%;font-size:88px;transform:translateX(-50%);opacity:0;z-index:680;pointer-events:auto;text-shadow:0 8px 30px rgba(255,255,255,0.08);transition: transform 0.35s, opacity 0.35s;}
+.item{position:absolute;font-size:28px;cursor:pointer;user-select:none;z-index:300;transform-origin:center;transition: transform 120ms;}
+.bone{font-size:28px;}
+.skull{font-size:36px;}
+.zombie{font-size:36px;}
+.bat{font-size:36px;}
+.vamp{font-size:40px;}
+.ghost{font-size:38px;opacity:0.95;}
+#boss{position:absolute;left:50%;top:-30%;font-size:64px;transform:translateX(-50%);opacity:0;z-index:680;pointer-events:auto;text-shadow:0 6px 20px rgba(255,255,255,0.08);transition: transform 0.35s, opacity 0.35s;}
 #boss.active{top:8%;opacity:1;transform:translateX(-50%) scale(1.02);}
 #boss.hit{transform:translateX(-50%) scale(0.93);}
 #owen-rise{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85));z-index:999;color:#ffdede;font-size:28px;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.6s;}
 #owen-rise.show{opacity:1;pointer-events:auto;}
-#owen-rise .big{font-size:120px;margin-bottom:10px;text-shadow:0 18px 60px rgba(0,0,0,0.7);}
-.floatText{position:absolute;font-weight:700;color:#ffdede;pointer-events:none;z-index:980;text-shadow:0 6px 18px rgba(0,0,0,0.7);}
-@media (max-width:720px){
-  #gravestone{width:280px;padding:12px;}
-  .item{font-size:28px;}
-  .zombie{font-size:38px;}
-  #boss{font-size:60px;}
-  .candle{font-size:18px;}
-  .hud{left:8px;top:8px;}
-}
+#owen-rise .big{font-size:80px;margin-bottom:10px;text-shadow:0 12px 40px rgba(0,0,0,0.7);}
+.floatText{position:absolute;font-weight:700;color:#ffdede;pointer-events:none;z-index:980;text-shadow:0 4px 14px rgba(0,0,0,0.7);}
 </style>
 </head>
 <body>
 <div id="stage" aria-live="polite">
   <div class="fog" aria-hidden="true"><div></div><div></div><div></div></div>
-  <div id="flash" aria-hidden="true"></div>
   
   <div class="hud">
     <div class="card">
@@ -88,9 +77,11 @@ html,body{margin:0;padding:0;height:100%;font-family:Inter,sans-serif;background
     <div class="crack c1" id="crack1"></div>
     <div class="crack c2" id="crack2"></div>
     <div class="crack c3" id="crack3"></div>
-    <div class="candle" id="c1" style="left:calc(50% - 230px)">🕯️</div>
-    <div class="candle" id="c2" style="left:calc(50% - 10px)">🕯️</div>
-    <div class="candle" id="c3" style="left:calc(50% + 210px)">🕯️</div>
+    <!-- Candles -->
+    <div class="candle" id="c1" style="left:10%">🕯️</div>
+    <div class="candle" id="c2" style="left:40%">🕯️</div>
+    <div class="candle" id="c3" style="left:70%">🕯️</div>
+    <div class="candle" id="c4" style="left:90%">🕯️</div>
   </div>
   
   <div id="boss" aria-hidden="true">🧟‍♂️</div>
@@ -101,14 +92,9 @@ const stage=document.getElementById("stage");
 const scoreEl=document.getElementById("score");
 const bestEl=document.getElementById("best");
 const gravestone=document.getElementById("gravestone");
-const crack1=document.getElementById("crack1");
-const crack2=document.getElementById("crack2");
-const crack3=document.getElementById("crack3");
-const c1=document.getElementById("c1");
-const c2=document.getElementById("c2");
-const c3=document.getElementById("c3");
+const cracks=[document.getElementById("crack1"),document.getElementById("crack2"),document.getElementById("crack3")];
+const candles=[document.getElementById("c1"),document.getElementById("c2"),document.getElementById("c3"),document.getElementById("c4")];
 const milestoneList=document.getElementById("milestone-list");
-const flash=document.getElementById("flash");
 const boss=document.getElementById("boss");
 const owenRise=document.getElementById("owen-rise");
 
@@ -119,17 +105,15 @@ let items=new Map();
 let itemIdx=0;
 let milestones=[10,50,120,250,500,1000];
 let milestoneText=["First Bones!","Candle Lit","Grave Cracked","Ghost Appears","Crow Flies","Owen Rises"];
-let vampUnlocked=false;
 let bossActive=false;
 let bossHP=10;
 
 const EMOJIS=[
-  {id:'bone',sym:'🦴',pts:1,min:0,movement:'side',spawnWeight:60},
-  {id:'skull',sym:'💀',pts:3,min:3,movement:'side',spawnWeight:25},
-  {id:'zombie',sym:'🧟',pts:5,min:10,movement:'shuffle',spawnWeight:10},
-  {id:'bat',sym:'🦇',pts:10,min:30,movement:'float',spawnWeight:10},
-  {id:'vamp',sym:'🧛',pts:15,min:50,movement:'float',spawnWeight:0},
-  {id:'ghost',sym:'👻',pts:20,min:100,movement:'float',spawnWeight:0}
+  {id:'bone',sym:'🦴',pts:1,min:0,weight:60},
+  {id:'skull',sym:'💀',pts:3,min:3,weight:25},
+  {id:'zombie',sym:'🧟',pts:5,min:10,weight:10},
+  {id:'bat',sym:'🦇',pts:10,min:30,weight:10},
+  {id:'ghost',sym:'👻',pts:20,min:100,weight:0}
 ];
 
 function updateScore(n){
@@ -137,6 +121,13 @@ function updateScore(n){
   scoreEl.textContent=score;
   if(score>best){best=score;bestEl.textContent=best;localStorage.setItem("grave_best",best);}
   checkMilestones();
+  updateCandles();
+}
+
+function updateCandles(){
+  candles.forEach((c,i)=>{
+    if(score>=100*(i+1))c.classList.add("show");
+  });
 }
 
 function checkMilestones(){
@@ -146,10 +137,8 @@ function checkMilestones(){
       div.id="milestone-"+i;
       div.textContent=milestoneText[i];
       milestoneList.appendChild(div);
-      if(i===1)c1.classList.add("show");
-      if(i===2){crack1.classList.add("show");crack2.classList.add("show");crack3.classList.add("show");c2.classList.add("show");}
-      if(i===3 || i===4){c3.classList.add("show");}
-      if(i===5){startOwenRise();}
+      if(i===2) cracks.forEach(c=>c.classList.add("show"));
+      if(i===5) startOwenRise();
     }
   });
 }
@@ -162,19 +151,18 @@ function startOwenRise(){
 }
 
 function spawnItem(){
-  let available=EMOJIS.filter(e=>score>=e.min && (e.spawnWeight>0));
-  if(bossActive)return;
-  if(!available.length)return;
-  let total=available.reduce((acc,e)=>acc+e.spawnWeight,0);
+  let available=EMOJIS.filter(e=>score>=e.min && e.weight>0);
+  if(bossActive || !available.length)return;
+  let total=available.reduce((acc,e)=>acc+e.weight,0);
   let rnd=Math.random()*total;
   let chosen;
-  for(let e of available){rnd-=e.spawnWeight;if(rnd<=0){chosen=e;break;}}
+  for(let e of available){rnd-=e.weight;if(rnd<=0){chosen=e;break;}}
   if(!chosen)return;
   let div=document.createElement("div");
   div.className="item "+chosen.id;
   div.textContent=chosen.sym;
-  let left=Math.random()*(window.innerWidth-60);
-  let top=Math.random()*(window.innerHeight-160);
+  let left=Math.random()*(window.innerWidth-50);
+  let top=Math.random()*(window.innerHeight-150);
   div.style.left=left+"px";
   div.style.top=top+"px";
   stage.appendChild(div);
@@ -187,10 +175,10 @@ function spawnItem(){
     items.delete(div.dataset.idx);
   });
   itemIdx++;
-  moveItem(div,chosen.movement);
+  moveItem(div);
 }
 
-function moveItem(el,type){
+function moveItem(el){
   let dx=(Math.random()*2-1)*1.2;
   let dy=(Math.random()*2-1)*1.2;
   function step(){
@@ -199,8 +187,8 @@ function moveItem(el,type){
     let y=rect.top+dy;
     if(x<0 || x>window.innerWidth-40)dx*=-1;
     if(y<0 || y>window.innerHeight-40)dy*=-1;
-    if(type==='float'){el.style.transform=`translate(${Math.sin(Date.now()/500)*10}px, ${Math.sin(Date.now()/700)*10}px)`;}
-    else{el.style.left=x+"px";el.style.top=y+"px";}
+    el.style.left=x+"px";
+    el.style.top=y+"px";
     if(stage.contains(el))requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
