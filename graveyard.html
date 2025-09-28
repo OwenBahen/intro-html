@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graveyard — Owen Bahen (Deluxe)</title>
 <style>
 :root{
@@ -13,65 +13,92 @@
   --muted:#dcdcdc;
   --fog: rgba(255,255,255,0.03);
 }
-*{box-sizing:border-box}
-html,body{height:100%; margin:0; padding:0; font-family:Inter,system-ui, -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--muted);}
-body{background:linear-gradient(180deg,var(--bg-dark) 0%, var(--bg-mid) 70%); overflow:hidden;}
-header{position:relative; padding:18px 20px; text-align:center; background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.12)); border-bottom:1px solid rgba(255,255,255,0.03);}
-header h1{margin:0; font-size:1.4rem; color:#ffdede; letter-spacing:1px}
-header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
-#stage{position:relative; width:100%; height:calc(100vh - 120px); overflow:hidden; background:radial-gradient(1200px 600px at 10% 6%, rgba(255,255,255,0.02), transparent 8%),linear-gradient(180deg,#0a0a0f 0%, #111217 60%);}
-.fog{position:absolute; left:-20%; right:-20%; top:-10%; bottom:-10%; pointer-events:none; z-index:80; opacity:0.22}
-.fog div{position:absolute; width:40%; height:46%; background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.06), rgba(255,255,255,0.01)); filter:blur(18px); animation: drift linear infinite;}
+*{box-sizing:border-box;}
+body,html{margin:0;padding:0;height:100%;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--muted);background: linear-gradient(180deg,var(--bg-dark) 0%, var(--bg-mid) 70%);overflow:hidden;}
+header{
+  position:relative;z-index:900;padding:18px 20px;text-align:center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.12));
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+header h1{margin:0;font-size:1.4rem;color:#ffdede;letter-spacing:1px;}
+header p{margin:6px 0 0 0;font-size:0.9rem;color:#cfcfcf;opacity:0.95;}
+
+#stage{
+  position:relative;width:100%;height:calc(100vh - 120px);overflow:hidden;
+  background:
+    radial-gradient(1200px 600px at 10% 6%, rgba(255,255,255,0.02), transparent 8%),
+    linear-gradient(180deg,#0a0a0f 0%, #111217 60%);
+}
+
+.fog{position:absolute; left:-20%; right:-20%; top:-10%; bottom:-10%; pointer-events:none; z-index:80; opacity:0.22;}
+.fog div{position:absolute;width:40%;height:46%;background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.06), rgba(255,255,255,0.01)); filter:blur(18px);animation: drift linear infinite;}
 .fog div:nth-child(1){left:0%; top:10%; animation-duration:52s; animation-delay:0s}
 .fog div:nth-child(2){left:28%; top:12%; animation-duration:70s; animation-delay:10s}
 .fog div:nth-child(3){left:60%; top:0%; animation-duration:62s; animation-delay:5s}
 @keyframes drift { from{transform:translateX(-8%)} to{transform:translateX(8%)} }
-#flash{position:absolute; inset:0; background:white; opacity:0; pointer-events:none; z-index:950}
-.hud{position:absolute; left:16px; top:16px; z-index:900; display:flex; gap:12px; flex-direction:column}
-.card{background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px)}
-.card h3{margin:0 0 6px 0; font-size:0.95rem; color:#ffdcdc}
-#score{font-size:1.2rem; font-weight:700}
-#best{font-size:0.9rem; color:#f0dcdc; margin-top:6px}
-.top-buttons{position:absolute; right:16px; top:16px; z-index:900; display:flex; gap:8px}
-.btn{background:rgba(255,255,255,0.04); padding:8px 10px; border-radius:8px; color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer}
-.btn.primary{background:linear-gradient(180deg,#6b2c2c,#a04444); color:white; border:none}
-.btn.hidden{display:none}
-#gravestone{position:absolute; left:50%; transform:translateX(-50%); bottom:26px; width:360px; min-height:160px; background:linear-gradient(180deg,var(--stone), #1f1f1f); border-radius:26px 26px 12px 12px; border:3px solid rgba(0,0,0,0.5); box-shadow:0 12px 40px rgba(0,0,0,0.75), inset 0 -8px 24px rgba(255,255,255,0.02); z-index:410; padding:18px; text-align:center;}
-#gravestone h2{margin:0;color:#ffdede; font-size:1.05rem}
-#gravestone .years{font-weight:700; margin-top:6px; color:#f0dcdc}
-#gravestone .epitaph{margin-top:10px; font-size:0.88rem; color:#e0d9d9; line-height:1.28}
-.crack{position:absolute; left:50%; top:4px; width:2px; height:0; background:linear-gradient(#333,#111); opacity:0.18; transform-origin:top; border-radius:2px}
-.crack.c1{transform:translateX(-46px) rotate(-18deg)}
-.crack.c2{transform:translateX(0px) rotate(0deg)}
-.crack.c3{transform:translateX(46px) rotate(18deg)}
-.crack.show{height:86px; opacity:0.7}
-#scroll{display:none; margin-top:12px; background: rgba(0,0,0,0.6); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); color:#ffd;font-size:0.92rem}
-.item{position:absolute; font-size:36px; cursor:pointer; user-select:none; z-index:300; transform-origin:center; transition: transform 120ms;}
-.bone{font-size:34px}
-.skull{font-size:42px}
-.zombie{font-size:46px}
-.bat{font-size:40px}
-.vamp{font-size:48px}
-.ghost{font-size:46px; opacity:0.95}
-#boss{position:absolute; left:50%; top:-30%; font-size:88px; transform:translateX(-50%); opacity:0; z-index:680; pointer-events:auto; text-shadow:0 8px 30px rgba(255,255,255,0.08); transition: transform 0.35s, opacity 0.35s;}
-#boss.active{top:8%; opacity:1; transform:translateX(-50%) scale(1.02)}
-#boss.hit{transform:translateX(-50%) scale(0.93)}
-.candle{position:absolute; bottom:12px; font-size:22px; opacity:0; transition:opacity 0.8s; z-index:420}
-.candle.show{opacity:1}
-.crow{position:absolute; font-size:28px; z-index:520; opacity:0.95}
-#milestone-list{margin-top:8px; font-size:0.86rem; color:#ffd}
-#owen-rise{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)); z-index:999; color:#ffdede; font-size:28px; flex-direction:column; opacity:0; pointer-events:none; transition:opacity 0.6s}
-#owen-rise.show{opacity:1; pointer-events:auto}
-#owen-rise .big{font-size:120px; margin-bottom:10px; text-shadow:0 18px 60px rgba(0,0,0,0.7)}
-.floatText{position:absolute; font-weight:700; color:#ffdede; pointer-events:none; z-index:980; text-shadow:0 6px 18px rgba(0,0,0,0.7);}
+
+#flash{position:absolute;inset:0;background:white;opacity:0;pointer-events:none;z-index:950;}
+
+.hud{position:absolute;left:16px;top:16px;z-index:900;display:flex;gap:12px;flex-direction:column;}
+.card{background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);}
+.card h3{margin:0 0 6px 0;font-size:0.95rem;color:#ffdcdc;}
+#score{font-size:1.2rem;font-weight:700;}
+#best{font-size:0.9rem;color:#f0dcdc;margin-top:6px;}
+
+.top-buttons{position:absolute;right:16px;top:16px;z-index:900;display:flex;gap:8px;}
+.btn{background:rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;color:var(--muted);border:1px solid rgba(255,255,255,0.03);cursor:pointer;}
+.btn.primary{background:linear-gradient(180deg,#6b2c2c,#a04444); color:white;border:none;}
+.btn.hidden{display:none;}
+
+#gravestone{
+  position:absolute; left:50%; transform:translateX(-50%); bottom:26px; width:360px; min-height:160px;
+  background:linear-gradient(180deg,var(--stone), #1f1f1f); border-radius:26px 26px 12px 12px;
+  border:3px solid rgba(0,0,0,0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.75), inset 0 -8px 24px rgba(255,255,255,0.02);
+  z-index:410; padding:18px; text-align:center;
+}
+#gravestone h2{margin:0;color:#ffdede;font-size:1.05rem;}
+#gravestone .years{font-weight:700;margin-top:6px;color:#f0dcdc;}
+#gravestone .epitaph{margin-top:10px;font-size:0.88rem;color:#e0d9d9;line-height:1.28;}
+.crack{position:absolute;left:50%;top:4px;width:2px;height:0;background:linear-gradient(#333,#111);opacity:0.18;transform-origin:top;border-radius:2px;}
+.crack.c1{transform:translateX(-46px) rotate(-18deg);}
+.crack.c2{transform:translateX(0px) rotate(0deg);}
+.crack.c3{transform:translateX(46px) rotate(18deg);}
+.crack.show{height:86px;opacity:0.7;}
+#scroll{display:none;margin-top:12px;background: rgba(0,0,0,0.6);padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);color:#ffd;font-size:0.92rem;}
+
+.item{position:absolute;font-size:36px;cursor:pointer;user-select:none;z-index:300;transform-origin:center;transition: transform 120ms;}
+.bone{font-size:34px;}
+.skull{font-size:42px;}
+.zombie{font-size:46px;}
+.bat{font-size:40px;}
+.vamp{font-size:48px;}
+.ghost{font-size:46px;opacity:0.95;}
+
+#boss{position:absolute;left:50%;top:-30%;font-size:88px;transform:translateX(-50%);opacity:0;z-index:680;pointer-events:auto;text-shadow:0 8px 30px rgba(255,255,255,0.08);transition: transform 0.35s, opacity 0.35s;}
+#boss.active{top:8%;opacity:1;transform:translateX(-50%) scale(1.02);}
+#boss.hit{transform:translateX(-50%) scale(0.93);}
+
+.candle{position:absolute;bottom:12px;font-size:22px;opacity:0;transition:opacity 0.8s;z-index:420;}
+.candle.show{opacity:1;}
+
+.crow{position:absolute;font-size:28px;z-index:520;opacity:0.95;}
+
+#milestone-list{margin-top:8px;font-size:0.86rem;color:#ffd;}
+
+#owen-rise{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85));z-index:999;color:#ffdede;font-size:28px;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.6s;}
+#owen-rise.show{opacity:1;pointer-events:auto;}
+#owen-rise .big{font-size:120px;margin-bottom:10px;text-shadow:0 18px 60px rgba(0,0,0,0.7);}
+
+.floatText{position:absolute;font-weight:700;color:#ffdede;pointer-events:none;z-index:980;text-shadow:0 6px 18px rgba(0,0,0,0.7);}
+
 @media (max-width:720px){
-#gravestone{width:280px;padding:12px}
-.item{font-size:28px}
-.zombie{font-size:38px}
-#boss{font-size:60px}
-.candle{font-size:18px}
-.hud{left:8px; top:8px}
-.top-buttons{right:8px; top:8px}
+  #gravestone{width:280px;padding:12px;}
+  .item{font-size:28px;}
+  .zombie{font-size:38px;}
+  #boss{font-size:60px;}
+  .candle{font-size:18px;}
+  .hud{left:8px;top:8px;}
+  .top-buttons{right:8px;top:8px;}
 }
 </style>
 </head>
@@ -83,9 +110,10 @@ header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
 </header>
 
 <div id="stage" aria-live="polite">
-  <div class="fog" aria-hidden="true"><div></div><div></div><div></div></div>
-  <div id="flash" aria-hidden="true"></div>
+  <div class="fog"><div></div><div></div><div></div></div>
+  <div id="flash"></div>
 
+  <!-- HUD -->
   <div class="hud" role="region" aria-label="Game HUD">
     <div class="card">
       <h3>Score</h3>
@@ -94,8 +122,7 @@ header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
     </div>
     <div class="card">
       <h3>Milestones</h3>
-      <div style="font-size:0.9rem">10 • 25 • 50 • 100</div>
-      <div id="milestone-list"></div>
+      <div id="milestone-list">—</div>
     </div>
   </div>
 
@@ -108,7 +135,11 @@ header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
   <div id="gravestone" role="button" title="Click the gravestone">
     <h2>Owen Bahen</h2>
     <div class="years">1997 — 2100</div>
-    <div class="epitaph">"3 Century Man"<br/>Born on the side of the road — Local newspaper Day 1.<br/>Ended with the same local fame.</div>
+    <div class="epitaph">
+      "3 Century Man"<br/>
+      Born on the side of the road — Local newspaper Day 1.<br/>
+      Ended with the same local fame.
+    </div>
     <div id="scroll">A secret scroll: Owen walked the line between ordinary & extraordinary. Click the stone.</div>
     <div class="crack c1" id="crack1"></div>
     <div class="crack c2" id="crack2"></div>
@@ -117,104 +148,124 @@ header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
     <div class="candle" id="c2" style="left:50px">🕯️</div>
     <div class="candle" id="c3" style="right:50px">🕯️</div>
   </div>
-</div>
 
-<div id="owen-rise">
-  <div class="big">☠️</div>
-  <div>Owen Rises! Click the grave to summon him.</div>
+  <div id="boss">👻</div>
+  <div id="owen-rise"><div class="big">☠️</div><div>Owen Rises! Click the grave to summon him.</div></div>
 </div>
 
 <script>
-let score = 0;
-let best = 0;
+/* =========================
+   Graveyard Deluxe Game
+   ========================= */
+let score=0,best=Number(localStorage.getItem("grave_best")||0);
+document.getElementById("score").textContent=score;
+document.getElementById("best").textContent="Best: "+best;
 
-const scoreEl = document.getElementById("score");
-const bestEl = document.getElementById("best");
-const gravestone = document.getElementById("gravestone");
-const crack1 = document.getElementById("crack1");
-const crack2 = document.getElementById("crack2");
-const crack3 = document.getElementById("crack3");
-const c1 = document.getElementById("c1");
-const c2 = document.getElementById("c2");
-const c3 = document.getElementById("c3");
-const scroll = document.getElementById("scroll");
-const milestoneList = document.getElementById("milestone-list");
+const stage=document.getElementById("stage");
+const scoreEl=document.getElementById("score");
+const bestEl=document.getElementById("best");
+const gravestone=document.getElementById("gravestone");
+const crack1=document.getElementById("crack1");
+const crack2=document.getElementById("crack2");
+const crack3=document.getElementById("crack3");
+const c1=document.getElementById("c1");
+const c2=document.getElementById("c2");
+const c3=document.getElementById("c3");
+const milestoneList=document.getElementById("milestone-list");
+const flash=document.getElementById("flash");
+const boss=document.getElementById("boss");
+const owenRise=document.getElementById("owen-rise");
 
-const milestones = [10,25,50,100];
-let bonesAdded = 0;
+let items=[];
+let milestones=[10,50,120,250,500,1000];
+let milestoneText=["First Bones!","Candle Lit","Grave Cracked","Ghost Appears","Crow Flies","Owen Rises"];
+let bossActive=false;
+let floatTexts=[];
 
-function updateScore(points){
-  score += points;
-  if(score>best) best=score;
-  scoreEl.textContent = score;
-  bestEl.textContent = "Best: "+best;
+function randomInt(min,max){return Math.floor(Math.random()*(max-min+1)+min);}
+function addItem(type){
+  let el=document.createElement("div");
+  el.className="item "+type;
+  el.textContent=type==="bone"?"🦴":type==="skull"?"💀":type==="zombie"?"🧟":type==="bat"?"🦇":type==="vamp"?"🧛":type==="ghost"?"👻":"?";
+  el.style.left=randomInt(0,window.innerWidth-40)+"px";
+  el.style.top=randomInt(60,window.innerHeight-200)+"px";
+  stage.appendChild(el);
+  el.addEventListener("click",()=>collectItem(el,type));
+  items.push(el);
+}
+
+function collectItem(el,type){
+  score+=1;
+  scoreEl.textContent=score;
+  if(score>best){best=score; bestEl.textContent="Best: "+best; localStorage.setItem("grave_best",best);}
+  stage.removeChild(el);
+  items=items.filter(i=>i!==el);
   updateGrave();
+  showFloatText("+"+1,el);
+  checkMilestones();
+}
+
+function showFloatText(txt,target){
+  let ft=document.createElement("div");
+  ft.className="floatText";
+  ft.textContent=txt;
+  ft.style.left=target.offsetLeft+"px";
+  ft.style.top=target.offsetTop+"px";
+  stage.appendChild(ft);
+  floatTexts.push(ft);
+  setTimeout(()=>{ft.remove(); floatTexts=floatTexts.filter(f=>f!==ft)},1000);
 }
 
 function updateGrave(){
-  // cracks
-  crack1.classList.toggle("show", score>=10);
-  crack2.classList.toggle("show", score>=25);
-  crack3.classList.toggle("show", score>=50);
-  // candles
-  c1.classList.toggle("show", score>=10);
-  c2.classList.toggle("show", score>=25);
-  c3.classList.toggle("show", score>=50);
-  // bones
-  if(score>=10 && bonesAdded<1){addBones(1);}
-  if(score>=25 && bonesAdded<2){addBones(2);}
-  if(score>=50 && bonesAdded<3){addBones(3);}
-  // milestone messages
-  milestoneList.textContent = milestones.filter(m=>score>=m).join(" • ");
+  if(score>10) c1.classList.add("show");
+  if(score>50) c2.classList.add("show");
+  if(score>120) c3.classList.add("show");
+  if(score>250) crack1.classList.add("show");
+  if(score>500) crack2.classList.add("show");
+  if(score>750) crack3.classList.add("show");
 }
 
-function addBones(count){
-  for(let i=0;i<count;i++){
-    let b = document.createElement("div");
-    b.textContent = i%2? "💀":"🦴";
-    b.className="item";
-    let x = Math.random()*250-125;
-    let y = Math.random()*30+50;
-    b.style.left=`calc(50% + ${x}px)`;
-    b.style.bottom=`${y}px`;
-    gravestone.appendChild(b);
-  }
-  bonesAdded+=count;
-}
-
-gravestone.addEventListener("click",()=>{scroll.style.display="block";updateScore(1);});
-
-// simulate items falling
-function spawnItem(){
-  let items = ["💀","🦴","🧟","🦇","👻","🧛"];
-  let i = document.createElement("div");
-  i.className="item";
-  i.textContent = items[Math.floor(Math.random()*items.length)];
-  let x = Math.random()*window.innerWidth-20;
-  i.style.left = x+"px";
-  i.style.top = "-50px";
-  document.getElementById("stage").appendChild(i);
-  let speed = Math.random()*1.2+0.8;
-  let fall = setInterval(()=>{
-    let top = parseFloat(i.style.top);
-    if(top>window.innerHeight){
-      i.remove();
-      clearInterval(fall);
-    } else {
-      i.style.top = top+speed+"px";
+function checkMilestones(){
+  for(let i=0;i<milestones.length;i++){
+    if(score===milestones[i]){
+      milestoneList.textContent=milestoneText[i];
+      if(i===milestones.length-1){summonBoss();}
+      flashScreen();
     }
-  },16);
+  }
 }
-setInterval(spawnItem,800);
 
-// simulate flashes & fog intensity changes
-function flash(){
-  const f = document.getElementById("flash");
-  f.style.opacity=0.4;
-  setTimeout(()=>f.style.opacity=0,120);
+function flashScreen(){
+  flash.style.opacity=1;
+  setTimeout(()=>{flash.style.opacity=0;},80);
 }
-setInterval(flash,9000);
+
+function spawnRandomItems(){
+  let types=["bone","skull","zombie","bat","vamp","ghost"];
+  addItem(types[randomInt(0,types.length-1)]);
+}
+
+function summonBoss(){
+  boss.classList.add("active");
+  bossActive=true;
+}
+
+function bossHit(){
+  if(bossActive){
+    score+=10; scoreEl.textContent=score;
+    flashScreen();
+  }
+}
+
+gravestone.addEventListener("click",()=>{owenRise.classList.add("show");});
+boss.addEventListener("click",bossHit);
+
+/* Spawn loop */
+setInterval(spawnRandomItems,1800);
+
+/* Info */
+document.getElementById("infoBtn").addEventListener("click",()=>alert("Collect bones, skulls, and items. Watch the grave update and candles light up. Reach milestones to summon Owen!"));
+
 </script>
-
 </body>
 </html>
