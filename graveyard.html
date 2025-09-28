@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graveyard – Owen Bahen</title>
 <style>
-/* --- Reset --- */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: "Trebuchet MS", sans-serif;
@@ -15,150 +14,36 @@ body {
   height:100vh;
   position:relative;
 }
-
-/* --- Graveyard ground --- */
 .ground {
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:120px;
-  background: repeating-linear-gradient(
-    45deg,
-    #0f0f0f,
-    #0f0f0f 10px,
-    #141414 10px,
-    #141414 20px
-  );
-  border-top:3px solid #333;
-  z-index:2;
+  position:absolute; bottom:0; width:100%; height:120px;
+  background: repeating-linear-gradient(45deg,#0f0f0f,#0f0f0f 10px,#141414 10px,#141414 20px);
+  border-top:3px solid #333; z-index:2;
 }
-
-/* --- Gravestone --- */
 .gravestone {
-  position:absolute;
-  bottom:120px;
-  left:50%;
-  transform:translateX(-50%);
-  width:240px;
-  height:180px;
-  background:#444;
-  border-radius:120px 120px 0 0;
-  text-align:center;
-  padding:1rem;
-  color:#fff;
-  font-size:0.9rem;
-  box-shadow:0 -4px 12px rgba(0,0,0,0.8);
-  z-index:3;
+  position:absolute; bottom:120px; left:50%; transform:translateX(-50%);
+  width:240px; min-height:180px; background:#444; border-radius:120px 120px 0 0;
+  text-align:center; padding:1rem; color:#fff; font-size:0.9rem;
+  box-shadow:0 -4px 12px rgba(0,0,0,0.8); z-index:3; transition:all 0.4s;
 }
 .gravestone h2 { font-size:1.2rem; margin-bottom:0.5rem; }
-
-/* --- Score & Info --- */
-.hud {
-  position:absolute;
-  top:10px;
-  left:10px;
-  display:flex;
-  flex-direction:column;
-  gap:0.5rem;
-  z-index:5;
-}
-.score-box {
-  background:#222;
-  padding:0.5rem 1rem;
-  border-radius:8px;
-  border:1px solid #555;
-}
-button.info-btn {
-  background:#333;
-  color:#fff;
-  border:none;
-  padding:0.4rem 0.8rem;
-  border-radius:5px;
-  cursor:pointer;
-}
-button.info-btn:hover { background:#555; }
-
-/* --- Info popup --- */
+.hud { position:absolute; top:10px; left:10px; display:flex; flex-direction:column; gap:0.5rem; z-index:5; }
+.score-box { background:#222; padding:0.5rem 1rem; border-radius:8px; border:1px solid #555; }
+button.info-btn, #returnBtn { background:#333; color:#fff; border:none; padding:0.4rem 0.8rem; border-radius:5px; cursor:pointer; }
+button.info-btn:hover, #returnBtn:hover { background:#555; }
 .info-popup {
-  display:none;
-  position:absolute;
-  top:20%;
-  left:50%;
-  transform:translateX(-50%);
-  background:#111;
-  border:2px solid #555;
-  border-radius:10px;
-  padding:1rem;
-  width:80%;
-  max-width:400px;
-  z-index:10;
-  text-align:center;
+  display:none; position:absolute; top:20%; left:50%; transform:translateX(-50%);
+  background:#111; border:2px solid #555; border-radius:10px; padding:1rem;
+  width:80%; max-width:400px; z-index:10; text-align:center;
 }
 .info-popup h3 { margin-bottom:0.5rem; }
-.info-popup button {
-  margin-top:1rem;
-  padding:0.3rem 0.7rem;
-}
-
-/* --- Return button --- */
-#returnBtn {
-  display:none;
-  margin-top:0.8rem;
-  background:#111;
-  color:#fff;
-  border:1px solid #666;
-  border-radius:5px;
-  padding:0.4rem 0.8rem;
-  cursor:pointer;
-}
-#returnBtn:hover { background:#333; }
-
-/* --- Falling entities --- */
-.entity {
-  position:absolute;
-  font-size:2rem;
-  cursor:pointer;
-  z-index:4;
-  user-select:none;
-}
-
-/* Animations */
-@keyframes float-down {
-  0% { transform:translateY(-50px); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(100vh); opacity:0; }
-}
-@keyframes float-up {
-  0% { transform:translateY(100vh); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translateY(-50px); opacity:0; }
-}
-@keyframes zigzag {
-  0% { transform:translate(0,0); }
-  25% { transform:translate(-40px,25vh); }
-  50% { transform:translate(40px,50vh); }
-  75% { transform:translate(-30px,75vh); }
-  100% { transform:translate(0,100vh); }
-}
-@keyframes quick-pop {
-  0% { transform:scale(0); opacity:0; }
-  20% { transform:scale(1.2); opacity:1; }
-  80% { transform:scale(1); opacity:1; }
-  100% { transform:scale(0); opacity:0; }
-}
-@keyframes random-move {
-  0% { transform:translate(0,0); }
-  25% { transform:translate(40px,-20px); }
-  50% { transform:translate(-40px,30px); }
-  75% { transform:translate(20px,20px); }
-  100% { transform:translate(0,0); }
-}
-
-/* --- Mobile adjustments --- */
-@media(max-width:600px){
-  .gravestone { width:200px; height:150px; font-size:0.75rem; }
-  .entity { font-size:1.6rem; }
-}
+.info-popup button { margin-top:1rem; padding:0.3rem 0.7rem; }
+.entity { position:absolute; font-size:2rem; cursor:pointer; z-index:4; user-select:none; }
+@keyframes float-down { 0%{transform:translateY(-50px);opacity:0;}10%{opacity:1;}100%{transform:translateY(100vh);opacity:0;} }
+@keyframes float-up { 0%{transform:translateY(100vh);opacity:0;}10%{opacity:1;}100%{transform:translateY(-50px);opacity:0;} }
+@keyframes zigzag {0%{transform:translate(0,0);}25%{transform:translate(-40px,25vh);}50%{transform:translate(40px,50vh);}75%{transform:translate(-30px,75vh);}100%{transform:translate(0,100vh);} }
+@keyframes quick-pop {0%{transform:scale(0);opacity:0;}20%{transform:scale(1.2);opacity:1;}80%{transform:scale(1);opacity:1;}100%{transform:scale(0);opacity:0;}}
+@keyframes random-move {0%{transform:translate(0,0);}25%{transform:translate(40px,-20px);}50%{transform:translate(-40px,30px);}75%{transform:translate(20px,20px);}100%{transform:translate(0,0);}}
+@media(max-width:600px){.gravestone { width:200px; min-height:150px; font-size:0.75rem;} .entity { font-size:1.6rem; }}
 </style>
 </head>
 <body>
@@ -182,67 +67,51 @@ button.info-btn:hover { background:#555; }
 </div>
 
 <div class="ground"></div>
+<button id="returnBtn" style="position:absolute; top:60px; right:10px;" onclick="window.location.href='index.html'">Return to Main</button>
 
 <script>
-let score = 0;
-let spawnInterval = 2500;
-let milestones = [3,10,25,50,100,200];
-let unlockedMain = false;
+let score=0;
+let spawnInterval=2500;
+let unlockedMain=false;
 
-/* Milestone Messages */
 function updateGravestone(){
-  const stone = document.getElementById("gravestone");
-  if(score >= 200){
-    stone.innerHTML = `<h2>RIP Owen Bahen</h2><p>Born interesting, died interesting… risen legendary.</p>`;
-  } else if(score >= 100){
-    stone.innerHTML = `<h2>The grave splits open!</h2><p>The century man cannot be contained.</p>`;
-  } else if(score >= 50){
-    stone.innerHTML = `<h2>Shadows gather...</h2><p>Owen Bahen grows stronger in death than in life.</p>`;
-  } else if(score >= 25){
-    stone.innerHTML = `<h2>Local fame revived</h2><p>The same paper that announced his birth now reports his return.</p>`;
-  } else if(score >= 10){
-    stone.innerHTML = `<h2>Bones rattle louder</h2><p>Whispers spread through the graveyard.</p>`;
-  } else if(score >= 3){
-    stone.innerHTML = `<h2>The dead stir…</h2><p>A faint glow appears on the stone.</p><button id="returnBtn" onclick="window.location.href='index.html'">Return to Main</button>`;
-    unlockedMain = true;
-  } else {
-    stone.innerHTML = `<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`;
-  }
+  const stone=document.getElementById("gravestone");
+  const returnBtn=document.getElementById("returnBtn");
+  if(score>=200){stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>Born interesting, died interesting… risen legendary.</p>`;}
+  else if(score>=100){stone.innerHTML=`<h2>The grave splits open!</h2><p>The century man cannot be contained.</p>`;}
+  else if(score>=50){stone.innerHTML=`<h2>Shadows gather...</h2><p>Owen Bahen grows stronger in death than in life.</p>`;}
+  else if(score>=25){stone.innerHTML=`<h2>Local fame revived</h2><p>The same paper that announced his birth now reports his return.</p>`;}
+  else if(score>=10){stone.innerHTML=`<h2>Bones rattle louder</h2><p>Whispers spread through the graveyard.</p>`;}
+  else if(score>=3){stone.innerHTML=`<h2>The dead stir…</h2><p>A faint glow appears on the stone.</p>`; returnBtn.style.display='block'; unlockedMain=true;}
+  else{stone.innerHTML=`<h2>RIP Owen Bahen</h2><p>1997 – 2100<br>"3 Century Man"</p>`; returnBtn.style.display='none';}
 }
 
-/* Info toggle */
 function toggleInfo(){
-  const popup = document.getElementById("infoPopup");
-  popup.style.display = popup.style.display === "block" ? "none" : "block";
+  const popup=document.getElementById("infoPopup");
+  popup.style.display=popup.style.display==="block"?"none":"block";
 }
 
-/* Entity spawning */
 function spawnEntity(){
-  let choices = [];
-  if(score >= 1) choices.push("bone");
-  if(score >= 3) choices.push("skull");
-  if(score >= 10) choices.push("zombie");
-  if(score >= 30) choices.push("bat");
-  if(score >= 50) choices.push("vampire");
-  if(Math.random() < 0.05) choices.push("ghost"); // occasional
+  let choices=[];
+  if(score>=0) choices.push("bone");
+  if(score>=3) choices.push("skull");
+  if(score>=10) choices.push("zombie");
+  if(score>=30) choices.push("bat");
+  if(score>=50) choices.push("vampire");
+  if(Math.random()<0.05) choices.push("ghost");
 
-  if(choices.length === 0) return;
-
-  let type = choices[Math.floor(Math.random()*choices.length)];
-  let entity = document.createElement("div");
-  entity.className = "entity";
-
-  let duration = 6000; 
-  if(type==="bone"){ entity.textContent="🦴"; entity.style.animation="float-down "+duration+"ms linear forwards"; }
-  if(type==="skull"){ entity.textContent="💀"; entity.style.animation="float-up "+duration+"ms linear forwards"; }
-  if(type==="zombie"){ entity.textContent="🧟"; entity.style.animation="float-down "+(duration+2000)+"ms linear forwards"; }
-  if(type==="bat"){ entity.textContent="🦇"; entity.style.animation="zigzag "+(duration-2000)+"ms linear forwards"; }
-  if(type==="vampire"){ entity.textContent="🧛"; entity.style.animation="quick-pop 2500ms linear forwards"; }
-  if(type==="ghost"){ entity.textContent="👻"; entity.style.animation="random-move 4s infinite"; }
-
-  entity.style.left = Math.random()*80 + "%";
-  entity.style.top = "0px";
-
+  if(choices.length===0) return;
+  let type=choices[Math.floor(Math.random()*choices.length)];
+  let entity=document.createElement("div");
+  entity.className="entity";
+  let duration=6000;
+  if(type==="bone"){entity.textContent="🦴"; entity.style.animation=`float-down ${duration}ms linear forwards`;}
+  if(type==="skull"){entity.textContent="💀"; entity.style.animation=`float-up ${duration}ms linear forwards`;}
+  if(type==="zombie"){entity.textContent="🧟"; entity.style.animation=`float-down ${duration+2000}ms linear forwards`;}
+  if(type==="bat"){entity.textContent="🦇"; entity.style.animation=`zigzag ${duration-2000}ms linear forwards`;}
+  if(type==="vampire"){entity.textContent="🧛"; entity.style.animation=`quick-pop 2500ms linear forwards`;}
+  if(type==="ghost"){entity.textContent="👻"; entity.style.animation=`random-move 4s infinite`;}
+  entity.style.left=Math.random()*80+"%"; entity.style.top="0px";
   document.body.appendChild(entity);
 
   entity.addEventListener("click",()=>{
@@ -258,21 +127,18 @@ function spawnEntity(){
     updateGravestone();
     entity.remove();
   });
-
-  setTimeout(()=>{ entity.remove(); }, duration+3000);
+  setTimeout(()=>{entity.remove();},duration+3000);
 }
 
-/* Spawn loop */
 setInterval(spawnEntity, spawnInterval);
 
-/* Spawn rate progression */
 function adjustSpawnRate(){
-  if(score >= 10 && spawnInterval>2000) spawnInterval=2000;
-  if(score >= 25 && spawnInterval>1500) spawnInterval=1500;
-  if(score >= 50 && spawnInterval>1000) spawnInterval=1000;
-  if(score >= 100 && spawnInterval>700) spawnInterval=700;
+  if(score>=10 && spawnInterval>2000) spawnInterval=2000;
+  if(score>=25 && spawnInterval>1500) spawnInterval=1500;
+  if(score>=50 && spawnInterval>1000) spawnInterval=1000;
+  if(score>=100 && spawnInterval>700) spawnInterval=700;
 }
-setInterval(adjustSpawnRate, 3000);
+setInterval(adjustSpawnRate,3000);
 </script>
 </body>
 </html>
