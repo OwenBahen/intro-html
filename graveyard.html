@@ -1,680 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Graveyard — Owen Bahen</title>
-<style>
-  :root{
-    --bg1:#0b0b0f;
-    --bg2:#14121a;
-    --accent:#b85b5b;
-    --stone:#2e2e2e;
-    --muted:#cfcfcf;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    background: linear-gradient(180deg,var(--bg1) 0%, #0f1520 60%);
-    color:var(--muted);
-    overflow:hidden;
-    min-height:100vh;
-  }
+  <meta charset="UTF-8">
+  <title>Owen's Graveyard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* General spooky style */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to top, #0b0b0b, #1e1e1e);
+      color: #f8f8f8;
+      font-family: "Trebuchet MS", sans-serif;
+      overflow: hidden;
+    }
 
-  header{
-    position:relative; z-index:300; padding:18px 20px; text-align:center;
-    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
-    border-bottom:1px solid rgba(255,255,255,0.03);
-  }
-  header h1{margin:0; font-size:1.4rem; color:#ffdddd; letter-spacing:1px}
-  header p{margin:6px 0 0 0; font-size:0.9rem; color:#cfcfcf; opacity:0.95}
+    h1 {
+      text-align: center;
+      padding: 10px;
+      font-size: 2em;
+      color: #ff4444;
+      text-shadow: 2px 2px 6px black;
+    }
 
-  /* Stage */
-  #stage{position:relative; width:100%; height:calc(100vh - 120px); overflow:hidden; background:
-    radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,0.02), transparent),
-    linear-gradient(180deg,#07080b 0%, #0e1116 60%);}
+    #grave {
+      text-align: center;
+      margin-top: 10px;
+    }
 
-  /* Fog layers */
-  .fog{position:absolute; left:-20%; right:-20%; top:-10%; bottom:-10%; pointer-events:none; z-index:50; opacity:0.22}
-  .fog div{position:absolute; width:40%; height:40%; background: linear-gradient(90deg, rgba(240,240,240,0.02), rgba(240,240,240,0.06), rgba(240,240,240,0.02)); filter:blur(18px); opacity:0.6; animation: drift linear infinite;}
-  .fog div:nth-child(1){left:0%; top:10%; animation-duration:50s; animation-delay:0s}
-  .fog div:nth-child(2){left:30%; top:20%; animation-duration:70s; animation-delay:10s}
-  .fog div:nth-child(3){left:60%; top:0%; animation-duration:60s; animation-delay:5s}
-  @keyframes drift { from{transform:translateX(-10%)} to{transform:translateX(10%)} }
+    #grave p {
+      font-style: italic;
+      color: #ccc;
+    }
 
-  /* Lightning flash */
-  #flash{position:absolute; inset:0; background:white; opacity:0; pointer-events:none; z-index:260}
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 75vh;
+      border-top: 3px solid #333;
+      background: url('https://i.ibb.co/8mMBPbh/spooky-trees.jpg') center/cover no-repeat;
+      overflow: hidden;
+    }
 
-  /* HUD */
-  .hud{position:absolute; left:16px; top:16px; z-index:300; display:flex; gap:12px; flex-direction:column}
-  .card{background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px)}
-  .card h3{margin:0 0 6px 0; font-size:0.95rem; color:#ffdcdc}
-  #score{font-size:1.2rem; font-weight:700}
+    .falling {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      animation: floatDown 6s linear forwards;
+    }
 
-  .top-buttons{position:absolute; right:16px; top:16px; z-index:300; display:flex; gap:8px}
-  .btn{background:rgba(255,255,255,0.04); padding:8px 10px; border-radius:8px; color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer}
-  .btn.primary{background:linear-gradient(180deg,#6b2c2c,#a04444); color:white; border:none}
-  .btn.hidden{display:none}
+    @keyframes floatDown {
+      from { top: -50px; }
+      to { top: 100%; opacity: 0; }
+    }
 
-  /* Gravestone */
-  #gravestone{
-    position:absolute;
-    left:50%; transform:translateX(-50%);
-    bottom:22px;
-    width:360px;
-    min-height:160px;
-    background:linear-gradient(180deg,var(--stone), #202020);
-    border-radius:26px 26px 12px 12px;
-    border:3px solid rgba(0,0,0,0.5);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.7), inset 0 -8px 24px rgba(255,255,255,0.02);
-    z-index:220;
-    padding:18px;
-    text-align:center;
-  }
-  #gravestone h2{margin:0;color:#ffdede; font-size:1.1rem}
-  #gravestone .years{font-weight:700; margin-top:6px; color:#f0dcdc}
-  #gravestone .epitaph{margin-top:10px; font-size:0.85rem; color:#e0d9d9; line-height:1.2}
-  .crack{position:absolute; left:50%; top:4px; width:2px; height:0; background:linear-gradient(#333,#111); opacity:0.18; transform-origin:top; border-radius:2px}
-  .crack.c1{transform:translateX(-46px) rotate(-18deg)}
-  .crack.c2{transform:translateX(0px) rotate(0deg)}
-  .crack.c3{transform:translateX(46px) rotate(18deg)}
-  .crack.show{height:86px; opacity:0.7}
+    .popup {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 20, 20, 0.95);
+      border: 2px solid #666;
+      border-radius: 12px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      display: none;
+      z-index: 10;
+    }
 
-  #scroll{display:none; margin-top:12px; background: rgba(0,0,0,0.6); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); color:#ffd;font-size:0.9rem}
+    .popup button {
+      margin-top: 10px;
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
 
-  /* items */
-  .item{position:absolute; font-size:36px; cursor:pointer; user-select:none; z-index:210; transform-origin:center; text-shadow:0 6px 16px rgba(0,0,0,0.6)}
-  .bone{font-size:34px}
-  .skull{font-size:42px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6))}
-  .zombie{font-size:46px}
-  .bat{font-size:40px}
-  .vamp{font-size:46px}
-  .ghost{font-size:46px; opacity:0.95}
+    #scoreboard {
+      text-align: center;
+      margin: 10px 0;
+    }
 
-  /* boss ghost */
-  #boss{position:absolute; left:50%; top:-30%; font-size:88px; transform:translateX(-50%); opacity:0; z-index:290; pointer-events:auto; text-shadow:0 8px 30px rgba(255,255,255,0.08); transition: transform 0.4s, opacity 0.4s;}
-  #boss.active{top:8%; opacity:1; transform:translateX(-50%) scale(1.02)}
-  #boss.hit{transform:translateX(-50%) scale(0.9)}
+    #milestones {
+      text-align: center;
+      font-size: 0.9em;
+      color: #aaa;
+    }
 
-  /* candles */
-  .candle{position:absolute; bottom:12px; font-size:22px; opacity:0; transition:opacity 0.8s; z-index:230}
-  .candle.show{opacity:1}
-
-  /* crows */
-  .crow{position:absolute; font-size:28px; z-index:240; opacity:0.95}
-
-  /* owen-rise modal */
-  #owen-rise{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)); z-index:500; color:#ffdede; font-size:28px; flex-direction:column; opacity:0; pointer-events:none; transition:opacity 0.6s}
-  #owen-rise.show{opacity:1; pointer-events:auto}
-  #owen-rise .big{font-size:120px; margin-bottom:10px; text-shadow:0 18px 60px rgba(0,0,0,0.7)}
-
-  @media (max-width:720px){
-    #gravestone{width:280px;padding:12px}
-    .item{font-size:28px}
-    .zombie{font-size:38px}
-    #boss{font-size:60px}
-    .candle{font-size:18px}
-  }
-</style>
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5em; }
+      .falling { font-size: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
+  <h1>💀 Owen’s Spooky Graveyard 💀</h1>
 
-<header>
-  <h1>☠️ The Graveyard — Owen Bahen ☠️</h1>
-  <p>"3 Century Man" — RIP 1997 – 2100 — Born interesting. Died interesting.</p>
-</header>
-
-<div id="stage" aria-live="polite">
-  <div class="fog" aria-hidden="true">
-    <div></div><div></div><div></div>
+  <div id="grave">
+    <h2>RIP Owen (1997–2100)</h2>
+    <p>"3 Century Man" <br> Born on the side of the road, ended with the same local fame.<br>
+    Born interesting, died interesting.</p>
   </div>
 
-  <div id="flash" aria-hidden="true"></div>
-
-  <!-- HUD -->
-  <div class="hud" role="region" aria-label="Game HUD">
-    <div class="card">
-      <h3>Score</h3>
-      <div id="score">0</div>
-      <div style="font-size:0.8rem; color:#e8dada; margin-top:6px">Best: <span id="best">0</span></div>
-    </div>
-
-    <div class="card" id="milestone-card">
-      <h3>Milestones</h3>
-      <div style="font-size:0.9rem">
-        10 • 25 • 50 • 100
-      </div>
-      <div id="milestone-list" style="margin-top:8px; font-size:0.85rem; color:#ffd"></div>
-    </div>
+  <div id="scoreboard">
+    Score: <span id="score">0</span>
   </div>
 
-  <div class="top-buttons">
-    <button class="btn" id="infoBtn">ℹ️ Info</button>
-    <button class="btn hidden" id="mainBtn">🏠 Main Page</button>
+  <div id="milestones">
+    Milestones: 10 🦴 | 25 💀 | 50 🧟 | 100 🦇 | 200 🧛
   </div>
 
-  <!-- gravestone -->
-  <div id="gravestone" aria-hidden="true" role="button" title="Click the gravestone">
-    <h2>Owen Bahen</h2>
-    <div class="years">1997 — 2100</div>
-    <div class="epitaph">
-      "3 Century Man"<br/>
-      Born on the side of the road — Local newspaper Day 1.<br/>
-      Ended with the same local fame.
-    </div>
+  <div id="gameArea"></div>
 
-    <div id="scroll">A secret scroll: Owen walked the line between ordinary & extraordinary. Click the stone.</div>
-
-    <div class="crack c1" id="crack1"></div>
-    <div class="crack c2" id="crack2"></div>
-    <div class="crack c3" id="crack3"></div>
+  <div style="text-align:center;margin-top:10px;">
+    <button onclick="showInfo()">ℹ️ Info</button>
+    <button onclick="goHome()">🏠 Main Page</button>
   </div>
 
-  <div id="boss" aria-hidden="true">👻</div>
-
-  <div class="candle" id="c1" style="left:calc(50% - 230px)">🕯️</div>
-  <div class="candle" id="c2" style="left:calc(50% - 10px)">🕯️</div>
-  <div class="candle" id="c3" style="left:calc(50% + 210px)">🕯️</div>
-
-  <div id="owen-rise" role="dialog" aria-hidden="true">
-    <div class="big">🧟‍♂️</div>
-    <div>Owen Rises — The Graveyard Trembles</div>
-    <button class="btn primary" id="closeRise" style="margin-top:18px">Return to Grave</button>
+  <div class="popup" id="infoPopup">
+    <h3>How to Play ☠️</h3>
+    <p>Collect as many spooky emojis as you can:</p>
+    <ul>
+      <li>🦴 Bone = 1 point (always)</li>
+      <li>💀 Skull = 3 points (unlocks at 3+ points)</li>
+      <li>🧟 Zombie = 5 points (unlocks at 10+)</li>
+      <li>🦇 Bat = 10 points (unlocks at 30+)</li>
+      <li>🧛 Vampire = 25 points (unlocks at 50+)</li>
+      <li>👻 Ghost = 1 point, floats randomly (bonus)</li>
+    </ul>
+    <p>Milestones unlock faster spawns and new challenges. Try to reach 200 points!</p>
+    <button onclick="hideInfo()">Close</button>
   </div>
-</div>
 
-<!-- info modal -->
-<div id="infoModal" style="position:fixed; inset:8% 6%; background:rgba(0,0,0,0.94); padding:18px; z-index:600; border-radius:12px; display:none; color:var(--muted)">
-  <h2 style="color:#ffdede;margin-top:0">How to Play</h2>
-  <ul>
-    <li>Click bones 🦴 for +1 point (available from 1+)</li>
-    <li>Click skulls 💀 for +3 points (available from 3+, spawn at 0.5× rate)</li>
-    <li>Click zombies 🧟 for +5 points (available from 10+)</li>
-    <li>Click bats 🦇 for +10 points (available from 30+)</li>
-    <li>Click vampires 🧛 for +25 points (rare; appear after your first bat click)</li>
-    <li>Click ghosts 👻 for +1 point (each ghost can be clicked up to 10 times)</li>
-    <li>Milestones: reaching 10 / 25 / 50 / 100 will increase spawn rates (cumulatively) and let you enter a name for the milestone.</li>
-    <li>Press <kbd>c</kbd> to clear items; <kbd>t</kbd> to toggle practice (freeze spawn pace).</li>
-  </ul>
-  <div style="text-align:center; margin-top:12px">
-    <button class="btn" id="closeInfo">Close</button>
-  </div>
-</div>
+  <script>
+    let score = 0;
+    const scoreDisplay = document.getElementById("score");
+    const gameArea = document.getElementById("gameArea");
 
-<script>
-/* ============================
-   Full Graveyard Game (Single file)
-   Implements:
-   - side-entry spawns
-   - emoji availability by score
-   - spawn-rate modifiers at milestones
-   - ghost clickable up to 10 times
-   - milestone name entry (localStorage)
-   - visual fx: fog, lightning, crows, boss, candles, cracks
-   - WebAudio feedback (no external audio files)
-   - saves best score in localStorage
-   ============================ */
-
-/* ----------------- Elements ----------------- */
-const stage = document.getElementById('stage');
-const scoreEl = document.getElementById('score');
-const bestEl = document.getElementById('best');
-const infoBtn = document.getElementById('infoBtn');
-const infoModal = document.getElementById('infoModal');
-const closeInfo = document.getElementById('closeInfo');
-const mainBtn = document.getElementById('mainBtn');
-const gravestone = document.getElementById('gravestone');
-const crack1 = document.getElementById('crack1');
-const crack2 = document.getElementById('crack2');
-const crack3 = document.getElementById('crack3');
-const scroll = document.getElementById('scroll');
-const boss = document.getElementById('boss');
-const c1 = document.getElementById('c1'), c2=document.getElementById('c2'), c3=document.getElementById('c3');
-const owenRise = document.getElementById('owen-rise'), closeRise = document.getElementById('closeRise');
-const flash = document.getElementById('flash');
-const milestoneList = document.getElementById('milestone-list');
-
-let score = 0;
-let best = Number(localStorage.getItem('grave_best') || 0);
-bestEl.textContent = best;
-
-/* ----------------- Game Configuration ----------------- */
-/* emoji definitions per your spec:
-   - symbol, points, minPoints (available when score >=), spawnRateMultiplier (for skulls 0.5)
-   - movement type string: 'side', 'shuffle', 'zigzag', 'blink', 'random'
-*/
-const EMOJIS = [
-  {id:'bone', symbol:'🦴', pts:1, min:1, spawnWeight:60, movement:'side'},
-  {id:'skull', symbol:'💀', pts:3, min:3, spawnWeight:25, movement:'side', weightMul:0.5}, // skull spawns at 0.5x base rate
-  {id:'zombie', symbol:'🧟', pts:5, min:10, spawnWeight:8, movement:'shuffle'},
-  {id:'bat', symbol:'🦇', pts:10, min:30, spawnWeight:4, movement:'zigzag'},
-  {id:'vamp', symbol:'🧛', pts:25, min:9999, spawnWeight:1, movement:'blink', rare:true}, // appears after first bat clicked
-  {id:'ghost', symbol:'👻', pts:1, min:0, spawnWeight:6, movement:'random', maxClicks:10}
-];
-
-const MILESTONES = [10,25,50,100]; // spawn modifiers at these
-let milestoneRecords = JSON.parse(localStorage.getItem('grave_milestones') || '{}'); // {10:{name:'',time:..}, ...}
-
-/* spawn control */
-let baseSpawnInterval = 1400; // ms
-let spawnTimer = null;
-let spawnModifier = 1; // increased by milestones cumulatively
-let maxOnScreen = 6; // increases with score
-const itemsOnStage = new Map(); // id -> {el,meta}
-
-/* boss */
-let bossActive = false;
-let bossHP = 0;
-
-/* other state */
-let vampUnlocked = false; // after first bat click
-let practiceLock = false;
-
-/* audio - WebAudio lightweight feedback (no files) */
-const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
-function clickTone(freq=600, dur=0.06){
-  if(!audioCtx) return;
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.connect(g); g.connect(audioCtx.destination);
-  o.type='sine'; o.frequency.value = freq;
-  g.gain.value = 0.0001;
-  const now = audioCtx.currentTime;
-  g.gain.linearRampToValueAtTime(0.08, now + 0.001);
-  o.start(now);
-  g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-  o.stop(now + dur + 0.01);
-}
-function jingle(){
-  if(!audioCtx) return;
-  const now = audioCtx.currentTime;
-  const o1 = audioCtx.createOscillator(), g1=audioCtx.createGain();
-  o1.type='sawtooth'; o1.frequency.value = 440;
-  o1.connect(g1); g1.connect(audioCtx.destination);
-  g1.gain.value = 0.0001;
-  g1.gain.linearRampToValueAtTime(0.06, now+0.01);
-  g1.gain.linearRampToValueAtTime(0.0001, now+0.45);
-  o1.start(now); o1.stop(now+0.5);
-}
-
-/* ----------------- Utilities ----------------- */
-function rand(min,max){ return Math.random()*(max-min)+min; }
-function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,9); }
-function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-
-/* ARIA live */
-const ariaAnnounce = document.createElement('div'); ariaAnnounce.setAttribute('aria-live','polite');
-ariaAnnounce.style.position='absolute'; ariaAnnounce.style.left='-9999px'; document.body.appendChild(ariaAnnounce);
-
-/* ----------------- Spawn Weight Helper ----------------- */
-function availableEmojiList(){
-  // return array of emoji meta that are available given current score and vampUnlocked
-  const list = EMOJIS.filter(e=>{
-    if(e.id === 'vamp' && !vampUnlocked) return false;
-    return score >= e.min;
-  });
-  return list;
-}
-function pickEmoji(){
-  const list = availableEmojiList();
-  if(list.length === 0) return null;
-  // create weighted list:
-  const weighted = [];
-  list.forEach(e=>{
-    // apply weight multiplier for skull (0.5) and any other modifiers
-    let w = e.spawnWeight || 1;
-    if(e.weightMul) w *= e.weightMul;
-    // apply spawnModifier increases
-    w *= 1;
-    // push e w times scaled
-    weighted.push({e,w});
-  });
-  // simple weighted pick:
-  let total = weighted.reduce((s,w)=>s + w.w, 0);
-  let r = Math.random()*total;
-  for(const wobj of weighted){
-    if(r < wobj.w) return wobj.e;
-    r -= wobj.w;
-  }
-  return weighted[weighted.length-1].e;
-}
-
-/* ----------------- Spawn Mechanics (side-entry) ----------------- */
-function spawnSideItem(){
-  // enforce cap
-  if(itemsOnStage.size >= maxOnScreen) return;
-  const e = pickEmoji();
-  if(!e) return;
-
-  const id = uid('it');
-  const el = document.createElement('div');
-  el.className = 'item ' + e.id;
-  el.textContent = e.symbol;
-
-  // starting side
-  const fromLeft = Math.random() < 0.5;
-  const y = rand(60, stage.clientHeight - 140);
-  const startX = fromLeft ? -80 : (stage.clientWidth + 80);
-  el.style.left = startX + 'px';
-  el.style.top = y + 'px';
-
-  // add to DOM & map
-  stage.appendChild(el);
-
-  // add small random rotation and bob
-  el.animate([
-    { transform: 'translateY(0) rotate(0deg)' },
-    { transform: `translateY(${rand(-8,8)}px) rotate(${rand(-18,18)}deg)` },
-    { transform: 'translateY(0) rotate(0deg)' }
-  ], { duration: 2500 + Math.random()*4200, iterations: Infinity, easing:'ease-in-out' });
-
-  const speedBase = (e.id === 'bat') ? rand(2.6,4.2) : (e.id==='vamp' ? rand(5,8) : (e.id==='zombie' ? rand(0.6,1.2) : rand(0.9,1.8)));
-  const direction = fromLeft ? 1 : -1;
-
-  // special behaviour for ghost: allow multiple clicks, random drift
-  let ghostClicks = 0;
-  let lifetime = 6000 + Math.random()*5000 - Math.min(score, 300)*10;
-  lifetime = Math.max(1600, lifetime);
-
-  const start = Date.now();
-  const moveFrame = ()=>{
-    if(!stage.contains(el)) return; // removed
-    const elapsed = (Date.now() - start)/1000;
-    let left = parseFloat(el.style.left);
-    let top = parseFloat(el.style.top);
-
-    // movement types
-    if(e.movement === 'side'){
-      left += direction * speedBase;
-    } else if(e.movement === 'shuffle'){
-      left += direction * speedBase * 0.6;
-      top += Math.sin(Date.now()/400 + left/40) * 0.8;
-    } else if(e.movement === 'zigzag'){
-      left += direction * speedBase * 1.6;
-      top += Math.sin(left/30) * 20;
-    } else if(e.movement === 'blink'){
-      // blink in/out: randomly invisible
-      if(Math.random() < 0.012) el.style.visibility = el.style.visibility === 'hidden' ? 'visible' : 'hidden';
-      left += direction * speedBase * 0.4;
-    } else if(e.movement === 'random'){
-      left += (Math.random()*2-1)*2.5;
-      top += (Math.random()*2-1)*1.8;
+    function updateScore(points) {
+      score += points;
+      scoreDisplay.textContent = score;
     }
 
-    el.style.left = left + 'px';
-    el.style.top = clamp(top, 40, stage.clientHeight - 140) + 'px';
+    function spawnEmoji() {
+      const emojiTypes = [];
 
-    // remove if crossed bounds
-    if(left < -160 || left > stage.clientWidth + 160){
-      if(stage.contains(el)) { el.remove(); itemsOnStage.delete(id); }
-      return;
+      // Always available
+      emojiTypes.push({ char: "🦴", points: 1 });
+
+      if (score >= 3) emojiTypes.push({ char: "💀", points: 3 });
+      if (score >= 10) emojiTypes.push({ char: "🧟", points: 5 });
+      if (score >= 30) emojiTypes.push({ char: "🦇", points: 10 });
+      if (score >= 50) emojiTypes.push({ char: "🧛", points: 25 });
+      if (Math.random() < 0.05) emojiTypes.push({ char: "👻", points: 1 });
+
+      const chosen = emojiTypes[Math.floor(Math.random() * emojiTypes.length)];
+      const emoji = document.createElement("div");
+      emoji.textContent = chosen.char;
+      emoji.className = "falling";
+      emoji.style.left = Math.random() * 90 + "%";
+
+      emoji.onclick = () => {
+        updateScore(chosen.points);
+        emoji.remove();
+      };
+
+      gameArea.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 6000);
     }
 
-    requestAnimationFrame(moveFrame);
-  };
-  requestAnimationFrame(moveFrame);
-
-  // click handler
-  const onClick = (evt)=>{
-    evt.stopPropagation();
-    // ghost special: up to maxClicks per ghost
-    if(e.id === 'ghost'){
-      const maxClicks = e.maxClicks || 10;
-      if(ghostClicks >= maxClicks) return;
-      ghostClicks++;
-      updateScore(e.pts);
-      clickTone(700,0.05);
-      showFloating('+1', el);
-      if(ghostClicks >= maxClicks){
-        // remove ghost after reached clicks
-        if(stage.contains(el)) el.remove();
-        itemsOnStage.delete(id);
-      }
-      return;
+    function showInfo() {
+      document.getElementById("infoPopup").style.display = "block";
     }
 
-    // bat click unlocks vampire
-    if(e.id === 'bat'){
-      vampUnlocked = true;
+    function hideInfo() {
+      document.getElementById("infoPopup").style.display = "none";
     }
 
-    // reward
-    updateScore(e.pts);
-    clickTone(200 + Math.random()*800, 0.06);
-    showFloating('+'+e.pts, el);
-
-    // visual pop then remove
-    el.animate([{ transform:'scale(1)' }, { transform:'scale(1.18)' }, { transform:'scale(0)' }], { duration:240, easing:'ease-out' })
-      .onfinish = ()=>{ if(stage.contains(el)) el.remove(); itemsOnStage.delete(id); };
-
-    // rare vampire spawn additional reaction
-    if(e.id === 'vamp'){
-      jingle();
-      // small skeleton burst
-      for(let i=0;i<5;i++) setTimeout(()=>spawnFireflyBone(), i*120);
+    function goHome() {
+      window.location.href = "index.html";
     }
-  };
 
-  el.addEventListener('click', onClick);
-
-  // set lifetime removal
-  const timeout = setTimeout(()=>{
-    if(stage.contains(el)) el.remove();
-    itemsOnStage.delete(id);
-  }, lifetime);
-
-  itemsOnStage.set(id, {el, meta:e, timeout});
-}
-
-/* small aesthetic bone float */
-function spawnFireflyBone(){
-  const el = document.createElement('div');
-  el.className='item bone';
-  el.textContent='🦴';
-  el.style.left = rand(10, 90) + '%';
-  el.style.top = rand(10, 40) + '%';
-  el.style.zIndex = 250;
-  stage.appendChild(el);
-  el.animate([{transform:'translateY(0) scale(1)', opacity:1},{transform:'translateY(-180px) scale(0.6)', opacity:0}], {duration:1200, easing:'ease-out'}).onfinish = ()=>el.remove();
-}
-
-/* show floating text */
-function showFloating(text, el){
-  const f = document.createElement('div');
-  f.style.position='absolute';
-  f.style.left = (el.offsetLeft + 8) + 'px';
-  f.style.top = (el.offsetTop - 10) + 'px';
-  f.style.color = '#ffd';
-  f.style.fontSize = '14px';
-  f.style.fontWeight = '700';
-  f.style.zIndex = 400;
-  f.textContent = text;
-  document.body.appendChild(f);
-  const anim = f.animate([{transform:'translateY(0)', opacity:1},{transform:'translateY(-28px)', opacity:0}], {duration:900, easing:'ease-out'});
-  anim.onfinish = ()=>f.remove();
-}
-
-/* spawn controller */
-let spawner = null;
-function computeSpawnModifier(){
-  // cumulative increases at 10,25,50,100
-  let mod = 1;
-  if(score >= 10) mod *= 1.25;
-  if(score >= 25) mod *= 1.25;
-  if(score >= 50) mod *= 1.25;
-  if(score >= 100) mod *= 2;
-  return mod;
-}
-function updateMaxOnScreen(){
-  // starts low, grows with score
-  if(score < 25) maxOnScreen = 6;
-  else if(score < 75) maxOnScreen = 10;
-  else if(score < 200) maxOnScreen = 16;
-  else maxOnScreen = 30;
-}
-function startSpawner(){
-  if(spawner) clearInterval(spawner);
-  const base = 1200;
-  spawner = setInterval(()=>{
-    // spawn multiple items occasionally as score increases
-    const mod = computeSpawnModifier();
-    const chance = 0.9;
-    updateMaxOnScreen();
-    if(Math.random() < chance) spawnSideItem();
-    // occasionally spawn a second one quickly depending on mod
-    if(Math.random() < (mod-1)*0.4) spawnSideItem();
-  }, Math.max(220, Math.floor(base / computeSpawnModifier())));
-}
-startSpawner();
-
-/* ----------------- Milestone and UI logic ----------------- */
-function updateScore(n=0){
-  score += n;
-  score = Math.max(0, Math.floor(score));
-  scoreEl.textContent = score;
-  ariaAnnounce('Score ' + score);
-  // best save
-  if(score > best){ best = score; bestEl.textContent = best; localStorage.setItem('grave_best', best); }
-
-  // unlock main button at 3
-  if(score >= 3) mainBtn.classList.remove('hidden'), c1.classList.add('show'), c2.classList.add('show'), c3.classList.add('show');
-
-  // reveal scroll at 10
-  if(score >= 10) scroll.style.display = 'block';
-
-  // apply cracks
-  if(score >= 1) crack1.classList.add('show');
-  if(score >= 5) crack2.classList.add('show');
-  if(score >= 10) crack3.classList.add('show');
-
-  // spawn boss at 10
-  if(score >= 10 && !bossActive) spawnBoss();
-
-  // trigger owen rise at 21 (fun)
-  if(score >= 21 && !owenRise.classList.contains('show')) {
-    // only show once
-    setTimeout(()=>{ owenRise.classList.add('show'); }, 600);
-  }
-
-  // milestone input prompt
-  MILESTONES.forEach(m => {
-    if(score >= m && !milestoneRecords[m]){
-      // prompt for name
-      const name = prompt(`Congrats — you reached ${m} points! Enter a name to record this milestone:`, "Anonymous");
-      milestoneRecords[m] = {name: name || 'Anonymous', time: Date.now()};
-      localStorage.setItem('grave_milestones', JSON.stringify(milestoneRecords));
-      renderMilestones();
-      jingle();
+    // Spawn rate logic
+    let spawnInterval = 2000;
+    function adjustSpawnRate() {
+      if (score >= 10) spawnInterval = 1500;
+      if (score >= 25) spawnInterval = 1200;
+      if (score >= 50) spawnInterval = 900;
+      if (score >= 100) spawnInterval = 600;
+      if (score >= 200) spawnInterval = 400;
     }
-  });
-}
 
-/* render milestone list */
-function renderMilestones(){
-  milestoneList.innerHTML = '';
-  MILESTONES.forEach(m=>{
-    const rec = milestoneRecords[m];
-    const d = document.createElement('div');
-    d.style.marginBottom = '6px';
-    d.innerHTML = `<strong>${m}</strong> pts — ${rec ? rec.name : '<em>unclaimed</em>'}`;
-    milestoneList.appendChild(d);
-  });
-}
-renderMilestones();
-
-/* boss spawn */
-function spawnBoss(){
-  bossActive = true;
-  bossHP = 5 + Math.floor(score/5);
-  boss.classList.add('active');
-  boss.onclick = ()=> {
-    // damage boss
-    bossHP--;
-    clickTone(520, 0.06);
-    boss.classList.add('hit');
-    setTimeout(()=> boss.classList.remove('hit'), 140);
-    updateScore(1);
-    if(bossHP <= 0){
-      // boss vanishes with reward: spawn burst and give points
-      boss.classList.remove('active');
-      bossActive = false;
-      for(let i=0;i<8;i++) setTimeout(()=>spawnSmallBurst(), i*100);
-      jingle();
+    function gameLoop() {
+      spawnEmoji();
+      adjustSpawnRate();
+      setTimeout(gameLoop, spawnInterval);
     }
-  };
-  // auto-desist after some time
-  setTimeout(()=>{ if(bossActive){ boss.classList.remove('active'); bossActive=false; } }, 22000);
-}
 
-/* small burst: spawn many small items quickly */
-function spawnSmallBurst(){
-  for(let i=0;i<6;i++) setTimeout(()=>spawnSideItem(), i*80);
-}
-
-/* occasional crow */
-function spawnCrow(){
-  const el = document.createElement('div');
-  el.className = 'crow';
-  el.textContent = '🐦';
-  el.style.left = '-8%';
-  el.style.top = (10 + Math.random()*30) + '%';
-  stage.appendChild(el);
-  el.animate([{ transform:'translateX(0)' }, { transform:'translateX(120vw)' }], { duration: 5000 + Math.random()*4000, easing:'linear' })
-    .onfinish = ()=> el.remove();
-}
-setInterval(()=>{ if(Math.random() < 0.36) spawnCrow(); }, 4500);
-
-/* occasional lightning */
-function lightning(){
-  flash.style.opacity = 0.95;
-  flash.animate([{opacity:0.95}, {opacity:0}], {duration:220, easing:'ease-out'});
-  stage.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}], {duration:260, easing:'ease-in-out'});
-}
-setInterval(()=>{ if(Math.random() < 0.18) lightning(); }, 8000);
-
-/* ----------------- Misc UI interactions ----------------- */
-infoBtn.addEventListener('click', ()=> { infoModal.style.display = 'block'; });
-closeInfo.addEventListener('click', ()=> { infoModal.style.display = 'none'; });
-
-mainBtn.addEventListener('click', ()=> { window.location.href = 'index.html'; });
-
-gravestone.addEventListener('click', ()=> {
-  gravestone.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}], {duration:300});
-  if(score >= 10){
-    scroll.style.display = 'block';
-    scroll.animate([{opacity:0, transform:'translateY(6px)'},{opacity:1, transform:'translateY(0)'}], {duration:360});
-  } else {
-    scroll.style.display = 'block';
-    scroll.textContent = 'The stone hums... collect bones to reveal more.';
-    setTimeout(()=>{ if(score < 10) scroll.style.display = 'none'; }, 2200);
-  }
-});
-
-/* Owen rise overlay close */
-closeRise.addEventListener('click', ()=> { owenRise.classList.remove('show'); });
-
-/* key controls */
-window.addEventListener('keydown', (e)=> {
-  if(e.key === 'c') { // clear
-    itemsOnStage.forEach((val, key)=>{ clearTimeout(val.timeout); if(val.el.parentNode) val.el.remove(); itemsOnStage.delete(key); });
-  }
-  if(e.key === 't') { practiceLock = !practiceLock; alert('Practice mode toggled: ' + (practiceLock ? 'ON' : 'OFF')); }
-});
-
-/* aria announce helper */
-function ariaAnnounce(msg){ ariaAnnounce.textContent = msg; }
-
-/* save best periodically */
-setInterval(()=>{ if(score > best){ best = score; localStorage.setItem('grave_best', best); bestEl.textContent = best; } }, 2000);
-
-/* ----------------- Initial seeding ----------------- */
-// seed a few items so the stage doesn't start empty
-for(let i=0;i<5;i++) setTimeout(()=> spawnSideItem(), i*220);
-
-/* ----------------- ensure resize responsiveness ----------------- */
-window.addEventListener('resize', ()=>{ /* items reposition naturally; no special handling needed */ });
-
-</script>
+    gameLoop();
+  </script>
 </body>
 </html>
